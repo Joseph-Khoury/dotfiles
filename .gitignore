@@ -1,3 +1,4 @@
 .DS_Store
 move_and_link.sh
 nohup.out
+*.secret
