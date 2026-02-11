@@ -97,6 +97,7 @@ alt-x = 'workspace X'
 alt-y = 'workspace Y'
 alt-z = 'workspace Z'
 
+
 alt-shift-1 = 'move-node-to-workspace 1'
 alt-shift-2 = 'move-node-to-workspace 2'
 alt-shift-3 = 'move-node-to-workspace 3'
@@ -129,6 +130,12 @@ alt-shift-w = 'move-node-to-workspace W'
 alt-shift-x = 'move-node-to-workspace X'
 alt-shift-y = 'move-node-to-workspace Y'
 alt-shift-z = 'move-node-to-workspace Z'
+
+[workspace-to-monitor-force-assignment]
+7 = ['Built-in Retina Display', 'secondary', 'main']
+8 = ['Built-in Retina Display', 'secondary', 'main']
+9 = ['3', 'secondary', 'main']
+0 = ['3','secondary', 'main']
 
 
 # 'service' binding mode declaration.
