@@ -43,16 +43,16 @@ export PATH="/Library/TeX/texbin:$PATH"
 
 # <<<<<<<<<<<<<<<<<<<< aliases <<<<<<<<<<<<<<<<<<<<
 alias dir=ls
-alias ls='ls -a'
-alias vim=nvim
+alias la='ls -a'
+# alias vim=nvim
 alias nv=neovide
-alias workspace='cd ~/Workspace/;neovide .'
-alias inbox='cd ~/Workspace/00_INBOX/;neovide.'
-alias vim_config='cd ~/.dotfiles/.config/nvim/;neovide .'
-alias hammerspoon_config='cd ~/.dotfiles/.hammerspoon/;neovide .'
-alias aerospace_config='cd ~/.dotfiles/.config/aerospace/;neovide aerospace.toml'
-alias alacritty_config='cd ~/.dotfiles/.config/alacritty/;neovide alacritty.toml'
-alias df="cd ~/.dotfiles/;neovide ."
+alias workspace='cd ~/Workspace/;nvim .'
+alias inbox='cd ~/Workspace/00_INBOX/;nvim .'
+alias vim_config='cd ~/.dotfiles/.config/nvim/;nvim .'
+alias hammerspoon_config='cd ~/.dotfiles/.hammerspoon/;nvim .'
+alias aerospace_config='cd ~/.dotfiles/.config/aerospace/;nvim aerospace.toml'
+alias alacritty_config='cd ~/.dotfiles/.config/alacritty/;nvim alacritty.toml'
+alias df="cd ~/.dotfiles/;nvim ."
 alias dff="cd ~/.dotfiles/"
 alias memorycheck="source ~/bin/memorycheck.sh"
 
