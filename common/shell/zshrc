@@ -55,6 +55,7 @@ alias alacritty_config='cd ~/.dotfiles/.config/alacritty/;nvim alacritty.toml'
 alias df="cd ~/.dotfiles/;nvim ."
 alias dff="cd ~/.dotfiles/"
 alias memorycheck="source ~/bin/memorycheck.sh"
+alias zcf="nvim ~/.zshrc"
 
 # <<<<<<<<<<<<<<<<<<<< add-ons <<<<<<<<<<<<<<<<<<<<
 # zsh-completions
@@ -108,3 +109,7 @@ ltspice() {
 #     nohup wine "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe" &>/dev/null &
 #     disown
 # }
+
+#<<<<<<<<<<<<<<<<<<< direnv <<<<<<<<<<<<<<<<<<<<<<<<
+# This allows for running a python venv as soon as you enter a directory
+eval "$(direnv hook zsh)"

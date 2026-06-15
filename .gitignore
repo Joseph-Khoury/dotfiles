@@ -7,6 +7,8 @@
 *.private
 .env
 .env.*
+.venv/
+.envrc
 
 # logs / runtime
 nohup.out
