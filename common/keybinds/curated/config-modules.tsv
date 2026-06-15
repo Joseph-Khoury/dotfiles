@@ -1,0 +1,9 @@
+id	title	area	platform	status	priority	source_path	repo_path	parity_target
+aerospace	AeroSpace	workspace	macos	active	high	~/.config/aerospace	macos/aerospace	glazewm
+hammerspoon	Hammerspoon	workspace	macos	active	high	~/.hammerspoon	macos/hammerspoon	autohotkey
+homerow	Homerow	workspace	macos	active	medium	Homerow app settings	macos/homerow	unknown
+sketchybar	Sketchybar	workspace	macos	active	medium	~/.config/sketchybar	macos/sketchybar	zebar
+alacritty	Alacritty	terminal	macos	active	medium	~/.config/alacritty	macos/alacritty	windows-terminal
+nvim	Neovim	editor	common	active	high	~/.config/nvim	common/nvim	nvim
+tmux	tmux	terminal	common	active	high	~/.tmux.conf	common/tmux/tmux.conf	tmux
+zsh	zsh	shell	common	active	high	~/.zshrc	common/shell/zshrc	zsh-wsl

@@ -47,3 +47,32 @@ spoon.FloatingWindows.resizeStep = 40
 
 spoon.FloatingWindows:start()
 
+-- Extract hotkeys for obsidian database
+function ExportHammerspoonHotkeys()
+  local hotkeys = hs.hotkey.getHotkeys()
+  local out = {}
+
+  for _, hk in ipairs(hotkeys) do
+    table.insert(out, {
+      app = "hammerspoon",
+      key = hk.idx,
+      action = hk.msg or "",
+    })
+  end
+
+  local dotfiles = os.getenv("DOTFILES_ROOT") or os.getenv("HOME") .. "/.dotfiles"
+  local path = dotfiles .. "/macos/keybinds/generated/hammerspoon.json"
+
+  local file = io.open(path, "w")
+  if not file then
+    hs.alert.show("Could not write Hammerspoon hotkeys")
+    return
+  end
+
+  file:write(hs.json.encode(out, true))
+  file:close()
+
+  hs.alert.show("Exported Hammerspoon hotkeys")
+end
+
+hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "e", "Export Hammerspoon hotkeys", ExportHammerspoonHotkeys)

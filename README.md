@@ -1,23 +1,23 @@
 # Joseph's dotfiles!
-Welcome to my repo for all my dotfiles! This is a collection of dotfiles and configs/scripts for my macbook.
+Welcome to my repo for all my dotfiles! This is a collection of dotfiles and configs/scripts for my MacBook.
 
 This repo includes:
 - .zshrc
 - some zsh addons
     ~/.zshrc and ~/.zsh_addons
 - [tmux](https://github.com/tmux/tmux/wiki) config and addons
-    - macos: ~/.tmux.conf
+    - macOS: ~/.tmux.conf
 - [neovide](https://neovide.dev/) config and settings
-    -macos: ~/Library/Application\ Support/neovide
+    -macOS: ~/Library/Application\ Support/neovide
 - [hammerspoon](https://www.hammerspoon.org/) config and scripts (macro app)
-    macos: ~/.hammerspoon
+    macOS: ~/.hammerspoon
 - ~~[sketchybar](https://github.com/FelixKratz/SketchyBar) config (WIP)~~
-    - macos: ~/.config/sketchybar
+    - macOS: ~/.config/sketchybar
 - [neovim](https://neovim.io/)!!!!!
-    - macos: ~/.config/nvim
+    - macOS: ~/.config/nvim
 - [neofetch](https://github.com/dylanaraps/neofetch) (terminal startup icon and stats)
-    - macos: ~/.config/neofetch
+    - macOS: ~/.config/neofetch
 - [alacritty](https://alacritty.org/) (terminal emulator)
-    - macos: ~/.config/alacritty
-- and [aerospace](https://nikitabobko.github.io/AeroSpace/guide) (macos tiling window manager)
-    - macos: ~/.config/aerospace
+    - macOS: ~/.config/alacritty
+- and [aerospace](https://nikitabobko.github.io/AeroSpace/guide) (macOS tiling window manager)
+    - macOS: ~/.config/aerospace

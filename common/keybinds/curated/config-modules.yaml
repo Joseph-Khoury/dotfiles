@@ -1,0 +1,88 @@
+configs:
+  - id: aerospace
+    title: AeroSpace
+    area: workspace
+    platform: macos
+    status: active
+    priority: high
+    source_path: "~/.config/aerospace"
+    repo_path: "macos/aerospace"
+    parity_target: glazewm
+    keybind_importance: high
+
+  - id: hammerspoon
+    title: Hammerspoon
+    area: workspace
+    platform: macos
+    status: active
+    priority: high
+    source_path: "~/.hammerspoon"
+    repo_path: "macos/hammerspoon"
+    parity_target: tbd
+    keybind_importance: high
+
+  - id: sketchybar
+    title: Sketchybar
+    area: workspace
+    platform: macos
+    status: inactive
+    priority: medium
+    source_path: "~/.config/sketchybar"
+    repo_path: "macos/sketchybar"
+    parity_target: zebar
+    keybind_importance: low
+
+  - id: alacritty
+    title: Alacritty
+    area: terminal
+    platform: macos
+    status: active
+    priority: medium
+    source_path: "~/.config/alacritty"
+    repo_path: "macos/alacritty"
+    parity_target: windows-terminal
+    keybind_importance: medium
+
+  - id: nvim
+    title: Neovim
+    area: editor
+    platform: common
+    status: active
+    priority: high
+    source_path: "~/.config/nvim"
+    repo_path: "common/nvim"
+    parity_target: nvim
+    keybind_importance: high
+
+  - id: tmux
+    title: tmux
+    area: terminal
+    platform: common
+    status: active
+    priority: high
+    source_path: "~/.tmux.conf"
+    repo_path: "common/tmux/tmux.conf"
+    parity_target: tmux
+    keybind_importance: high
+
+  - id: zsh
+    title: zsh
+    area: shell
+    platform: common
+    status: active
+    priority: high
+    source_path: "~/.zshrc"
+    repo_path: "common/shell/zshrc"
+    parity_target: zsh-wsl
+    keybind_importance: medium
+
+  - id: neovide
+    title: Neovide
+    area: editor
+    platform: macos
+    status: active
+    priority: low
+    source_path: "Neovide app config"
+    repo_path: "macos/neovide"
+    parity_target: none
+    keybind_importance: low

@@ -1,0 +1,82 @@
+filters:
+  and:
+    - 'type == "keybind"'
+
+properties:
+  app:
+    displayName: App
+  area:
+    displayName: Area
+  platform:
+    displayName: Platform
+  key:
+    displayName: Key
+  action:
+    displayName: Action
+  frequency:
+    displayName: Frequency
+  importance:
+    displayName: Importance
+  parity_action:
+    displayName: Parity action
+
+views:
+  - type: table
+    name: "All keybinds"
+    order:
+      - app
+      - area
+      - platform
+      - key
+      - action
+      - frequency
+      - importance
+
+  - type: table
+    name: "Rare but important"
+    filters:
+      or:
+        - 'frequency == "rare"'
+        - 'importance == "high"'
+    order:
+      - app
+      - key
+      - action
+      - frequency
+      - importance
+
+  - type: table
+    name: "Workspace"
+    filters:
+      and:
+        - 'area == "workspace"'
+    order:
+      - app
+      - platform
+      - key
+      - action
+
+  - type: table
+    name: "Terminal/editor"
+    filters:
+      or:
+        - 'area == "terminal"'
+        - 'area == "editor"'
+        - 'area == "shell"'
+    order:
+      - app
+      - key
+      - action
+      - frequency
+
+  - type: table
+    name: "Windows parity"
+    filters:
+      and:
+        - 'platform != "windows"'
+    order:
+      - parity_action
+      - app
+      - platform
+      - key
+      - action

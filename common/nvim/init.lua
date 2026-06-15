@@ -10,6 +10,11 @@ vim.opt.termguicolors = true
 require("config.lazy")
 require("mystuffs")
 
+-- Extract the keymaps for the obsidian database
+vim.api.nvim_create_user_command("ExportKeymaps", function()
+  require("tools.export_keymaps").export("~/.dotfiles/common/keybinds/generated/nvim.jsonl")
+end, {})
+
 -- Add line numbers and relative line numbers
 vim.opt.nu = true
 vim.opt.relativenumber = true

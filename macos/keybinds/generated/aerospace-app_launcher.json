@@ -1,0 +1,6 @@
+{
+  "esc" : "mode main",
+  "f" : "exec-and-forget  open -na Firefox --args --new-window \"https://web.tabliss.io/\"; mode main",
+  "o" : "exec-and-forget  open -na Obsidian; mode main",
+  "t" : "exec-and-forget  /Applications/Alacritty.app/Contents/MacOS/Alacritty --command tmux a; mode main"
+}

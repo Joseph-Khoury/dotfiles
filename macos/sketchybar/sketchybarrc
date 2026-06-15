@@ -1,3 +1,113 @@
-#!/usr/bin/env lua
+#!/usr/bin/env bash
 
-require("init")
+CONFIG_DIR="$HOME/.config/sketchybar"
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+
+source "$CONFIG_DIR/colors.sh"
+
+# Clean reload
+sketchybar --remove '/.*/'
+
+# Floating transparent-ish bar
+sketchybar --bar \
+  height=34 \
+  position=top \
+  color=$BAR \
+  blur_radius=30 \
+  margin=8 \
+  corner_radius=12 \
+  padding_left=8 \
+  padding_right=8 \
+  y_offset=6 \
+  sticky=on \
+  topmost=window \
+  shadow=off
+
+# Sensible item defaults
+sketchybar --default \
+  updates=when_shown \
+  icon.font="Hack Nerd Font:Bold:14.0" \
+  icon.color=$TEXT \
+  icon.padding_left=8 \
+  icon.padding_right=6 \
+  label.font="Hack Nerd Font:Medium:12.0" \
+  label.color=$SUBTEXT \
+  label.padding_left=0 \
+  label.padding_right=8 \
+  background.drawing=on \
+  background.color=$SURFACE0 \
+  background.height=26 \
+  background.corner_radius=9 \
+  padding_left=3 \
+  padding_right=3
+
+# Events
+sketchybar --add event aerospace_workspace_change
+
+# Left: logo
+sketchybar --add item logo left \
+  --set logo \
+  icon="" \
+  label.drawing=off \
+  icon.color=$LAVENDER \
+  background.color=$SURFACE0 \
+  click_script="open -a 'System Settings'"
+
+# Hidden watcher: dynamically rebuilds only non-empty/current AeroSpace workspaces
+sketchybar --add item space_watcher left \
+  --set space_watcher \
+  drawing=off \
+  update_freq=5 \
+  script="$PLUGIN_DIR/aerospace_spaces.sh" \
+  --subscribe space_watcher aerospace_workspace_change
+
+# Build spaces once on startup
+"$PLUGIN_DIR/aerospace_spaces.sh"
+
+# Center: active app
+sketchybar --add item front_app center \
+  --set front_app \
+  icon="󰣆" \
+  label="App" \
+  label.max_chars=32 \
+  background.color=$SURFACE0 \
+  script="$PLUGIN_DIR/front_app.sh" \
+  --subscribe front_app front_app_switched
+
+# Right: launchers/status
+sketchybar --add item nextcloud right \
+  --set nextcloud \
+  icon="" \
+  label.drawing=off \
+  update_freq=15 \
+  script="$PLUGIN_DIR/nextcloud.sh" \
+  click_script="open -a Nextcloud"
+
+sketchybar --add item obsidian right \
+  --set obsidian \
+  icon="◆" \
+  label.drawing=off \
+  icon.color=$MAUVE \
+  click_script="open -a Obsidian"
+
+sketchybar --add item volume right \
+  --set volume \
+  icon="󰕾" \
+  update_freq=5 \
+  script="$PLUGIN_DIR/volume.sh" \
+  --subscribe volume volume_change
+
+sketchybar --add item battery right \
+  --set battery \
+  icon="󰁹" \
+  update_freq=60 \
+  script="$PLUGIN_DIR/battery.sh" \
+  --subscribe battery power_source_change system_woke
+
+sketchybar --add item clock right \
+  --set clock \
+  icon="" \
+  update_freq=15 \
+  script="$PLUGIN_DIR/clock.sh"
+
+sketchybar --update

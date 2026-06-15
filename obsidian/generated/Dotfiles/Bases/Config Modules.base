@@ -1,0 +1,70 @@
+filters:
+  and:
+    - 'type == "config-module"'
+
+properties:
+  title:
+    displayName: Title
+  tool:
+    displayName: Tool
+  area:
+    displayName: Area
+  platform:
+    displayName: Platform
+  status:
+    displayName: Status
+  priority:
+    displayName: Priority
+  source_path:
+    displayName: Live path
+  repo_path:
+    displayName: Repo path
+  parity_target:
+    displayName: Parity target
+
+views:
+  - type: table
+    name: "All configs"
+    order:
+      - file.name
+      - area
+      - platform
+      - status
+      - priority
+      - parity_target
+
+  - type: table
+    name: "Workspace"
+    filters:
+      and:
+        - 'area == "workspace"'
+    order:
+      - file.name
+      - platform
+      - status
+      - parity_target
+
+  - type: table
+    name: "Terminal and editor"
+    filters:
+      or:
+        - 'area == "terminal"'
+        - 'area == "editor"'
+        - 'area == "shell"'
+    order:
+      - file.name
+      - area
+      - platform
+      - status
+
+  - type: table
+    name: "Needs parity"
+    filters:
+      and:
+        - 'parity_target != "none"'
+        - 'parity_target != ""'
+    order:
+      - file.name
+      - platform
+      - parity_target
+      - status

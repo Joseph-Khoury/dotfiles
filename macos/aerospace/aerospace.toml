@@ -1,10 +1,16 @@
 after-login-command = []
 
 after-startup-command = [
-    'exec-and-forget borders active_color=0xFFF4DBD6 inactive_color=0xFF363A4F width=5.0'
+    'exec-and-forget borders active_color=0xFFF4DBD6 inactive_color=0xFF363A4F width=5.0',
+    # 'exec-and-forget sketchybar',
 ]
-exec-on-workspace-change = ['/bin/bash', '-c', 
-    'sketchybar --trigger aerospace_workspace_change FOCUSED=$AEROSPACE_FOCUSED_WORKSPACE']
+
+# exec-on-workspace-change = ['/bin/bash', '-c',
+#   'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+# ]
+#
+# on-focus-changed = ['exec-and-forget sketchybar --trigger aerospace_workspace_change']
+
 
 start-at-login = true
 

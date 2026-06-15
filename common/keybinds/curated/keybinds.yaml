@@ -1,0 +1,90 @@
+keybinds:
+  - app: aerospace
+    area: workspace
+    platform: macos
+    key: "alt-h/j/k/l"
+    action: "Focus window left/down/up/right"
+    frequency: daily
+    importance: high
+    parity_action: focus_window_direction
+
+  - app: aerospace
+    area: workspace
+    platform: macos
+    key: "alt-shift-h/j/k/l"
+    action: "Move tiled window left/down/up/right"
+    frequency: daily
+    importance: high
+    parity_action: move_window_direction
+
+  - app: aerospace
+    area: workspace
+    platform: macos
+    key: "alt-shift-; + f"
+    action: "Toggle floating/tiling"
+    frequency: weekly
+    importance: high
+    parity_action: toggle_floating
+
+  - app: hammerspoon
+    area: workspace
+    platform: macos
+    key: "cmd-ctrl-alt-h/j/k/l"
+    action: "Move floating window"
+    frequency: rare
+    importance: high
+    parity_action: move_floating_window
+
+  - app: hammerspoon
+    area: workspace
+    platform: macos
+    key: "cmd-ctrl-alt--/="
+    action: "Resize floating window width"
+    frequency: rare
+    importance: medium
+    parity_action: resize_floating_window_width
+
+  - app: tmux
+    area: terminal
+    platform: common
+    key: "prefix + ?"
+    action: "Show tmux keybindings"
+    frequency: rare
+    importance: high
+    parity_action: show_terminal_mux_help
+
+  - app: nvim
+    area: editor
+    platform: common
+    key: "<leader>pf"
+    action: "Find files"
+    frequency: daily
+    importance: high
+    parity_action: editor_find_files
+
+  - app: nvim
+    area: editor
+    platform: common
+    key: "<leader>ps"
+    action: "Live grep/search project text"
+    frequency: daily
+    importance: high
+    parity_action: editor_search_text
+
+  - app: nvim
+    area: editor
+    platform: common
+    key: "<leader>vca"
+    action: "LSP code action"
+    frequency: rare
+    importance: high
+    parity_action: editor_code_action
+
+  - app: nvim
+    area: editor
+    platform: common
+    key: "<leader>vrn"
+    action: "Rename symbol"
+    frequency: rare
+    importance: high
+    parity_action: editor_rename_symbol

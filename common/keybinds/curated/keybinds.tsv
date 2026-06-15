@@ -1,0 +1,12 @@
+app	area	platform	key	action	frequency	importance	parity_action
+aerospace	workspace	macos	alt-h/j/k/l	Focus window left/down/up/right	daily	high	focus_window_direction
+aerospace	workspace	macos	alt-shift-h/j/k/l	Move tiled window left/down/up/right	daily	high	move_window_direction
+aerospace	workspace	macos	alt-shift-space	Toggle floating/tiling	weekly	high	toggle_floating
+hammerspoon	workspace	macos	cmd-ctrl-alt-h/j/k/l	Move floating window	rare	high	move_floating_window
+hammerspoon	workspace	macos	cmd-ctrl-alt--/=	Resize floating window width	rare	medium	resize_floating_window_width
+homerow	workspace	macos	cmd-shift-space	Activate clickable labels	daily	high	click_ui_without_mouse
+tmux	terminal	common	prefix + ?	Show tmux keybindings	rare	high	show_terminal_mux_help
+nvim	editor	common	<leader>ff	Find files	daily	high	editor_find_files
+nvim	editor	common	<leader>sg	Live grep/search project text	daily	high	editor_search_text
+nvim	editor	common	<leader>ca	LSP code action	rare	high	editor_code_action
+nvim	editor	common	<leader>rn	Rename symbol	rare	high	editor_rename_symbol

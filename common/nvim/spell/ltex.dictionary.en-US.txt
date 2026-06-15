@@ -35,3 +35,14 @@ Mach-Zehnder
 MQE
 eigenoperators
 maths
+dotfiles
+zshrc
+zsh
+addons
+conf
+neovide
+hammerspoon
+sketchybar
+neovim
+neofetch
+alacritty

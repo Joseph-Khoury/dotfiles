@@ -1,0 +1,72 @@
+[
+  {
+    "app" : "hammerspoon",
+    "key" : "✧-",
+    "action" : "✧-"
+  },
+  {
+    "app" : "hammerspoon",
+    "key" : "✧=",
+    "action" : "✧="
+  },
+  {
+    "app" : "hammerspoon",
+    "key" : "⌘⌃\\",
+    "action" : "⌘⌃\\"
+  },
+  {
+    "app" : "hammerspoon",
+    "key" : "⌘⌥TAB",
+    "action" : "⌘⌥TAB"
+  },
+  {
+    "app" : "hammerspoon",
+    "key" : "⌘⌃⌥-",
+    "action" : "⌘⌃⌥-"
+  },
+  {
+    "app" : "hammerspoon",
+    "key" : "⌘⌃⌥=",
+    "action" : "⌘⌃⌥="
+  },
+  {
+    "app" : "hammerspoon",
+    "key" : "⌘⌃⌥C",
+    "action" : "⌘⌃⌥C"
+  },
+  {
+    "app" : "hammerspoon",
+    "key" : "⌘⌃⌥E",
+    "action" : "⌘⌃⌥E: Export Hammerspoon hotkeys"
+  },
+  {
+    "app" : "hammerspoon",
+    "key" : "⌘⌃⌥H",
+    "action" : "⌘⌃⌥H"
+  },
+  {
+    "app" : "hammerspoon",
+    "key" : "⌘⌃⌥J",
+    "action" : "⌘⌃⌥J"
+  },
+  {
+    "app" : "hammerspoon",
+    "key" : "⌘⌃⌥K",
+    "action" : "⌘⌃⌥K"
+  },
+  {
+    "app" : "hammerspoon",
+    "key" : "⌘⌃⌥L",
+    "action" : "⌘⌃⌥L"
+  },
+  {
+    "app" : "hammerspoon",
+    "key" : "⌘⌃⌥R",
+    "action" : "⌘⌃⌥R"
+  },
+  {
+    "app" : "hammerspoon",
+    "key" : "⌘⌃⌥W",
+    "action" : "⌘⌃⌥W"
+  }
+]

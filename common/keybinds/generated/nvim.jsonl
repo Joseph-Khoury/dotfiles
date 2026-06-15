@@ -1,0 +1,268 @@
+{"noremap":1,"key":" y","mode":"visual-block","source":3,"silent":0,"action":"\"+y","app":"nvim"}
+{"noremap":1,"key":" d","mode":"visual-block","source":3,"silent":0,"action":"\"d","app":"nvim"}
+{"noremap":1,"key":" p","mode":"visual-block","source":3,"silent":0,"action":"\"_dP","app":"nvim"}
+{"noremap":1,"key":"#","mode":"visual-block","source":-8,"silent":0,"action":":help v_#-default","app":"nvim"}
+{"noremap":0,"key":"%","mode":"visual-block","source":21,"silent":1,"action":"<Plug>(MatchitVisualForward)","app":"nvim"}
+{"noremap":1,"key":"*","mode":"visual-block","source":-8,"silent":0,"action":":help v_star-default","app":"nvim"}
+{"noremap":1,"key":"@","mode":"visual-block","source":-8,"silent":1,"action":":help v_@-default","app":"nvim"}
+{"noremap":1,"key":"J","mode":"visual-block","source":3,"silent":0,"action":":m '>+1<CR>gv=gv","app":"nvim"}
+{"noremap":1,"key":"K","mode":"visual-block","source":3,"silent":0,"action":":m '<lt>-2<CR>gv=gv","app":"nvim"}
+{"noremap":1,"key":"Q","mode":"visual-block","source":-8,"silent":1,"action":":help v_Q-default","app":"nvim"}
+{"noremap":1,"key":"S","mode":"visual-block","source":34,"silent":0,"action":"Add a surrounding pair around a visual selection","app":"nvim"}
+{"noremap":0,"key":"[%","mode":"visual-block","source":21,"silent":1,"action":"<Plug>(MatchitVisualMultiBackward)","app":"nvim"}
+{"noremap":1,"key":"[N","mode":"visual-block","source":-8,"silent":0,"action":"Select previous sibling node","app":"nvim"}
+{"noremap":1,"key":"[n","mode":"visual-block","source":-8,"silent":0,"action":"Select previous node","app":"nvim"}
+{"noremap":0,"key":"]%","mode":"visual-block","source":21,"silent":1,"action":"<Plug>(MatchitVisualMultiForward)","app":"nvim"}
+{"noremap":1,"key":"]N","mode":"visual-block","source":-8,"silent":0,"action":"Select next sibling node","app":"nvim"}
+{"noremap":1,"key":"]n","mode":"visual-block","source":-8,"silent":0,"action":"Select next node","app":"nvim"}
+{"noremap":0,"key":"a%","mode":"visual-block","source":21,"silent":0,"action":"<Plug>(MatchitVisualTextObject)","app":"nvim"}
+{"noremap":1,"key":"an","mode":"visual-block","source":-8,"silent":0,"action":"Select parent (outer) node","app":"nvim"}
+{"noremap":1,"key":"gS","mode":"visual-block","source":34,"silent":0,"action":"Add a surrounding pair around a visual selection, on new lines","app":"nvim"}
+{"noremap":0,"key":"g%","mode":"visual-block","source":21,"silent":1,"action":"<Plug>(MatchitVisualBackward)","app":"nvim"}
+{"noremap":1,"key":"gb","mode":"visual-block","source":3,"silent":0,"action":"Comment toggle blockwise (visual)","app":"nvim"}
+{"noremap":1,"key":"gra","mode":"visual-block","source":-8,"silent":0,"action":"vim.lsp.buf.code_action()","app":"nvim"}
+{"noremap":1,"key":"gc","mode":"visual-block","source":3,"silent":0,"action":"Comment toggle linewise (visual)","app":"nvim"}
+{"noremap":1,"key":"gx","mode":"visual-block","source":-8,"silent":0,"action":"Opens filepath or URI under cursor with the system handler (file explorer, web browser, …)","app":"nvim"}
+{"noremap":1,"key":"in","mode":"visual-block","source":-8,"silent":0,"action":"Select child (inner) node","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-expand-repeat","mode":"visual-block","source":41,"silent":1,"action":"LuaSnip: Repeat last node expansion","app":"nvim"}
+{"noremap":1,"key":"<Plug>(nvim-surround-visual-line)","mode":"visual-block","source":34,"silent":1,"action":"Add a surrounding pair around a visual selection, on new lines","app":"nvim"}
+{"noremap":1,"key":"<Plug>(nvim-surround-visual)","mode":"visual-block","source":34,"silent":1,"action":"Add a surrounding pair around a visual selection","app":"nvim"}
+{"noremap":0,"key":"<Plug>(MatchitVisualTextObject)","mode":"visual-block","source":21,"silent":1,"action":"<Plug>(MatchitVisualMultiBackward)o<Plug>(MatchitVisualMultiForward)","app":"nvim"}
+{"noremap":1,"key":"<Plug>(MatchitVisualMultiForward)","mode":"visual-block","source":21,"silent":1,"action":":<C-U>call matchit#MultiMatch(\"W\",  \"n\")<CR>m'gv``","app":"nvim"}
+{"noremap":1,"key":"<Plug>(MatchitVisualMultiBackward)","mode":"visual-block","source":21,"silent":1,"action":":<C-U>call matchit#MultiMatch(\"bW\", \"n\")<CR>m'gv``","app":"nvim"}
+{"noremap":1,"key":"<Plug>(MatchitVisualBackward)","mode":"visual-block","source":21,"silent":1,"action":":<C-U>call matchit#Match_wrapper('',0,'v')<CR>m'gv``","app":"nvim"}
+{"noremap":1,"key":"<Plug>(MatchitVisualForward)","mode":"visual-block","source":21,"silent":1,"action":":<C-U>call matchit#Match_wrapper('',1,'v')<CR>:if col(\"''\") != col(\"$\") | exe \":normal! m'\" | endif<CR>gv``","app":"nvim"}
+{"noremap":1,"key":"<Plug>(comment_toggle_blockwise_visual)","mode":"visual-block","source":11,"silent":0,"action":"Comment toggle blockwise (visual)","app":"nvim"}
+{"noremap":1,"key":"<Plug>(comment_toggle_linewise_visual)","mode":"visual-block","source":11,"silent":0,"action":"Comment toggle linewise (visual)","app":"nvim"}
+{"noremap":1,"key":"<CR>","mode":"normal","source":3,"silent":0,"action":"Enter newline below cursor in normal mode","app":"nvim"}
+{"noremap":1,"key":" ==","mode":"normal","source":3,"silent":0,"action":"Auto-align whole file","app":"nvim"}
+{"noremap":1,"key":" wp","mode":"normal","source":3,"silent":0,"action":"Previous window","app":"nvim"}
+{"noremap":1,"key":" wr","mode":"normal","source":3,"silent":0,"action":"Rotate windows","app":"nvim"}
+{"noremap":1,"key":" w=","mode":"normal","source":3,"silent":0,"action":"Equalize splits","app":"nvim"}
+{"noremap":1,"key":" wc","mode":"normal","source":3,"silent":0,"action":"Close window","app":"nvim"}
+{"noremap":1,"key":" wl","mode":"normal","source":3,"silent":0,"action":"Move to right window","app":"nvim"}
+{"noremap":1,"key":" wk","mode":"normal","source":3,"silent":0,"action":"Move to above window","app":"nvim"}
+{"noremap":1,"key":" wj","mode":"normal","source":3,"silent":0,"action":"Move to below window","app":"nvim"}
+{"noremap":1,"key":" wh","mode":"normal","source":3,"silent":0,"action":"Move to left window","app":"nvim"}
+{"noremap":1,"key":" wso","mode":"normal","source":3,"silent":0,"action":"Write and source if Lua/Vim file","app":"nvim"}
+{"noremap":1,"key":" tv","mode":"normal","source":3,"silent":0,"action":"Toggle vertical terminal","app":"nvim"}
+{"noremap":1,"key":" tt","mode":"normal","source":3,"silent":0,"action":"Toggles the term","app":"nvim"}
+{"noremap":1,"key":" rn","mode":"normal","source":3,"silent":0,"action":"Run Python in float terminal","app":"nvim"}
+{"noremap":1,"key":" bb","mode":"normal","source":3,"silent":0,"action":":Telescope buffers<CR>","app":"nvim"}
+{"noremap":1,"key":" bp","mode":"normal","source":3,"silent":0,"action":":bprev<CR>","app":"nvim"}
+{"noremap":1,"key":" bn","mode":"normal","source":3,"silent":0,"action":":bnext<CR>","app":"nvim"}
+{"noremap":1,"key":" ex","mode":"normal","source":3,"silent":0,"action":"Make current file executable","app":"nvim"}
+{"noremap":1,"key":" Y","mode":"normal","source":3,"silent":0,"action":"\"+Y","app":"nvim"}
+{"noremap":1,"key":" y","mode":"normal","source":3,"silent":0,"action":"\"+y","app":"nvim"}
+{"noremap":1,"key":" d","mode":"normal","source":3,"silent":0,"action":"\"d","app":"nvim"}
+{"noremap":1,"key":" hn","mode":"normal","source":3,"silent":0,"action":"Previous harpoon","app":"nvim"}
+{"noremap":1,"key":" hp","mode":"normal","source":3,"silent":0,"action":"Previous harpoon","app":"nvim"}
+{"noremap":1,"key":" h4","mode":"normal","source":3,"silent":0,"action":"Harpoon 4","app":"nvim"}
+{"noremap":1,"key":" h3","mode":"normal","source":3,"silent":0,"action":"Harpoon 3","app":"nvim"}
+{"noremap":1,"key":" h2","mode":"normal","source":3,"silent":0,"action":"Harpoon 2","app":"nvim"}
+{"noremap":1,"key":" h1","mode":"normal","source":3,"silent":0,"action":"Harpoon 1","app":"nvim"}
+{"noremap":1,"key":" hf","mode":"normal","source":3,"silent":0,"action":"Open harpoon menu","app":"nvim"}
+{"noremap":1,"key":" a","mode":"normal","source":3,"silent":0,"action":"Harpoon file","app":"nvim"}
+{"noremap":1,"key":" cp","mode":"normal","source":3,"silent":0,"action":"Clipboard","app":"nvim"}
+{"noremap":1,"key":" ps","mode":"normal","source":3,"silent":0,"action":"Telescope live grep","app":"nvim"}
+{"noremap":1,"key":" pf","mode":"normal","source":3,"silent":0,"action":"Telescope find files","app":"nvim"}
+{"noremap":1,"key":" pv","mode":"normal","source":3,"silent":0,"action":"Toggle File Tree","app":"nvim"}
+{"noremap":1,"key":" gd","mode":"normal","source":3,"silent":0,"action":"Git diff split","app":"nvim"}
+{"noremap":1,"key":" gb","mode":"normal","source":3,"silent":0,"action":"Git blame","app":"nvim"}
+{"noremap":1,"key":" gs","mode":"normal","source":3,"silent":0,"action":"Git status (Fugitive)","app":"nvim"}
+{"noremap":1,"key":" u","mode":"normal","source":3,"silent":0,"action":"<callback>","app":"nvim"}
+{"noremap":1,"key":"$","mode":"normal","source":3,"silent":0,"action":"g$","app":"nvim"}
+{"noremap":0,"key":"%","mode":"normal","source":21,"silent":1,"action":"<Plug>(MatchitNormalForward)","app":"nvim"}
+{"noremap":1,"key":"&","mode":"normal","source":-8,"silent":0,"action":":help &-default","app":"nvim"}
+{"noremap":1,"key":"0","mode":"normal","source":3,"silent":0,"action":"g0","app":"nvim"}
+{"noremap":1,"key":"J","mode":"normal","source":3,"silent":0,"action":"mzJ`z","app":"nvim"}
+{"noremap":1,"key":"N","mode":"normal","source":3,"silent":0,"action":"Nzzzv","app":"nvim"}
+{"noremap":1,"key":"Y","mode":"normal","source":-8,"silent":0,"action":":help Y-default","app":"nvim"}
+{"noremap":0,"key":"[%","mode":"normal","source":21,"silent":1,"action":"<Plug>(MatchitNormalMultiBackward)","app":"nvim"}
+{"noremap":1,"key":"[ ","mode":"normal","source":-8,"silent":0,"action":"Add empty line above cursor","app":"nvim"}
+{"noremap":1,"key":"[B","mode":"normal","source":-8,"silent":0,"action":":brewind","app":"nvim"}
+{"noremap":1,"key":"[b","mode":"normal","source":-8,"silent":0,"action":":bprevious","app":"nvim"}
+{"noremap":1,"key":"[<C-T>","mode":"normal","source":-8,"silent":0,"action":":ptprevious","app":"nvim"}
+{"noremap":1,"key":"[T","mode":"normal","source":-8,"silent":0,"action":":trewind","app":"nvim"}
+{"noremap":1,"key":"[t","mode":"normal","source":-8,"silent":0,"action":":tprevious","app":"nvim"}
+{"noremap":1,"key":"[A","mode":"normal","source":-8,"silent":0,"action":":rewind","app":"nvim"}
+{"noremap":1,"key":"[a","mode":"normal","source":-8,"silent":0,"action":":previous","app":"nvim"}
+{"noremap":1,"key":"[<C-L>","mode":"normal","source":-8,"silent":0,"action":":lpfile","app":"nvim"}
+{"noremap":1,"key":"[L","mode":"normal","source":-8,"silent":0,"action":":lrewind","app":"nvim"}
+{"noremap":1,"key":"[l","mode":"normal","source":-8,"silent":0,"action":":lprevious","app":"nvim"}
+{"noremap":1,"key":"[<C-Q>","mode":"normal","source":-8,"silent":0,"action":":cpfile","app":"nvim"}
+{"noremap":1,"key":"[Q","mode":"normal","source":-8,"silent":0,"action":":crewind","app":"nvim"}
+{"noremap":1,"key":"[q","mode":"normal","source":-8,"silent":0,"action":":cprevious","app":"nvim"}
+{"noremap":1,"key":"[D","mode":"normal","source":-8,"silent":0,"action":"Jump to the first diagnostic in the current buffer","app":"nvim"}
+{"noremap":1,"key":"[d","mode":"normal","source":-8,"silent":0,"action":"Jump to the previous diagnostic in the current buffer","app":"nvim"}
+{"noremap":0,"key":"]%","mode":"normal","source":21,"silent":1,"action":"<Plug>(MatchitNormalMultiForward)","app":"nvim"}
+{"noremap":1,"key":"] ","mode":"normal","source":-8,"silent":0,"action":"Add empty line below cursor","app":"nvim"}
+{"noremap":1,"key":"]B","mode":"normal","source":-8,"silent":0,"action":":blast","app":"nvim"}
+{"noremap":1,"key":"]b","mode":"normal","source":-8,"silent":0,"action":":bnext","app":"nvim"}
+{"noremap":1,"key":"]<C-T>","mode":"normal","source":-8,"silent":0,"action":":ptnext","app":"nvim"}
+{"noremap":1,"key":"]T","mode":"normal","source":-8,"silent":0,"action":":tlast","app":"nvim"}
+{"noremap":1,"key":"]t","mode":"normal","source":-8,"silent":0,"action":":tnext","app":"nvim"}
+{"noremap":1,"key":"]A","mode":"normal","source":-8,"silent":0,"action":":last","app":"nvim"}
+{"noremap":1,"key":"]a","mode":"normal","source":-8,"silent":0,"action":":next","app":"nvim"}
+{"noremap":1,"key":"]<C-L>","mode":"normal","source":-8,"silent":0,"action":":lnfile","app":"nvim"}
+{"noremap":1,"key":"]L","mode":"normal","source":-8,"silent":0,"action":":llast","app":"nvim"}
+{"noremap":1,"key":"]l","mode":"normal","source":-8,"silent":0,"action":":lnext","app":"nvim"}
+{"noremap":1,"key":"]<C-Q>","mode":"normal","source":-8,"silent":0,"action":":cnfile","app":"nvim"}
+{"noremap":1,"key":"]Q","mode":"normal","source":-8,"silent":0,"action":":clast","app":"nvim"}
+{"noremap":1,"key":"]q","mode":"normal","source":-8,"silent":0,"action":":cnext","app":"nvim"}
+{"noremap":1,"key":"]D","mode":"normal","source":-8,"silent":0,"action":"Jump to the last diagnostic in the current buffer","app":"nvim"}
+{"noremap":1,"key":"]d","mode":"normal","source":-8,"silent":0,"action":"Jump to the next diagnostic in the current buffer","app":"nvim"}
+{"noremap":1,"key":"cS","mode":"normal","source":34,"silent":0,"action":"Change a surrounding pair, putting replacements on new lines","app":"nvim"}
+{"noremap":1,"key":"cs","mode":"normal","source":34,"silent":0,"action":"Change a surrounding pair","app":"nvim"}
+{"noremap":1,"key":"ds","mode":"normal","source":34,"silent":0,"action":"Delete a surrounding pair","app":"nvim"}
+{"noremap":0,"key":"g%","mode":"normal","source":21,"silent":1,"action":"<Plug>(MatchitNormalBackward)","app":"nvim"}
+{"noremap":1,"key":"gcA","mode":"normal","source":3,"silent":0,"action":"Comment insert end of line","app":"nvim"}
+{"noremap":1,"key":"gcO","mode":"normal","source":3,"silent":0,"action":"Comment insert above","app":"nvim"}
+{"noremap":1,"key":"gco","mode":"normal","source":3,"silent":0,"action":"Comment insert below","app":"nvim"}
+{"noremap":1,"key":"gbc","mode":"normal","source":3,"silent":0,"action":"Comment toggle current block","app":"nvim"}
+{"noremap":1,"key":"gb","mode":"normal","source":3,"silent":0,"action":"Comment toggle blockwise","app":"nvim"}
+{"noremap":1,"key":"gO","mode":"normal","source":-8,"silent":0,"action":"vim.lsp.buf.document_symbol()","app":"nvim"}
+{"noremap":1,"key":"grt","mode":"normal","source":-8,"silent":0,"action":"vim.lsp.buf.type_definition()","app":"nvim"}
+{"noremap":1,"key":"gri","mode":"normal","source":-8,"silent":0,"action":"vim.lsp.buf.implementation()","app":"nvim"}
+{"noremap":1,"key":"grr","mode":"normal","source":-8,"silent":0,"action":"vim.lsp.buf.references()","app":"nvim"}
+{"noremap":1,"key":"grx","mode":"normal","source":-8,"silent":0,"action":"vim.lsp.codelens.run()","app":"nvim"}
+{"noremap":1,"key":"gra","mode":"normal","source":-8,"silent":0,"action":"vim.lsp.buf.code_action()","app":"nvim"}
+{"noremap":1,"key":"grn","mode":"normal","source":-8,"silent":0,"action":"vim.lsp.buf.rename()","app":"nvim"}
+{"noremap":1,"key":"gcc","mode":"normal","source":3,"silent":0,"action":"Comment toggle current line","app":"nvim"}
+{"noremap":1,"key":"gc","mode":"normal","source":3,"silent":0,"action":"Comment toggle linewise","app":"nvim"}
+{"noremap":1,"key":"gx","mode":"normal","source":-8,"silent":0,"action":"Opens filepath or URI under cursor with the system handler (file explorer, web browser, …)","app":"nvim"}
+{"noremap":1,"key":"j","mode":"normal","source":3,"silent":0,"action":"gj","app":"nvim"}
+{"noremap":1,"key":"k","mode":"normal","source":3,"silent":0,"action":"gk","app":"nvim"}
+{"noremap":1,"key":"n","mode":"normal","source":3,"silent":0,"action":"nzzzv","app":"nvim"}
+{"noremap":1,"key":"ySS","mode":"normal","source":34,"silent":0,"action":"Add a surrounding pair around the current line, on new lines (normal mode)","app":"nvim"}
+{"noremap":1,"key":"yS","mode":"normal","source":34,"silent":0,"action":"Add a surrounding pair around a motion, on new lines (normal mode)","app":"nvim"}
+{"noremap":1,"key":"yss","mode":"normal","source":34,"silent":0,"action":"Add a surrounding pair around the current line (normal mode)","app":"nvim"}
+{"noremap":1,"key":"ys","mode":"normal","source":34,"silent":0,"action":"Add a surrounding pair around a motion (normal mode)","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-expand-repeat","mode":"normal","source":41,"silent":1,"action":"LuaSnip: Repeat last node expansion","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-delete-check","mode":"normal","source":41,"silent":1,"action":"LuaSnip: Removes current snippet from jumplist","app":"nvim"}
+{"noremap":1,"key":"<Plug>(nvim-surround-change-line)","mode":"normal","source":34,"silent":1,"action":"Change a surrounding pair, putting replacements on new lines","app":"nvim"}
+{"noremap":1,"key":"<Plug>(nvim-surround-change)","mode":"normal","source":34,"silent":1,"action":"Change a surrounding pair","app":"nvim"}
+{"noremap":1,"key":"<Plug>(nvim-surround-delete)","mode":"normal","source":34,"silent":1,"action":"Delete a surrounding pair","app":"nvim"}
+{"noremap":1,"key":"<Plug>(nvim-surround-normal-cur-line)","mode":"normal","source":34,"silent":1,"action":"Add a surrounding pair around the current line, on new lines (normal mode)","app":"nvim"}
+{"noremap":1,"key":"<Plug>(nvim-surround-normal-line)","mode":"normal","source":34,"silent":1,"action":"Add a surrounding pair around a motion, on new lines (normal mode)","app":"nvim"}
+{"noremap":1,"key":"<Plug>(nvim-surround-normal-cur)","mode":"normal","source":34,"silent":1,"action":"Add a surrounding pair around the current line (normal mode)","app":"nvim"}
+{"noremap":1,"key":"<Plug>(nvim-surround-normal)","mode":"normal","source":34,"silent":1,"action":"Add a surrounding pair around a motion (normal mode)","app":"nvim"}
+{"noremap":1,"key":"<S-CR>","mode":"normal","source":3,"silent":0,"action":"Enter newline below cursor in normal mode","app":"nvim"}
+{"noremap":1,"key":"<C-D>","mode":"normal","source":3,"silent":0,"action":"<C-D>zz","app":"nvim"}
+{"noremap":1,"key":"<C-U>","mode":"normal","source":3,"silent":0,"action":"<C-U>zz","app":"nvim"}
+{"noremap":1,"key":"<C-K>","mode":"normal","source":3,"silent":0,"action":"Toggle cmp autocompletion","app":"nvim"}
+{"noremap":1,"key":"<Plug>(MatchitNormalMultiForward)","mode":"normal","source":21,"silent":1,"action":":<C-U>call matchit#MultiMatch(\"W\",  \"n\")<CR>","app":"nvim"}
+{"noremap":1,"key":"<Plug>(MatchitNormalMultiBackward)","mode":"normal","source":21,"silent":1,"action":":<C-U>call matchit#MultiMatch(\"bW\", \"n\")<CR>","app":"nvim"}
+{"noremap":1,"key":"<Plug>(MatchitNormalBackward)","mode":"normal","source":21,"silent":1,"action":":<C-U>call matchit#Match_wrapper('',0,'n')<CR>","app":"nvim"}
+{"noremap":1,"key":"<Plug>(MatchitNormalForward)","mode":"normal","source":21,"silent":1,"action":":<C-U>call matchit#Match_wrapper('',1,'n')<CR>","app":"nvim"}
+{"noremap":1,"key":"<C-Bslash>","mode":"normal","source":3,"silent":1,"action":"Toggle Terminal","app":"nvim"}
+{"noremap":1,"key":"<Plug>PlenaryTestFile","mode":"normal","source":12,"silent":0,"action":":lua require('plenary.test_harness').test_file(vim.fn.expand(\"%:p\"))<CR>","app":"nvim"}
+{"noremap":1,"key":"<Plug>(comment_toggle_blockwise_count)","mode":"normal","source":11,"silent":0,"action":"Comment toggle blockwise with count","app":"nvim"}
+{"noremap":1,"key":"<Plug>(comment_toggle_linewise_count)","mode":"normal","source":11,"silent":0,"action":"Comment toggle linewise with count","app":"nvim"}
+{"noremap":1,"key":"<Plug>(comment_toggle_blockwise_current)","mode":"normal","source":11,"silent":0,"action":"Comment toggle current block","app":"nvim"}
+{"noremap":1,"key":"<Plug>(comment_toggle_linewise_current)","mode":"normal","source":11,"silent":0,"action":"Comment toggle current line","app":"nvim"}
+{"noremap":1,"key":"<Plug>(comment_toggle_blockwise)","mode":"normal","source":11,"silent":0,"action":"Comment toggle blockwise","app":"nvim"}
+{"noremap":1,"key":"<Plug>(comment_toggle_linewise)","mode":"normal","source":11,"silent":0,"action":"Comment toggle linewise","app":"nvim"}
+{"noremap":0,"key":"<C-W><C-D>","mode":"normal","source":-8,"silent":0,"action":"Show diagnostics under the cursor","app":"nvim"}
+{"noremap":1,"key":"<C-W>d","mode":"normal","source":-8,"silent":0,"action":"Show diagnostics under the cursor","app":"nvim"}
+{"noremap":1,"key":"<C-L>","mode":"normal","source":-8,"silent":0,"action":":help CTRL-L-default","app":"nvim"}
+{"noremap":1,"key":"<Tab>","mode":"visual","source":-8,"silent":1,"action":"vim.snippet.jump if active, otherwise <Tab>","app":"nvim"}
+{"noremap":1,"key":" y","mode":"visual","source":3,"silent":0,"action":"\"+y","app":"nvim"}
+{"noremap":1,"key":" d","mode":"visual","source":3,"silent":0,"action":"\"d","app":"nvim"}
+{"noremap":1,"key":" p","mode":"visual","source":3,"silent":0,"action":"\"_dP","app":"nvim"}
+{"noremap":1,"key":"#","mode":"visual","source":-8,"silent":0,"action":":help v_#-default","app":"nvim"}
+{"noremap":0,"key":"%","mode":"visual","source":21,"silent":1,"action":"<Plug>(MatchitVisualForward)","app":"nvim"}
+{"noremap":1,"key":"*","mode":"visual","source":-8,"silent":0,"action":":help v_star-default","app":"nvim"}
+{"noremap":1,"key":"@","mode":"visual","source":-8,"silent":1,"action":":help v_@-default","app":"nvim"}
+{"noremap":1,"key":"J","mode":"visual","source":3,"silent":0,"action":":m '>+1<CR>gv=gv","app":"nvim"}
+{"noremap":1,"key":"K","mode":"visual","source":3,"silent":0,"action":":m '<lt>-2<CR>gv=gv","app":"nvim"}
+{"noremap":1,"key":"Q","mode":"visual","source":-8,"silent":1,"action":":help v_Q-default","app":"nvim"}
+{"noremap":1,"key":"S","mode":"visual","source":34,"silent":0,"action":"Add a surrounding pair around a visual selection","app":"nvim"}
+{"noremap":0,"key":"[%","mode":"visual","source":21,"silent":1,"action":"<Plug>(MatchitVisualMultiBackward)","app":"nvim"}
+{"noremap":1,"key":"[N","mode":"visual","source":-8,"silent":0,"action":"Select previous sibling node","app":"nvim"}
+{"noremap":1,"key":"[n","mode":"visual","source":-8,"silent":0,"action":"Select previous node","app":"nvim"}
+{"noremap":0,"key":"]%","mode":"visual","source":21,"silent":1,"action":"<Plug>(MatchitVisualMultiForward)","app":"nvim"}
+{"noremap":1,"key":"]N","mode":"visual","source":-8,"silent":0,"action":"Select next sibling node","app":"nvim"}
+{"noremap":1,"key":"]n","mode":"visual","source":-8,"silent":0,"action":"Select next node","app":"nvim"}
+{"noremap":0,"key":"a%","mode":"visual","source":21,"silent":0,"action":"<Plug>(MatchitVisualTextObject)","app":"nvim"}
+{"noremap":1,"key":"an","mode":"visual","source":-8,"silent":0,"action":"Select parent (outer) node","app":"nvim"}
+{"noremap":1,"key":"gS","mode":"visual","source":34,"silent":0,"action":"Add a surrounding pair around a visual selection, on new lines","app":"nvim"}
+{"noremap":0,"key":"g%","mode":"visual","source":21,"silent":1,"action":"<Plug>(MatchitVisualBackward)","app":"nvim"}
+{"noremap":1,"key":"gb","mode":"visual","source":3,"silent":0,"action":"Comment toggle blockwise (visual)","app":"nvim"}
+{"noremap":1,"key":"gra","mode":"visual","source":-8,"silent":0,"action":"vim.lsp.buf.code_action()","app":"nvim"}
+{"noremap":1,"key":"gc","mode":"visual","source":3,"silent":0,"action":"Comment toggle linewise (visual)","app":"nvim"}
+{"noremap":1,"key":"gx","mode":"visual","source":-8,"silent":0,"action":"Opens filepath or URI under cursor with the system handler (file explorer, web browser, …)","app":"nvim"}
+{"noremap":1,"key":"in","mode":"visual","source":-8,"silent":0,"action":"Select child (inner) node","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-jump-prev","mode":"visual","source":41,"silent":1,"action":"LuaSnip: Jump to the previous node","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-jump-next","mode":"visual","source":41,"silent":1,"action":"LuaSnip: Jump to the next node","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-prev-choice","mode":"visual","source":41,"silent":1,"action":"LuaSnip: Change to the previous choice from the choiceNode","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-next-choice","mode":"visual","source":41,"silent":1,"action":"LuaSnip: Change to the next choice from the choiceNode","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-expand-snippet","mode":"visual","source":41,"silent":1,"action":"LuaSnip: Expand the current snippet","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-expand-or-jump","mode":"visual","source":41,"silent":1,"action":"LuaSnip: Expand or jump in the current snippet","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-expand-repeat","mode":"visual","source":41,"silent":1,"action":"LuaSnip: Repeat last node expansion","app":"nvim"}
+{"noremap":1,"key":"<Plug>(nvim-surround-visual-line)","mode":"visual","source":34,"silent":1,"action":"Add a surrounding pair around a visual selection, on new lines","app":"nvim"}
+{"noremap":1,"key":"<Plug>(nvim-surround-visual)","mode":"visual","source":34,"silent":1,"action":"Add a surrounding pair around a visual selection","app":"nvim"}
+{"noremap":0,"key":"<Plug>(MatchitVisualTextObject)","mode":"visual","source":21,"silent":1,"action":"<Plug>(MatchitVisualMultiBackward)o<Plug>(MatchitVisualMultiForward)","app":"nvim"}
+{"noremap":1,"key":"<Plug>(MatchitVisualMultiForward)","mode":"visual","source":21,"silent":1,"action":":<C-U>call matchit#MultiMatch(\"W\",  \"n\")<CR>m'gv``","app":"nvim"}
+{"noremap":1,"key":"<Plug>(MatchitVisualMultiBackward)","mode":"visual","source":21,"silent":1,"action":":<C-U>call matchit#MultiMatch(\"bW\", \"n\")<CR>m'gv``","app":"nvim"}
+{"noremap":1,"key":"<Plug>(MatchitVisualBackward)","mode":"visual","source":21,"silent":1,"action":":<C-U>call matchit#Match_wrapper('',0,'v')<CR>m'gv``","app":"nvim"}
+{"noremap":1,"key":"<Plug>(MatchitVisualForward)","mode":"visual","source":21,"silent":1,"action":":<C-U>call matchit#Match_wrapper('',1,'v')<CR>:if col(\"''\") != col(\"$\") | exe \":normal! m'\" | endif<CR>gv``","app":"nvim"}
+{"noremap":1,"key":"<Plug>(comment_toggle_blockwise_visual)","mode":"visual","source":11,"silent":0,"action":"Comment toggle blockwise (visual)","app":"nvim"}
+{"noremap":1,"key":"<Plug>(comment_toggle_linewise_visual)","mode":"visual","source":11,"silent":0,"action":"Comment toggle linewise (visual)","app":"nvim"}
+{"noremap":1,"key":"<S-Tab>","mode":"visual","source":-8,"silent":1,"action":"vim.snippet.jump if active, otherwise <S-Tab>","app":"nvim"}
+{"noremap":1,"key":"<C-S>","mode":"visual","source":-8,"silent":0,"action":"vim.lsp.buf.signature_help()","app":"nvim"}
+{"noremap":1,"key":"<Esc>","mode":"terminal","source":3,"silent":0,"action":"<C-\\><C-N>","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-expand-repeat","mode":"command","source":41,"silent":1,"action":"LuaSnip: Repeat last node expansion","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-delete-check","mode":"command","source":41,"silent":1,"action":"LuaSnip: Removes current snippet from jumplist","app":"nvim"}
+{"noremap":1,"key":"<Plug>(TelescopeFuzzyCommandSearch)","mode":"command","source":13,"silent":1,"action":"<C-\\>e \"lua require('telescope.builtin').command_history { default_text = [=[\" . escape(getcmdline(), '\"') . \"]=] }\"<CR><CR>","app":"nvim"}
+{"noremap":0,"key":"%","mode":"operator-pending","source":21,"silent":1,"action":"<Plug>(MatchitOperationForward)","app":"nvim"}
+{"noremap":0,"key":"[%","mode":"operator-pending","source":21,"silent":1,"action":"<Plug>(MatchitOperationMultiBackward)","app":"nvim"}
+{"noremap":0,"key":"]%","mode":"operator-pending","source":21,"silent":1,"action":"<Plug>(MatchitOperationMultiForward)","app":"nvim"}
+{"noremap":1,"key":"an","mode":"operator-pending","source":-8,"silent":0,"action":"Select parent (outer) node","app":"nvim"}
+{"noremap":0,"key":"g%","mode":"operator-pending","source":21,"silent":1,"action":"<Plug>(MatchitOperationBackward)","app":"nvim"}
+{"noremap":1,"key":"gc","mode":"operator-pending","source":-8,"silent":0,"action":"Comment textobject","app":"nvim"}
+{"noremap":1,"key":"in","mode":"operator-pending","source":-8,"silent":0,"action":"Select child (inner) node","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-expand-repeat","mode":"operator-pending","source":41,"silent":1,"action":"LuaSnip: Repeat last node expansion","app":"nvim"}
+{"noremap":1,"key":"<Plug>(MatchitOperationMultiForward)","mode":"operator-pending","source":21,"silent":1,"action":":<C-U>call matchit#MultiMatch(\"W\",  \"o\")<CR>","app":"nvim"}
+{"noremap":1,"key":"<Plug>(MatchitOperationMultiBackward)","mode":"operator-pending","source":21,"silent":1,"action":":<C-U>call matchit#MultiMatch(\"bW\", \"o\")<CR>","app":"nvim"}
+{"noremap":1,"key":"<Plug>(MatchitOperationBackward)","mode":"operator-pending","source":21,"silent":1,"action":":<C-U>call matchit#Match_wrapper('',0,'o')<CR>","app":"nvim"}
+{"noremap":1,"key":"<Plug>(MatchitOperationForward)","mode":"operator-pending","source":21,"silent":1,"action":":<C-U>call matchit#Match_wrapper('',1,'o')<CR>","app":"nvim"}
+{"noremap":1,"key":"<C-N>","mode":"insert","source":-8,"silent":1,"action":"cmp.utils.keymap.set_map","app":"nvim"}
+{"noremap":1,"key":"<C-Space>","mode":"insert","source":-8,"silent":1,"action":"cmp.utils.keymap.set_map","app":"nvim"}
+{"noremap":1,"key":"<C-E>","mode":"insert","source":-8,"silent":1,"action":"cmp.utils.keymap.set_map","app":"nvim"}
+{"noremap":1,"key":"<C-Y>","mode":"insert","source":-8,"silent":1,"action":"cmp.utils.keymap.set_map","app":"nvim"}
+{"noremap":1,"key":"<Down>","mode":"insert","source":-8,"silent":1,"action":"cmp.utils.keymap.set_map","app":"nvim"}
+{"noremap":1,"key":"<Up>","mode":"insert","source":-8,"silent":1,"action":"cmp.utils.keymap.set_map","app":"nvim"}
+{"noremap":1,"key":"<C-P>","mode":"insert","source":-8,"silent":1,"action":"cmp.utils.keymap.set_map","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-expand-repeat","mode":"insert","source":41,"silent":1,"action":"LuaSnip: Repeat last node expansion","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-delete-check","mode":"insert","source":41,"silent":1,"action":"LuaSnip: Removes current snippet from jumplist","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-jump-prev","mode":"insert","source":41,"silent":1,"action":"LuaSnip: Jump to the previous node","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-jump-next","mode":"insert","source":41,"silent":1,"action":"LuaSnip: Jump to the next node","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-prev-choice","mode":"insert","source":41,"silent":1,"action":"LuaSnip: Change to the previous choice from the choiceNode","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-next-choice","mode":"insert","source":41,"silent":1,"action":"LuaSnip: Change to the next choice from the choiceNode","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-expand-snippet","mode":"insert","source":41,"silent":1,"action":"LuaSnip: Expand the current snippet","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-expand-or-jump","mode":"insert","source":41,"silent":1,"action":"LuaSnip: Expand or jump in the current snippet","app":"nvim"}
+{"noremap":1,"key":"<Plug>(nvim-surround-insert-line)","mode":"insert","source":34,"silent":1,"action":"Add a surrounding pair around the cursor, on new lines (insert mode)","app":"nvim"}
+{"noremap":1,"key":"<Plug>(nvim-surround-insert)","mode":"insert","source":34,"silent":1,"action":"Add a surrounding pair around the cursor (insert mode)","app":"nvim"}
+{"noremap":1,"key":"<C-G>S","mode":"insert","source":34,"silent":0,"action":"Add a surrounding pair around the cursor, on new lines (insert mode)","app":"nvim"}
+{"noremap":1,"key":"<C-G>s","mode":"insert","source":34,"silent":0,"action":"Add a surrounding pair around the cursor (insert mode)","app":"nvim"}
+{"noremap":1,"key":"<C-Bslash>","mode":"insert","source":3,"silent":1,"action":"Toggle Terminal","app":"nvim"}
+{"noremap":1,"key":"<S-Tab>","mode":"insert","source":-8,"silent":1,"action":"vim.snippet.jump if active, otherwise <S-Tab>","app":"nvim"}
+{"noremap":1,"key":"<C-S>","mode":"insert","source":-8,"silent":0,"action":"vim.lsp.buf.signature_help()","app":"nvim"}
+{"noremap":1,"key":"<C-W>","mode":"insert","source":-8,"silent":0,"action":":help i_CTRL-W-default","app":"nvim"}
+{"noremap":1,"key":"<C-U>","mode":"insert","source":-8,"silent":0,"action":":help i_CTRL-U-default","app":"nvim"}
+{"noremap":1,"key":"<Tab>","mode":"insert","source":-8,"silent":1,"action":"cmp.utils.keymap.set_map","app":"nvim"}
+{"noremap":1,"key":"<Tab>","mode":"select","source":-8,"silent":1,"action":"vim.snippet.jump if active, otherwise <Tab>","app":"nvim"}
+{"noremap":1,"key":" y","mode":"select","source":3,"silent":0,"action":"\"+y","app":"nvim"}
+{"noremap":1,"key":" d","mode":"select","source":3,"silent":0,"action":"\"d","app":"nvim"}
+{"noremap":1,"key":"J","mode":"select","source":3,"silent":0,"action":":m '>+1<CR>gv=gv","app":"nvim"}
+{"noremap":1,"key":"K","mode":"select","source":3,"silent":0,"action":":m '<lt>-2<CR>gv=gv","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-jump-prev","mode":"select","source":41,"silent":1,"action":"LuaSnip: Jump to the previous node","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-jump-next","mode":"select","source":41,"silent":1,"action":"LuaSnip: Jump to the next node","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-prev-choice","mode":"select","source":41,"silent":1,"action":"LuaSnip: Change to the previous choice from the choiceNode","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-next-choice","mode":"select","source":41,"silent":1,"action":"LuaSnip: Change to the next choice from the choiceNode","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-expand-snippet","mode":"select","source":41,"silent":1,"action":"LuaSnip: Expand the current snippet","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-expand-or-jump","mode":"select","source":41,"silent":1,"action":"LuaSnip: Expand or jump in the current snippet","app":"nvim"}
+{"noremap":1,"key":"<Plug>luasnip-expand-repeat","mode":"select","source":41,"silent":1,"action":"LuaSnip: Repeat last node expansion","app":"nvim"}
+{"noremap":1,"key":"<S-Tab>","mode":"select","source":-8,"silent":1,"action":"vim.snippet.jump if active, otherwise <S-Tab>","app":"nvim"}
+{"noremap":1,"key":"<C-S>","mode":"select","source":-8,"silent":0,"action":"vim.lsp.buf.signature_help()","app":"nvim"}
