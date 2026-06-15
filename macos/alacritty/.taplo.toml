@@ -1,0 +1,16 @@
+# Taplo config for Alacritty
+include = ["*.toml"]
+
+[[rule]]
+name = "alacritty"
+include = ["alacritty.toml", "alacritty_*.toml"]
+
+[formatting]
+indent_string = "  "
+array_trailing_comma = true
+trailing_newline = true
+column_width = 100
+reorder_keys = false
+
+[schema]
+enabled = true

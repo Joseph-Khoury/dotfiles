@@ -1,0 +1,41 @@
+# macOS
+.DS_Store
+
+# secrets
+*.secret
+*.local
+*.private
+.env
+.env.*
+
+# logs / runtime
+nohup.out
+*.log
+*.sock
+
+# generated tree dumps
+tree.txt
+
+# Neovim / LaTeX scratch output
+.config/nvim/test/
+*.aux
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+
+# tmux plugins should be installed by plugin manager
+.config/tmux/plugins/
+
+# nested plugin git repos unless intentionally vendored
+.zsh_addons/fzf-tab
+
+# Neovim / LaTeX scratch output
+.config/nvim/test/*.aux
+.config/nvim/test/*.fdb_latexmk
+.config/nvim/test/*.fls
+.config/nvim/test/*.log
+.config/nvim/test/*.pdf
+.config/nvim/test/*.synctex.gz
+
+#Neovide runtime
+neovide/*.sock

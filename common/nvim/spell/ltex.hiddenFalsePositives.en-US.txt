@@ -1,0 +1,10 @@
+{"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\Qconducted by: ,\\E$"}
+{"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\QLecturer: ,\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QDiscuss whether the experiement met the objectives, what went well, what could have gone better, yadayadayada]\\E$"}
+{"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\QInstructors: ,\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qwhere \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q represents the correlation between measurements along directions a and b.\\E$"}
+{"rule":"IN_1990s","sentence":"^\\QRound C (1000s/10s) 1 36 2 30 3 33 4 54 5 33 6 35 7 26 8 29 9 2.7 10 36 11 52 12 32 13 28 14 64 15 58 16 31 Measurement table of the photon coincidence rates measured in 1000s of coincidences averaged over a 10s window.\\E$"}
+{"rule":"MISSING_GENITIVE","sentence":"^\\QJosephson effect\nIn the junction between superconducting materials,\\E$"}
+{"rule":"MISSING_GENITIVE","sentence":"^\\QJosephson effect\nThe goal is to bring two semiconductor materials together.\\E$"}
+{"rule":"MISSING_GENITIVE","sentence":"^\\QJosephson effect\nThe goal is to bring two semiconductor materials together.\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qnofooter.[L].\\E$"}
