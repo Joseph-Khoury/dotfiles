@@ -26,8 +26,8 @@ tree.txt
 # tmux plugins should be installed by plugin manager
 .config/tmux/plugins/
 
-# nested plugin git repos unless intentionally vendored
-.zsh_addons/fzf-tab
+# # nested plugin git repos unless intentionally vendored
+common/shell/zsh_addons/fzf-tab
 
 # Neovim / LaTeX scratch output
 .config/nvim/test/*.aux
@@ -39,3 +39,4 @@ tree.txt
 
 #Neovide runtime
 neovide/*.sock
+/
