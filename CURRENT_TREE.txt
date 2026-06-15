@@ -1,0 +1,133 @@
+.
+├── .envrc
+├── .gitignore
+├── .taplo.toml
+├── common
+│   ├── keybinds
+│   │   ├── curated
+│   │   │   ├── config-modules.tsv
+│   │   │   ├── config-modules.yaml
+│   │   │   ├── keybinds.tsv
+│   │   │   └── keybinds.yaml
+│   │   ├── generated
+│   │   │   ├── nvim.jsonl
+│   │   │   ├── tmux.tsv
+│   │   │   └── tmux.txt
+│   │   └── scripts
+│   ├── neofetch
+│   │   └── config.conf
+│   ├── nvim
+│   │   ├── init.lua
+│   │   ├── lazy-lock.json
+│   │   ├── lua
+│   │   │   ├── config
+│   │   │   ├── mystuffs
+│   │   │   ├── plugins
+│   │   │   └── tools
+│   │   ├── spell
+│   │   │   ├── en.utf-8.add
+│   │   │   ├── en.utf-8.add.spl
+│   │   │   ├── ltex.dictionary.en-US.txt
+│   │   │   ├── ltex.disabledRules.en-US.txt
+│   │   │   └── ltex.hiddenFalsePositives.en-US.txt
+│   │   └── test
+│   │       ├── test.aux
+│   │       ├── test.fdb_latexmk
+│   │       ├── test.fls
+│   │       ├── test.log
+│   │       ├── test.pdf
+│   │       ├── test.synctex.gz
+│   │       ├── test.tex
+│   │       └── test.toml
+│   ├── shell
+│   │   ├── zsh_addons
+│   │   │   ├── fzf-tab -> /Users/joe8922/.local/share/zsh/plugins/fzf-tab
+│   │   │   └── lazy_load_conda.zsh
+│   │   └── zshrc
+│   └── tmux
+│       └── tmux.conf
+├── CURRENT_TREE.txt
+├── macos
+│   ├── aerospace
+│   │   ├── aerospace.toml
+│   │   └── border_colors.sh
+│   ├── alacritty
+│   │   ├── .taplo.toml
+│   │   ├── alacritty.toml
+│   │   └── catppuccin-macchiato.toml
+│   ├── hammerspoon
+│   │   ├── aerospace_hud.lua
+│   │   ├── init.lua
+│   │   └── Spoons
+│   │       ├── AClock.spoon
+│   │       └── FloatingWindows.spoon
+│   ├── keybinds
+│   │   └── generated
+│   │       ├── aerospace-app_launcher.json
+│   │       ├── aerospace-main.json
+│   │       ├── aerospace-modes.txt
+│   │       ├── aerospace-regular_bindings.json
+│   │       ├── aerospace-service.json
+│   │       ├── alacritty.toml
+│   │       └── hammerspoon.json
+│   ├── neovide
+│   │   ├── neovide
+│   │   │   ├── config.toml
+│   │   │   └── neovide-settings.json
+│   │   └── neovide-settings.json
+│   └── sketchybar
+│       ├── bar.lua
+│       ├── colors.sh
+│       ├── constants.lua
+│       ├── default.lua
+│       ├── init.lua
+│       ├── plugins
+│       │   ├── aerospace_spaces.sh
+│       │   ├── aerospace.sh
+│       │   ├── battery.sh
+│       │   ├── clock.sh
+│       │   ├── colors.sh
+│       │   ├── front_app.sh
+│       │   ├── icon_map.sh
+│       │   ├── nextcloud.sh
+│       │   └── volume.sh
+│       └── sketchybarrc
+├── obsidian
+│   ├── generated
+│   │   ├── Configs
+│   │   │   ├── AeroSpace.md
+│   │   │   ├── Alacritty.md
+│   │   │   ├── Hammerspoon.md
+│   │   │   ├── Neovide.md
+│   │   │   ├── Neovim.md
+│   │   │   ├── Sketchybar.md
+│   │   │   ├── tmux.md
+│   │   │   └── zsh.md
+│   │   ├── Dotfiles
+│   │   │   ├── Bases
+│   │   │   ├── Configs
+│   │   │   └── Keybinds
+│   │   └── Keybinds Dashboard.md
+│   └── templates
+├── README.md
+├── requirements.txt
+├── scripts
+│   ├── cleanup-untrack.sh
+│   ├── collect-keybinds.sh
+│   ├── create_new_tree.sh
+│   ├── install-macos.sh
+│   ├── move_and_link.sh
+│   ├── render-obsidian-bases.py
+│   ├── render-obsidian-notes.py
+│   └── update-keybinds-and-notes.sh
+├── tree.txt
+└── windows
+    ├── autohotkey
+    ├── glazewm
+    ├── keybinds
+    │   └── generated
+    ├── powershell
+    ├── windows-terminal
+    └── zebar
+
+49 directories, 82 files
