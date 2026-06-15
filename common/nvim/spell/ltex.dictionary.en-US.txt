@@ -46,3 +46,14 @@ sketchybar
 neovim
 neofetch
 alacritty
+Dotfiles
+keybinds
+keybind
+Neovim
+AeroSpace
+Hammerspoon
+Alacritty
+Sketchybar
+Keybinds
+GlazeWM
+Zebar
