@@ -14,6 +14,8 @@
 nohup.out
 *.log
 *.sock
+grep -qxF "__pycache__/" .gitignore || echo "__pycache__/" >> .gitignore
+grep -qxF "*.pyc" .gitignore || echo "*.pyc" >> .gitignore
 
 # generated tree dumps
 tree.txt
