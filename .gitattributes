@@ -1,0 +1,23 @@
+# Default: keep text normalized in Git.
+* text=auto eol=lf
+
+# Unix / WSL / macOS scripts
+*.sh   text eol=lf
+*.bash text eol=lf
+*.zsh  text eol=lf
+
+# Config files
+*.lua  text eol=lf
+*.toml text eol=lf
+*.yaml text eol=lf
+*.yml  text eol=lf
+*.json text eol=lf
+*.md   text eol=lf
+*.conf text eol=lf
+
+# Windows scripts
+*.ps1  text eol=crlf
+*.psm1 text eol=crlf
+*.psd1 text eol=crlf
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
