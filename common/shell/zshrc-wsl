@@ -1,3 +1,5 @@
+#Official Neovim binary
+export PATH="/opt/nvim-linux-x86_64/bin:$PATH"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -125,6 +127,8 @@ alias la='ls -a'
 alias l='ls -CF'
 alias cls='clear'
 alias ff='fastfetch'
+alias df='cd ~/.dotfiles/; nvim .'
+alias dff='cd ~/.dotfiles/'
 
 # --- Safer defaults ---
 alias cp='cp -i'
