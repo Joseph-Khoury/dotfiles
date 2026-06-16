@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIGS_TSV = ROOT / "common" / "keybinds" / "curated" / "config-modules.tsv"
 KEYBINDS_TSV = ROOT / "common" / "keybinds" / "curated" / "keybinds.tsv"
 
-OUT = ROOT / "obsidian" / "generated" / "Dotfiles"
+OUT = ROOT / "obsidian" / "generated" / "Dotfiles (Bases)"
 
 TODAY = date.today().isoformat()
 
