@@ -126,14 +126,22 @@ alias ll='ls -lah'
 alias la='ls -a'
 alias l='ls -CF'
 alias cls='clear'
+
+# --- cli apps ---
 alias ff='fastfetch'
+
+# --- directories ---
 alias df='cd ~/.dotfiles/; nvim .'
 alias dff='cd ~/.dotfiles/'
+alias zconf='nvim ~/.zshrc'
+
+export PATH="$HOME/.local/bin:$PATH"
 
 # --- Safer defaults ---
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
+alias vim='nvim'
 
 # --- Git shortcuts ---
 alias gs='git status'
