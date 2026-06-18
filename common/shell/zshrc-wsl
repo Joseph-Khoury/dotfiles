@@ -142,6 +142,7 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
 alias vim='nvim'
+alias cdls='cd $1 | ls -a'
 
 # --- Git shortcuts ---
 alias gs='git status'
