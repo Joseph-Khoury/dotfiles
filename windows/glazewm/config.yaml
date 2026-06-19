@@ -38,7 +38,7 @@ general:
   # effect if `hide_method: 'hide'`.
   # - 'true': Show all windows (regardless of workspace).
   # - 'false': Only show windows from the currently shown workspaces.
-  show_all_in_taskbar: false
+  show_all_in_taskbar: true
 
 gaps:
   # Whether to scale the gaps with the DPI of the monitor.
@@ -49,12 +49,13 @@ gaps:
 
   # Gap between windows and the screen edge.
   outer_gap:
-    top: '60px'
+    top: '50px'
     right: '20px'
     bottom: '20px'
     left: '20px'
 
 window_effects:
+
   # Visual effects to apply to the focused window.
   focused_window:
     # Highlight the window with a colored border.
@@ -202,14 +203,29 @@ binding_modes:
 
   - name: 'service'
     keybindings:
+        # Reload the config
       - commands: ['wm-reload-config', 'wm-disable-binding-mode --name service']
         bindings: ['escape']
-      - commands: ['wm-redraw', 'wm-disable-binding-mode --name service']
-        bindings: ['w']
+        # Kill the window manager service safely
       - commands: ['wm-exit']
         bindings: ['alt+shift+e']
+        # Redraw all windows
+      - commands: ['wm-redraw', 'wm-disable-binding-mode --name service']
+        bindings: ['w']
+        # Change the focused window to be floating.
+      - commands: ['toggle-floating --centered']
+        bindings: ['f']
+        # Change the focused window to be tiling.
+      - commands: ['toggle-tiling']
+        bindings: ['t']
+        # Disable service binding mode
       - commands: ['wm-disable-binding-mode --name service']
         bindings: ['enter', 'alt+shift+;']
+
+  - name: 'app-launcher'
+    keybindings:
+      - commands: ['wm-disable-binding-mode --name app-launcher']
+        bindings: ['escape', 'alt+shift+space', 'enter']
 
 keybindings:
   #### binding modes
@@ -220,6 +236,8 @@ keybindings:
     bindings: ['alt+r']
   - commands: ['wm-enable-binding-mode --name service']
     bindings: ['alt+shift+;']
+  - commands: ['wm-enable-binding-mode --name app-launcher']
+    bindings: ['alt+shift+space']
 
   # Shift focus in a given direction.
   - commands: ['focus --direction left']
@@ -265,14 +283,6 @@ keybindings:
   - commands: ['wm-cycle-focus']
     bindings: ['alt+space']
 
-  # Change the focused window to be floating.
-  - commands: ['toggle-floating --centered']
-    bindings: ['alt+shift+space']
-
-  # Change the focused window to be tiling.
-  - commands: ['toggle-tiling']
-      bindings: ['alt+t']
-
   # Change the focused window to be fullscreen.
   - commands: ['toggle-fullscreen']
     bindings: ['alt+f']
@@ -284,18 +294,6 @@ keybindings:
   # Close focused window.
   - commands: ['close']
     bindings: ['alt+shift+q']
-
-  # # Kill GlazeWM process safely.
-  # - commands: ['wm-exit']
-  #   bindings: ['alt+shift+e']
-
-  # # Re-evaluate configuration file.
-  # - commands: ['wm-reload-config']
-  #   bindings: ['alt+shift+r']
-
-  # # Redraw all windows.
-  # - commands: ['wm-redraw']
-  #   bindings: ['alt+shift+w']
 
   # Launch CMD terminal. Alternatively, use `shell-exec wt` or
   # `shell-exec %ProgramFiles%/Git/git-bash.exe` to start Windows
