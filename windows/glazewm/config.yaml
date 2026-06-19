@@ -213,10 +213,10 @@ binding_modes:
       - commands: ['wm-redraw', 'wm-disable-binding-mode --name service']
         bindings: ['w']
         # Change the focused window to be floating.
-      - commands: ['toggle-floating --centered']
+      - commands: ['toggle-floating --centered', 'wm-disable-binding-mode --name service']
         bindings: ['f']
         # Change the focused window to be tiling.
-      - commands: ['toggle-tiling']
+      - commands: ['toggle-tiling', 'wm-disable-binding-mode --name service']
         bindings: ['t']
         # Disable service binding mode
       - commands: ['wm-disable-binding-mode --name service']
