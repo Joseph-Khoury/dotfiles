@@ -336,6 +336,8 @@ keybindings:
     bindings: ['alt+e']
   - commands: ['focus --workspace a']
     bindings: ['alt+a']
+  - commands: ['focus --workspace s']
+    bindings: ['alt+s']
   - commands: ['focus --workspace d']
     bindings: ['alt+d']
   - commands: ['focus --workspace z']
