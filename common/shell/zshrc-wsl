@@ -150,3 +150,5 @@ alias ga='git add'
 alias gc='git commit'
 alias gp='git push'
 alias gl='git log --online --graph --decorate --all'
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
