@@ -129,6 +129,7 @@ alias cls='clear'
 
 # --- cli apps ---
 alias ff='fastfetch'
+alias mvln='~/.dotfiles/scripts/move_and_link.sh'
 
 # --- directories ---
 alias df='cd ~/.dotfiles/; nvim .'

@@ -146,6 +146,7 @@ workspaces:
   # - name: 'r'
   - name: 'a'
   - name: 's'
+    display_name: 'Steam'
   - name: 'd'
   - name: 'z'
   - name: 'x'

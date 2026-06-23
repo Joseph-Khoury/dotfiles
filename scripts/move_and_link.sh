@@ -1,5 +1,6 @@
-#!/bin/bash
-DOTFILES=~/.dotfiles
+#!/usr/bin/env bash
+set -euo pipefail
+DOTFILES="~/.dotfiles"
 
 move_and_link() {
     src="$1"

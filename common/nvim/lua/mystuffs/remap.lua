@@ -75,9 +75,9 @@ vim.keymap.set('n', '<leader>bp', ':bprev<CR>')
 vim.keymap.set('n', '<leader>bb', ':Telescope buffers<CR>')
 
 
--- file execution
-local file_execution = require("mystuffs.file_execution")
-vim.keymap.set("n", "<leader>rn", file_execution.run_code, { desc = "Execute the current file via a console command" })
+-- -- file execution
+-- local file_execution = require("mystuffs.file_execution")
+-- vim.keymap.set("n", "<leader>rn", file_execution.run_code, { desc = "Execute the current file via a console command" })
 
 -- toggleterm ################################################################## 
 vim.keymap.set("n", "<leader>tt", "<cmd>ToggleTerm direction=horizontal<CR>", { desc = "Toggles the term" })
@@ -86,15 +86,6 @@ vim.keymap.set("n", "<leader>tv", "<cmd>ToggleTerm direction=vertical<CR>", { de
 vim.cmd([[tnoremap <Esc> <C-\><C-n>]])
 
 
-vim.keymap.set('n', '<leader>wso', function()
-  vim.cmd('write')
-  local ft = vim.bo.filetype
-  if ft == 'lua' or ft == 'vim' then
-    vim.cmd('source %')
-  else
-    print("File not sourced: not a config file")
-  end
-end, { desc = "Write and source if Lua/Vim file" })
 vim.keymap.set("n", "<leader>rn", function()
     require("toggleterm.terminal").Terminal:new({
         cmd = "python3 " .. vim.fn.expand("%"),
@@ -102,8 +93,11 @@ vim.keymap.set("n", "<leader>rn", function()
         close_on_exit = false,
     }):toggle()
 end, { desc = "Run Python in float terminal" })
--- local lazygit = require("toggleterm.terminal").Terminal:new({ cmd = "lazygit", hidden = true, direction = "float" })
--- vim.keymap.set("n", "<leader>gt", function() lazygit:toggle() end)
+
+-- LAZYGIT ####################################################################
+local lazygit = require("toggleterm.terminal").Terminal:new({ cmd = "lazygit", hidden = true, direction = "float" })
+vim.keymap.set("n", "<leader>gt", function() lazygit:toggle() end)
+
 
 -- Window navigation
 vim.keymap.set('n', '<leader>wh', '<C-w>h', { desc = 'Move to left window' })
@@ -135,7 +129,3 @@ vim.keymap.set('n', '<leader>wso', function()
     print("File not sourced: not a config file")
   end
 end, { desc = "Write and source if Lua/Vim file" })
-
--- new line in normal mode
-vim.keymap.set('n', '<CR>', 'm`o<Esc>``', { desc = "Enter newline below cursor in normal mode" })
-vim.keymap.set('n', '<S-CR>', 'm`O<Esc>``', { desc = "Enter newline below cursor in normal mode" })

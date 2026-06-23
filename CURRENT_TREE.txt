@@ -1,133 +1,161 @@
-.
-├── .envrc
-├── .gitignore
-├── .taplo.toml
-├── common
-│   ├── keybinds
-│   │   ├── curated
-│   │   │   ├── config-modules.tsv
-│   │   │   ├── config-modules.yaml
-│   │   │   ├── keybinds.tsv
-│   │   │   └── keybinds.yaml
-│   │   ├── generated
-│   │   │   ├── nvim.jsonl
-│   │   │   ├── tmux.tsv
-│   │   │   └── tmux.txt
-│   │   └── scripts
-│   ├── neofetch
-│   │   └── config.conf
-│   ├── nvim
-│   │   ├── init.lua
-│   │   ├── lazy-lock.json
-│   │   ├── lua
-│   │   │   ├── config
-│   │   │   ├── mystuffs
-│   │   │   ├── plugins
-│   │   │   └── tools
-│   │   ├── spell
-│   │   │   ├── en.utf-8.add
-│   │   │   ├── en.utf-8.add.spl
-│   │   │   ├── ltex.dictionary.en-US.txt
-│   │   │   ├── ltex.disabledRules.en-US.txt
-│   │   │   └── ltex.hiddenFalsePositives.en-US.txt
-│   │   └── test
-│   │       ├── test.aux
-│   │       ├── test.fdb_latexmk
-│   │       ├── test.fls
-│   │       ├── test.log
-│   │       ├── test.pdf
-│   │       ├── test.synctex.gz
-│   │       ├── test.tex
-│   │       └── test.toml
-│   ├── shell
-│   │   ├── zsh_addons
-│   │   │   ├── fzf-tab -> /Users/joe8922/.local/share/zsh/plugins/fzf-tab
-│   │   │   └── lazy_load_conda.zsh
-│   │   └── zshrc
-│   └── tmux
-│       └── tmux.conf
-├── CURRENT_TREE.txt
-├── macos
-│   ├── aerospace
-│   │   ├── aerospace.toml
-│   │   └── border_colors.sh
-│   ├── alacritty
-│   │   ├── .taplo.toml
-│   │   ├── alacritty.toml
-│   │   └── catppuccin-macchiato.toml
-│   ├── hammerspoon
-│   │   ├── aerospace_hud.lua
-│   │   ├── init.lua
-│   │   └── Spoons
-│   │       ├── AClock.spoon
-│   │       └── FloatingWindows.spoon
-│   ├── keybinds
-│   │   └── generated
-│   │       ├── aerospace-app_launcher.json
-│   │       ├── aerospace-main.json
-│   │       ├── aerospace-modes.txt
-│   │       ├── aerospace-regular_bindings.json
-│   │       ├── aerospace-service.json
-│   │       ├── alacritty.toml
-│   │       └── hammerspoon.json
-│   ├── neovide
-│   │   ├── neovide
-│   │   │   ├── config.toml
-│   │   │   └── neovide-settings.json
-│   │   └── neovide-settings.json
-│   └── sketchybar
-│       ├── bar.lua
-│       ├── colors.sh
-│       ├── constants.lua
-│       ├── default.lua
-│       ├── init.lua
-│       ├── plugins
-│       │   ├── aerospace_spaces.sh
-│       │   ├── aerospace.sh
-│       │   ├── battery.sh
-│       │   ├── clock.sh
-│       │   ├── colors.sh
-│       │   ├── front_app.sh
-│       │   ├── icon_map.sh
-│       │   ├── nextcloud.sh
-│       │   └── volume.sh
-│       └── sketchybarrc
-├── obsidian
-│   ├── generated
-│   │   ├── Configs
-│   │   │   ├── AeroSpace.md
-│   │   │   ├── Alacritty.md
-│   │   │   ├── Hammerspoon.md
-│   │   │   ├── Neovide.md
-│   │   │   ├── Neovim.md
-│   │   │   ├── Sketchybar.md
-│   │   │   ├── tmux.md
-│   │   │   └── zsh.md
-│   │   ├── Dotfiles
-│   │   │   ├── Bases
-│   │   │   ├── Configs
-│   │   │   └── Keybinds
-│   │   └── Keybinds Dashboard.md
-│   └── templates
-├── README.md
-├── requirements.txt
-├── scripts
-│   ├── cleanup-untrack.sh
-│   ├── collect-keybinds.sh
-│   ├── create_new_tree.sh
-│   ├── install-macos.sh
-│   ├── move_and_link.sh
-│   ├── render-obsidian-bases.py
-│   ├── render-obsidian-notes.py
-│   └── update-keybinds-and-notes.sh
-├── tree.txt
-└── windows
-    ├── autohotkey
-    ├── glazewm
-    ├── keybinds
-    │   └── generated
-    ├── powershell
-    ├── windows-terminal
-    └── zebar
-
-49 directories, 82 files
+.gitattributes
+.gitignore
+.taplo.toml
+CURRENT_STATE.md
+CURRENT_TREE.txt
+README.md
+common/keybinds/curated/config-modules.tsv
+common/keybinds/curated/config-modules.yaml
+common/keybinds/curated/keybinds.tsv
+common/keybinds/curated/keybinds.yaml
+common/keybinds/generated/nvim.jsonl
+common/keybinds/generated/tmux.tsv
+common/keybinds/generated/tmux.txt
+common/neofetch/config.conf
+common/nvim/init.lua
+common/nvim/lazy-lock.json
+common/nvim/lua/config/lazy.lua
+common/nvim/lua/config/neovide.lua
+common/nvim/lua/mystuffs/.luarc.json
+common/nvim/lua/mystuffs/cmp_toggle.lua
+common/nvim/lua/mystuffs/file_execution.lua
+common/nvim/lua/mystuffs/init.lua
+common/nvim/lua/mystuffs/nvr_socket.lua
+common/nvim/lua/mystuffs/remap.lua
+common/nvim/lua/plugins/cmp.lua
+common/nvim/lua/plugins/colorscheme.lua
+common/nvim/lua/plugins/comment.lua
+common/nvim/lua/plugins/fugitive.lua
+common/nvim/lua/plugins/harpoon.lua
+common/nvim/lua/plugins/highlights.lua
+common/nvim/lua/plugins/lazydev.lua
+common/nvim/lua/plugins/lsp.lua
+common/nvim/lua/plugins/lualine.lua
+common/nvim/lua/plugins/markdown.lua
+common/nvim/lua/plugins/neoclip.lua
+common/nvim/lua/plugins/surround.lua
+common/nvim/lua/plugins/telescope.lua
+common/nvim/lua/plugins/toggleterm.lua
+common/nvim/lua/plugins/tree.lua
+common/nvim/lua/plugins/treesitter.lua
+common/nvim/lua/plugins/undotree.lua
+common/nvim/lua/plugins/vimtex.lua
+common/nvim/lua/tools/export_keymaps.lua
+common/nvim/spell/en.utf-8.add
+common/nvim/spell/en.utf-8.add.spl
+common/nvim/spell/ltex.dictionary.en-US.txt
+common/nvim/spell/ltex.disabledRules.en-US.txt
+common/nvim/spell/ltex.hiddenFalsePositives.en-US.txt
+common/nvim/test/test.pdf
+common/nvim/test/test.tex
+common/nvim/test/test.toml
+common/shell/p10k.zsh
+common/shell/zsh_addons/lazy_load_conda.zsh
+common/shell/zshrc
+common/shell/zshrc-wsl
+common/tmux/tmux.conf
+macos/aerospace/aerospace.toml
+macos/aerospace/border_colors.sh
+macos/alacritty/.taplo.toml
+macos/alacritty/alacritty.toml
+macos/alacritty/catppuccin-macchiato.toml
+macos/hammerspoon/Spoons/AClock.spoon/docs.json
+macos/hammerspoon/Spoons/AClock.spoon/init.lua
+macos/hammerspoon/Spoons/FloatingWindows.spoon/init.lua
+macos/hammerspoon/aerospace_hud.lua
+macos/hammerspoon/init.lua
+macos/keybinds/generated/aerospace-app_launcher.json
+macos/keybinds/generated/aerospace-main.json
+macos/keybinds/generated/aerospace-modes.txt
+macos/keybinds/generated/aerospace-regular_bindings.json
+macos/keybinds/generated/aerospace-service.json
+macos/keybinds/generated/alacritty.toml
+macos/keybinds/generated/hammerspoon.json
+macos/neovide/neovide-settings.json
+macos/neovide/neovide/config.toml
+macos/neovide/neovide/neovide-settings.json
+macos/sketchybar/bar.lua
+macos/sketchybar/colors.sh
+macos/sketchybar/constants.lua
+macos/sketchybar/default.lua
+macos/sketchybar/init.lua
+macos/sketchybar/plugins/aerospace.sh
+macos/sketchybar/plugins/aerospace_spaces.sh
+macos/sketchybar/plugins/battery.sh
+macos/sketchybar/plugins/clock.sh
+macos/sketchybar/plugins/colors.sh
+macos/sketchybar/plugins/front_app.sh
+macos/sketchybar/plugins/icon_map.sh
+macos/sketchybar/plugins/nextcloud.sh
+macos/sketchybar/plugins/volume.sh
+macos/sketchybar/sketchybarrc
+obsidian/generated/Configs/AeroSpace.md
+obsidian/generated/Configs/Alacritty.md
+obsidian/generated/Configs/Hammerspoon.md
+obsidian/generated/Configs/Neovide.md
+obsidian/generated/Configs/Neovim.md
+obsidian/generated/Configs/Sketchybar.md
+obsidian/generated/Configs/tmux.md
+obsidian/generated/Configs/zsh.md
+obsidian/generated/Dotfiles (Bases)/Bases/Config Modules.base
+obsidian/generated/Dotfiles (Bases)/Bases/Keybinds.base
+obsidian/generated/Dotfiles (Bases)/Configs/aerospace.md
+obsidian/generated/Dotfiles (Bases)/Configs/alacritty.md
+obsidian/generated/Dotfiles (Bases)/Configs/hammerspoon.md
+obsidian/generated/Dotfiles (Bases)/Configs/homerow.md
+obsidian/generated/Dotfiles (Bases)/Configs/neovim.md
+obsidian/generated/Dotfiles (Bases)/Configs/sketchybar.md
+obsidian/generated/Dotfiles (Bases)/Configs/tmux.md
+obsidian/generated/Dotfiles (Bases)/Configs/zsh.md
+obsidian/generated/Dotfiles (Bases)/Keybinds/aerospace-focus-window-direction.md
+obsidian/generated/Dotfiles (Bases)/Keybinds/aerospace-move-window-direction.md
+obsidian/generated/Dotfiles (Bases)/Keybinds/aerospace-toggle-floating.md
+obsidian/generated/Dotfiles (Bases)/Keybinds/hammerspoon-move-floating-window.md
+obsidian/generated/Dotfiles (Bases)/Keybinds/hammerspoon-resize-floating-window-width.md
+obsidian/generated/Dotfiles (Bases)/Keybinds/homerow-click-ui-without-mouse.md
+obsidian/generated/Dotfiles (Bases)/Keybinds/nvim-editor-code-action.md
+obsidian/generated/Dotfiles (Bases)/Keybinds/nvim-editor-find-files.md
+obsidian/generated/Dotfiles (Bases)/Keybinds/nvim-editor-rename-symbol.md
+obsidian/generated/Dotfiles (Bases)/Keybinds/nvim-editor-search-text.md
+obsidian/generated/Dotfiles (Bases)/Keybinds/tmux-show-terminal-mux-help.md
+obsidian/generated/Dotfiles/Bases/Config Modules.base
+obsidian/generated/Dotfiles/Bases/Keybinds.base
+obsidian/generated/Dotfiles/Configs/aerospace.md
+obsidian/generated/Dotfiles/Configs/alacritty.md
+obsidian/generated/Dotfiles/Configs/hammerspoon.md
+obsidian/generated/Dotfiles/Configs/homerow.md
+obsidian/generated/Dotfiles/Configs/neovim.md
+obsidian/generated/Dotfiles/Configs/sketchybar.md
+obsidian/generated/Dotfiles/Configs/tmux.md
+obsidian/generated/Dotfiles/Configs/zsh.md
+obsidian/generated/Dotfiles/Keybinds/aerospace-focus-window-direction.md
+obsidian/generated/Dotfiles/Keybinds/aerospace-move-window-direction.md
+obsidian/generated/Dotfiles/Keybinds/aerospace-toggle-floating.md
+obsidian/generated/Dotfiles/Keybinds/hammerspoon-move-floating-window.md
+obsidian/generated/Dotfiles/Keybinds/hammerspoon-resize-floating-window-width.md
+obsidian/generated/Dotfiles/Keybinds/homerow-click-ui-without-mouse.md
+obsidian/generated/Dotfiles/Keybinds/nvim-editor-code-action.md
+obsidian/generated/Dotfiles/Keybinds/nvim-editor-find-files.md
+obsidian/generated/Dotfiles/Keybinds/nvim-editor-rename-symbol.md
+obsidian/generated/Dotfiles/Keybinds/nvim-editor-search-text.md
+obsidian/generated/Dotfiles/Keybinds/tmux-show-terminal-mux-help.md
+obsidian/generated/Keybinds Dashboard.md
+requirements.txt
+scripts/apply-windows.ps1
+scripts/apply-wsl.sh
+scripts/cleanup-untrack.sh
+scripts/collect-keybinds.sh
+scripts/create_new_tree.sh
+scripts/import-windows.ps1
+scripts/import-wsl.sh
+scripts/install-macos.sh
+scripts/install-wsl-tools.sh
+scripts/move_and_link.sh
+scripts/render-obsidian-bases.py
+scripts/render-obsidian-notes.py
+scripts/update-keybinds-and-notes.sh
+windows/glazewm/config.yaml
+windows/powershell/Microsoft.PowerShell_profile.ps1
+windows/windows-terminal/settings.json
+windows/zebar/.marketplace/glzr-io.starter.json
+windows/zebar/settings.json
