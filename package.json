@@ -1,0 +1,19 @@
+{
+  "name": "dotfiles",
+  "description": "Welcome to my repo for all my dotfiles! This is a collection of dotfiles and configs/scripts for my MacBook.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joseph-Khoury/dotfiles.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Joseph-Khoury/dotfiles/issues"
+  },
+  "homepage": "https://github.com/Joseph-Khoury/dotfiles#readme"
+}

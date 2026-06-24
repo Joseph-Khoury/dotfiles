@@ -1,0 +1,13 @@
+-- This is conceptually wrong!
+
+-- -- Python venv
+-- local function set_python_host()
+--   local venv = vim.fn.getcwd() .. '/.venv/bin/python'
+--   if vim.fn.executable(venv) == 1 then
+--     vim.g.python3_host_prog = venv
+--   end
+-- end
+--
+-- vim.api.nvim_create_autocmd("VimEnter", {
+--   callback = set_python_host,
+-- })

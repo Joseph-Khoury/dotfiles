@@ -88,3 +88,35 @@ keybinds:
     frequency: rare
     importance: high
     parity_action: editor_rename_symbol
+
+  - app: nvim
+    area: editor
+    platform: common
+    key: "ys{motion}{char}"
+    action: add surrounding characters
+    frequency: daily
+    importance: high
+
+  - app: nvim
+    area: editor
+    platform: common
+    key: "ds{char}"
+    action: delete surrounding characters
+    frequency: daily
+    importance: high
+
+  - app: nvim
+    area: editor
+    platform: common
+    key: "cs{target}{replacement}"
+    action: Change surrounding characters
+    frequency: rare
+    importance: high
+
+  - app: nvim
+    area: editor
+    platform: common
+    key: "dsf"
+    action: delete function calls
+    frequency: rare
+    importance: high

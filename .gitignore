@@ -9,6 +9,7 @@
 .env.*
 .venv/
 .envrc
+node_modules/
 
 # logs / runtime
 nohup.out
