@@ -154,4 +154,4 @@ alias gp='git push'
 alias gl='git log --online --graph --decorate --all'
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
-fastfetch
+[[ -z "$NVIM" ]] && fastfetch

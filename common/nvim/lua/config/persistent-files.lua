@@ -11,15 +11,13 @@ for _, dir in pairs(dirs) do
 end
 
 -- swap files: crash recovery for currently open buffers
-vim.opt.swapfile = true
+vim.opt.swapfile = false
 vim.opt.directory = dirs.swap
 
 -- backup files: preserve the previous version when writing
-vim.opt.backup = true
-vim.opt.writebackup = true
+vim.opt.backup = false
+vim.opt.writebackup = false
 vim.opt.backupdir = dirs.backup
-vim.opt.backupcopy = "yes" -- safer for symlinks
-vim.opt.backupext = "~" --Recognisable backup suffix
 
 -- undo files: preserve recent actions like a git tree for version control
 vim.opt.undofile = true

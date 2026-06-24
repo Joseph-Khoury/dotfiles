@@ -1,5 +1,6 @@
+require("config.persistent-files")
+require("config.autocmds")
 require("config.lazy")
 require("config.keymaps")
-require("config.persistent-files")
 require("config.general")
 require("config.diagnostics")

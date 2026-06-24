@@ -1,11 +1,45 @@
+local parsers = {
+	-- Nvim configuration
+	"lua",
+	"luadoc",
+	"vim",
+	"vimdoc",
+	"query",
+
+	-- Shell and configuration files
+	"bash",
+	"zsh",
+	"json",
+	"toml",
+	"yaml",
+	"powershell",
+
+	-- Programming
+	"c",
+	"cpp",
+	"cmake",
+	"make",
+	"python",
+	"rust",
+
+	-- Writing
+	"bibtex",
+	"latex",
+	"markdown",
+	"markdown_inline",
+}
+
 return {
     {
-        "nvim-treesitter/nvim-treesitter",
+        -- Use an explicit URL so Lazy cannot clone the archived repository.
+        name = "nvim-treesitter",
+        url = "https://github.com/neovim-treesitter/nvim-treesitter.git",
 
-        -- Tree-sitter must be available before opening normal buffers.
+        dependencies = {
+            "neovim-treesitter/treesitter-parser-registry",
+        },
+
         lazy = false,
-
-        -- Keep installed parsers compatible with the plugin queries.
         build = ":TSUpdate",
 
         config = function()
@@ -15,8 +49,9 @@ return {
                 install_dir = vim.fn.stdpath("data") .. "/site",
             })
 
-            -- -- Asynchronous and a no-op for parsers already installed.
-            -- treesitter.install(parsers)
+            -- Asynchronously install any missing parsers and their
+            -- matching queries. Existing current installations are no-ops.
+            treesitter.install(parsers)
 
             local group = vim.api.nvim_create_augroup(
                 "user_treesitter",
@@ -30,21 +65,23 @@ return {
                 callback = function(args)
                     local filetype = vim.bo[args.buf].filetype
 
-                    -- Let VimTeX own LaTeX syntax highlighting. Its syntax
-                    -- engine supports VimTeX features such as conceal and
-                    -- syntax-based math-zone detection.
-                    if vim.tbl_contains(
-                        { "tex", "plaintex", "latex" },
-                        filetype
-                    ) then
-                    return
-                end
+                    if filetype == "" then
+                        return
+                    end
 
-                -- Silently do nothing when no parser exists for a
-                -- particular filetype.
-                pcall(vim.treesitter.start, args.buf)
-            end,
-        })
-    end,
-},
+                    -- Let VimTeX handle LaTeX syntax.
+                    if vim.tbl_contains({
+                        "tex",
+                        "plaintex",
+                        "latex",
+                    }, filetype) then
+                        return
+                    end
+
+                    -- Some filetypes may not have an installed parser.
+                    pcall(vim.treesitter.start, args.buf)
+                end,
+            })
+        end,
+    },
 }
