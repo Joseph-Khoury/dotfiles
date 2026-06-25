@@ -31,7 +31,7 @@ require("lazy").setup({
 		{ import = "plugins.core" },
 		{ import = "plugins.editing" },
 		{ import = "plugins.git" },
-		{ import = "plugins.integrations" },
+		-- { import = "plugins.integrations" },
 		{ import = "plugins.language" },
 		{ import = "plugins.navigation" },
 		{ import = "plugins.terminal" },
