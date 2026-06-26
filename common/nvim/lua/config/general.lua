@@ -28,7 +28,7 @@ vim.opt.scrolloff = 8 -- As you scroll, you won't have <8 lines from edges of sc
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@") --???
 
-vim.opt.updatetime = 50 -- fast updatetime
+vim.opt.updatetime = 300 -- fast updatetime
 
 vim.opt.colorcolumn = "80" -- falsecolor column reminding you of the 80 character limit
 

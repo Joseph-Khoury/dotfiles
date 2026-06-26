@@ -1,10 +1,10 @@
 local map = vim.keymap.set
 
--- #1 NvimTree {{{
-
-map("n", "<leader>pv", '<cmd>NvimTreeToggle<CR>', { desc = "Toggle File Tree" })
-
--- }}}
+-- -- #1 NvimTree {{{
+--
+-- map("n", "<leader>pv", '<cmd>NvimTreeToggle<CR>', { desc = "Toggle File Tree" })
+--
+-- -- }}}
 
 -- #2 Telescope {{{
 
