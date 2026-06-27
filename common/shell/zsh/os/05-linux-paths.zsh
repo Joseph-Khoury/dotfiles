@@ -10,4 +10,6 @@ if [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
+#Dedupe after tools that modify PATH through scalar export
+typeset -U path fpath
 export PATH

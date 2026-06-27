@@ -1,23 +1,28 @@
--- diagnostic signs
-local signs = {
-    { name = "DiagnosticSignError", text = "" },
-    { name = "DiagnosticSignWarn",  text = "" },
-    { name = "DiagnosticSignHint",  text = "" },
-    { name = "DiagnosticSignInfo",  text = "" },
-}
+local severity = vim.diagnostic.severity
 
-for _, sign in ipairs(signs) do
-    vim.fn.sign_define(sign.name, { text = sign.text, texthl = sign.name, numhl = "" })
-end
-
--- configure diagnostic display
 vim.diagnostic.config({
     virtual_text = {
-        prefix = '●',
-        spacing = 4,
+        prefix = "●",
+        spacing = 2,
     },
-    signs = true,
+
+    signs = {
+        text = {
+            [severity.ERROR] = "",
+            [severity.WARN] = "",
+            [severity.INFO] = "",
+            [severity.HINT] = "",
+        },
+    },
+
     underline = true,
     update_in_insert = false,
     severity_sort = true,
+
+    float = {
+        border = "rounded",
+        source = "if_many",
+        header = "",
+        prefix = "",
+    },
 })

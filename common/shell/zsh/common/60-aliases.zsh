@@ -3,6 +3,7 @@
 # Basic
 alias cls='clear'
 alias vim='nvim'
+alias zreload='source ~/.zshrc'
 
 # Safer defaults
 alias cp='cp -i'
@@ -14,7 +15,7 @@ alias dot='cd ~/.dotfiles && nvim .'
 alias dots='cd ~/.dotfiles'
 alias zconf='nvim ~/.zshrc'
 alias zdir='cd ~/.dotfiles/common/shell/zsh && nvim .'
-alias nconf='nvim ~/.dotfiles/common/nvim'
+alias ndir='cd ~/.dotfiles/common/nvim && nvim .'
 
 # CLI apps
 if (( $+commands[fastfetch] )); then
@@ -30,6 +31,10 @@ else
   alias ll='ls -lah'
   alias la='ls -a'
   alias l='ls -CF'
+fi
+
+if (( $+commands[zoxide] )); then
+    alias cd='z'
 fi
 
 if (( $+commands[bat] )); then

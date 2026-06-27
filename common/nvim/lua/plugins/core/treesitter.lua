@@ -27,6 +27,10 @@ local parsers = {
 	"latex",
 	"markdown",
 	"markdown_inline",
+
+	-- HDL / FPGA
+	-- "verilog", -- Not an official parser
+	"vhdl",
 }
 
 return {

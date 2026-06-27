@@ -10,10 +10,10 @@ mkcd() {
   mkdir -p "$1" && builtin cd "$1"
 }
 
-# Reload shell config
-zreload() {
-  source ~/.zshrc
-}
+# # Reload shell config
+# zreload() {
+#     exec zsh
+# }
 
 # Show the split zsh config files in load order
 zsh-files() {

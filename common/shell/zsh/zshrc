@@ -30,19 +30,19 @@ source_if_exists() {
 # -----------------------------------------------------------------------------
 # 1. Detect OS and set common variables
 source_if_exists "$ZSH_CONFIG_DIR/common/00-detect.zsh"
-source_if_exists "$ZSH_CONFIG_DIR/common/05-env.zsh"
+[[ -r "$ZSH_CONFIG_DIR/common/05-env.zsh" ]] && source "$ZSH_CONFIG_DIR/common/05-env.zsh"
 
 # 2. Load OS-specific PATH/bootstrap before completions
 case "$ZSH_OS" in
   macos)
-    source_if_exists "$ZSH_CONFIG_DIR/os/05-macos-paths.zsh"
+    [[ -r "$ZSH_CONFIG_DIR/os/05-macos-paths.zsh" ]] && source "$ZSH_CONFIG_DIR/os/05-macos-paths.zsh"
     ;;
   wsl)
-    source_if_exists "$ZSH_CONFIG_DIR/os/05-linux-paths.zsh"
-    source_if_exists "$ZSH_CONFIG_DIR/os/05-wsl-paths.zsh"
+    [[ -r "$ZSH_CONFIG_DIR/os/05-linux-paths.zsh" ]] && source "$ZSH_CONFIG_DIR/os/05-linux-paths.zsh"
+    [[ -r "$ZSH_CONFIG_DIR/os/05-wsl-paths.zsh" ]] && source "$ZSH_CONFIG_DIR/os/05-wsl-paths.zsh"
     ;;
   linux)
-    source_if_exists "$ZSH_CONFIG_DIR/os/05-linux-paths.zsh"
+    [[ -r "$ZSH_CONFIG_DIR/os/05-linux-paths.zsh" ]] && source "$ZSH_CONFIG_DIR/os/05-linux-paths.zsh"
     ;;
 esac
 

@@ -81,8 +81,8 @@ function obj:init()
     textColor = self.textColor,
     textAlignment = "center",
   }
-  local mainScreen = hs.screen.primaryScreen()
-  local mainRes = mainScreen:fullFrame()
+  -- local mainScreen = hs.screen.primaryScreen()
+  -- local mainRes = mainScreen:fullFrame()
   self.canvas:frame(getframe(self.width, self.height))
   self._screen_watcher = hs.screen.watcher.new(function()
       self:update_canvas()

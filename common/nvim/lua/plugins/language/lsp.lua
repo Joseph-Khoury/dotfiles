@@ -1,113 +1,176 @@
 -- Language Server Protocol
+-- Neovim 0.12-style setup: vim.lsp.config() + Mason auto-enable.
 return {
-    'neovim/nvim-lspconfig',
+    "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-        'mason-org/mason.nvim',
-        'mason-org/mason-lspconfig.nvim',
+        { "mason-org/mason.nvim", opts = {} },
+        "mason-org/mason-lspconfig.nvim",
+        "hrsh7th/cmp-nvim-lsp",
         "barreiroleo/ltex_extra.nvim",
+        { "folke/trouble.nvim", opts = {}, cmd = "Trouble" },
     },
     config = function()
-        local ensure_installed = {
-            "pyright", -- .py
-            "bashls", -- .zsh/.sh
-            "lua_ls", -- .lua
-            "texlab", -- .tex
-            "ltex", -- .tex
-            "rust_analyzer",
-            "taplo",
-        }
+        local os = require("utils.os")
+        local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-        local lspconfig = require("lspconfig")
-        local default_capabilities = require("cmp_nvim_lsp").default_capabilities()
+        vim.lsp.config("*", {
+            capabilities = capabilities,
+        })
 
-        require("mason").setup()
-        require("mason-lspconfig").setup({
-            ensure_installed = ensure_installed,
-            handlers = {
-                ["lua_ls"] = function ()
-                    lspconfig.lua_ls.setup({
-                        settings = {
-                            Lua = {
-                                runtime = {
-                                    version = 'LuaJIT', -- used by neovim
-                                    path = vim.split(package.path, ';'),
-                                },
-                                diagnostics = {
-                                    globals = {
-                                        "hs", "spoon", -- hammerspoon
-                                    },
-                                },
-                                workspace = {
-                                    library = {
-                                        vim.env.VIMRUNTIME,
-                                        vim.fn.stdpath("config"),
-                                        vim.fn.expand("~/.dotfiles"),
-                                    },
-                                    checkThirdParty = false,
-                                },
-                                telemetry = { enable = false },
-                            },
+        vim.lsp.config("lua_ls", {
+            settings = {
+                Lua = {
+                    runtime = {
+                        version = "LuaJIT",
+                    },
+                    diagnostics = {
+                        globals = {
+                            "vim",
+                            "hs",
+                            "spoon",
                         },
-                    })
-                end,
-                ["ltex"] = function()
-                    lspconfig.ltex.setup({
-                        capabilities = default_capabilities,
-                        settings = {
-                            ltex = {
-                                language = "en-US",
-                                -- Your other ltex settings
-                            },
-                        },
-                    })
-                end,
-                ["pyright"] = function()
-                    lspconfig.pyright.setup({
-                        settings = {
-                            python = {
-                                venvPath = ".venv",
-                                pythonPath = "./.venv/bin/python",
-                            },
-                        },
-                    })
-                end,
+                    },
+                    workspace = {
+                        checkThirdParty = false,
+                    },
+                    telemetry = {
+                        enable = false,
+                    },
+                },
             },
         })
 
-        -- Separate LspAttach autocmd for ltex_extra
+        vim.lsp.config("pyright", {
+            settings = {
+                python = {
+                    analysis = {
+                        typeCheckingMode = "basic",
+                        autoSearchPaths = true,
+                        useLibraryCodeForTypes = true,
+                    },
+                },
+            },
+        })
+
+        vim.lsp.config("texlab", {
+            settings = {
+                texlab = {
+                    build = {
+                        executable = "latexmk",
+                        args = {
+                            "-pdf",
+                            "-interaction=nonstopmode",
+                            "-synctex=1",
+                            "%f",
+                        },
+                        onSave = false,
+                    },
+                    forwardSearch = {
+                        executable = os.is_macos and "displayline" or nil,
+                    },
+                },
+            },
+        })
+
+        vim.lsp.config("ltex_plus", {
+            settings = {
+                ltex = {
+                    language = "en-US",
+                    enabled = {
+                        "bibtex",
+                        "context",
+                        "context.tex",
+                        "html",
+                        "latex",
+                        "markdown",
+                        "org",
+                        "restructuredtext",
+                        "tex",
+                    },
+                },
+            },
+        })
+
+        vim.lsp.config("verible", {})
+        vim.lsp.config("vhdl_ls", {})
+
+        require("mason-lspconfig").setup({
+            ensure_installed = {
+                -- Neovim / configuration
+                "lua_ls",
+                "bashls",
+                "taplo",
+
+                -- Programming
+                "pyright",
+                "rust_analyzer",
+
+                -- Academic writing
+                "texlab",
+                "ltex_plus",
+
+                -- HDL / time-tagging project
+                "verible",
+                "vhdl_ls",
+            },
+            automatic_enable = true,
+        })
+
+        local ltex_extra_initialized = false
+        local group = vim.api.nvim_create_augroup("user_lsp_attach", { clear = true })
+
         vim.api.nvim_create_autocmd("LspAttach", {
-            callback = function(args)
-                local client = vim.lsp.get_client_by_id(args.data.client_id)
-                if client and client.name == "ltex" then
+            group = group,
+            callback = function(event)
+                local client = vim.lsp.get_client_by_id(event.data.client_id)
+
+                local function map(mode, lhs, rhs, desc)
+                    vim.keymap.set(mode, lhs, rhs, {
+                        buffer = event.buf,
+                        silent = true,
+                        desc = desc,
+                    })
+                end
+
+                -- Keep your familiar mappings for now, but also expose a clearer <leader>l namespace.
+                map("n", "gd", vim.lsp.buf.definition, "LSP: go to definition")
+                map("n", "gD", vim.lsp.buf.declaration, "LSP: go to declaration")
+                map("n", "K", vim.lsp.buf.hover, "LSP: hover")
+                map("i", "<C-h>", vim.lsp.buf.signature_help, "LSP: signature help")
+
+                map("n", "<leader>vrn", vim.lsp.buf.rename, "LSP: rename symbol")
+                map("n", "<leader>vca", vim.lsp.buf.code_action, "LSP: code action")
+                map("n", "<leader>vrr", vim.lsp.buf.references, "LSP: references")
+                map("n", "<leader>vws", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "LSP: workspace symbols")
+
+                map("n", "<leader>lr", vim.lsp.buf.rename, "LSP: rename symbol")
+                map("n", "<leader>la", vim.lsp.buf.code_action, "LSP: code action")
+                map("n", "<leader>lR", vim.lsp.buf.references, "LSP: references")
+                map("n", "<leader>ls", "<cmd>Telescope lsp_document_symbols<cr>", "LSP: document symbols")
+                map("n", "<leader>lS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "LSP: workspace symbols")
+
+                map("n", "<leader>kd", vim.diagnostic.open_float, "Diagnostics: current position")
+                map("n", "<leader>ld", vim.diagnostic.open_float, "Diagnostics: current position")
+                map("n", "[d", function()
+                    vim.diagnostic.jump({ count = -1, float = true })
+                end, "Diagnostics: previous")
+                map("n", "]d", function()
+                    vim.diagnostic.jump({ count = 1, float = true })
+                end, "Diagnostics: next")
+                map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", "Diagnostics: Trouble")
+                map("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", "Diagnostics: buffer Trouble")
+
+                if client and client.name == "ltex_plus" and not ltex_extra_initialized then
                     require("ltex_extra").setup({
                         load_langs = { "en-US" },
                         init_check = true,
                         path = vim.fn.stdpath("config") .. "/spell",
                         log_level = "warn",
                     })
+                    ltex_extra_initialized = true
                 end
-            end
+            end,
         })
-
-        -- Optional: LSP keybindings
-        vim.api.nvim_create_autocmd("LspAttach", {
-            callback = function(ev)
-                local opts = { buffer = ev.buf }
-                vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts) -- Native vim highlighting
-                -- vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>", opts) -- Using Telescope
-                vim.keymap.set("n", "K", vim.lsp.buf.hover, opts) -- mimicks putting your mouse cursor to see what something is
-                vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts) -- rename a symbol
-                vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, opts) -- this is doing the recommended smart suggestion
-                vim.keymap.set("n", "<leader>vws", require("telescope.builtin").lsp_workspace_symbols, opts)
-                vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)
-                vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
-
-                -- diagnostic stuff
-                vim.keymap.set("n", "<leader>kd", vim.diagnostic.open_float,  opts) -- opens the diagnostic for an error or warning etc.
-                vim.keymap.set("n", "[d", function() vim.diagnostic.jump({count=-1,float=true}) end, opts)
-                vim.keymap.set("n", "]d", function() vim.diagnostic.jump({count=1,float=true}) end, opts)
-            end
-        })
-    end
+    end,
 }

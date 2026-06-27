@@ -1,0 +1,1086 @@
+diff --git a/common/nvim/docs/os-lsp-snippets-migration.md b/common/nvim/docs/os-lsp-snippets-migration.md
+new file mode 100644
+index 0000000..a2b4282
+--- /dev/null
++++ b/common/nvim/docs/os-lsp-snippets-migration.md
+@@ -0,0 +1,35 @@
++# Neovim OS / LSP / Snippets migration notes
++
++This change-set is scoped to portability, LSP correctness, diagnostics, completion, and LaTeX snippets. It deliberately avoids changing the visual workflow more than necessary.
++
++## Added
++
++- `lua/utils/os.lua`: central OS detection and shared helpers for macOS, WSL, and normal Linux.
++- `luasnippets/tex.lua`: LuaSnip-based LaTeX snippets, seeded from the high-value static and regex portions of the Obsidian `Snippets.js` file.
++- `telescope-ui-select.nvim`: makes `vim.ui.select()` flows, including code actions, use Telescope-style selection.
++- `cmp-buffer`, `cmp-path`, `cmp-vimtex`: these were configured as completion sources before, but the plugins were not installed.
++- `trouble.nvim`: optional diagnostics panel.
++
++## Rewritten
++
++- `lua/plugins/language/lsp.lua`: moved to Neovim 0.12-style `vim.lsp.config()` with Mason's automatic enable flow.
++- `lua/config/diagnostics.lua`: moved to modern `vim.diagnostic.config()` sign configuration.
++- `lua/plugins/completion/cmp.lua`: adds snippet placeholder jumping, bordered UI, source labels, VimTeX completion, and custom LuaSnip loading.
++- `lua/plugins/writing/vimtex.lua`: makes PDF viewing OS-aware and lets VimTeX provide LaTeX syntax/math-zone detection.
++- `lua/plugins/core/treesitter.lua`: adds Verilog and VHDL parsers.
++
++## Deliberately not fully migrated yet
++
++The Obsidian `Snippets.js` file contains advanced JavaScript callback snippets and macro references such as `${GREEK}` / `${SYMBOL}`. Those should be ported manually in stages after the base LuaSnip setup is validated. The new `luasnippets/tex.lua` ports a safe, high-value subset first so that typing performance and expansion behaviour remain supervised.
++
++## Validation checklist
++
++1. `nvim --version` shows 0.12.x.
++2. `:Lazy sync` succeeds.
++3. `:Mason` installs `lua_ls`, `pyright`, `texlab`, `ltex_plus`, `verible`, and `vhdl_ls`.
++4. `:checkhealth vim.lsp` passes the important checks.
++5. Open a Lua file and verify `:LspInfo` shows `lua_ls`.
++6. Open a TeX file and verify `:LspInfo` shows `texlab` and `ltex_plus`.
++7. In TeX math mode, type `@a`, `ff`, `x1`, `xhat`, and `dm` outside math mode.
++8. Run `:CmpStatus` and confirm the active sources include LSP, LuaSnip, path, buffer, and VimTeX where relevant.
++9. Run `:Telescope lsp_document_symbols` and `gra` or `<leader>la` for code actions.
+diff --git a/common/nvim/lua/config/diagnostics.lua b/common/nvim/lua/config/diagnostics.lua
+index 64b16cb..26a4db6 100644
+--- a/common/nvim/lua/config/diagnostics.lua
++++ b/common/nvim/lua/config/diagnostics.lua
+@@ -1,23 +1,28 @@
+--- diagnostic signs
+-local signs = {
+-    { name = "DiagnosticSignError", text = "" },
+-    { name = "DiagnosticSignWarn",  text = "" },
+-    { name = "DiagnosticSignHint",  text = "" },
+-    { name = "DiagnosticSignInfo",  text = "" },
+-}
++local severity = vim.diagnostic.severity
+ 
+-for _, sign in ipairs(signs) do
+-    vim.fn.sign_define(sign.name, { text = sign.text, texthl = sign.name, numhl = "" })
+-end
+-
+--- configure diagnostic display
+ vim.diagnostic.config({
+     virtual_text = {
+-        prefix = '●',
+-        spacing = 4,
++        prefix = "●",
++        spacing = 2,
++    },
++
++    signs = {
++        text = {
++            [severity.ERROR] = "",
++            [severity.WARN] = "",
++            [severity.INFO] = "",
++            [severity.HINT] = "",
++        },
+     },
+-    signs = true,
++
+     underline = true,
+     update_in_insert = false,
+     severity_sort = true,
++
++    float = {
++        border = "rounded",
++        source = "if_many",
++        header = "",
++        prefix = "",
++    },
+ })
+diff --git a/common/nvim/lua/mystuffs/.luarc.json b/common/nvim/lua/mystuffs/.luarc.json
+deleted file mode 100644
+index 91244ec..0000000
+--- a/common/nvim/lua/mystuffs/.luarc.json
++++ /dev/null
+@@ -1,9 +0,0 @@
+-{
+-    "diagnostics.globals": [
+-        "vim",
+-        "Terminal"
+-    ],
+-    "diagnostics.disable": [
+-        "redundant-parameter"
+-    ]
+-}
+diff --git a/common/nvim/lua/plugins/completion/cmp.lua b/common/nvim/lua/plugins/completion/cmp.lua
+index 755200d..6c04fae 100644
+--- a/common/nvim/lua/plugins/completion/cmp.lua
++++ b/common/nvim/lua/plugins/completion/cmp.lua
+@@ -1,42 +1,114 @@
+--- This is the autocompletion server
+-return {
+-	'hrsh7th/nvim-cmp',
+-	event = "InsertEnter",
+-	dependencies = {
+-		'hrsh7th/cmp-nvim-lsp',
+-		'L3MON4D3/LuaSnip',
+-		'saadparwaiz1/cmp_luasnip',
+-		'rafamadriz/friendly-snippets',
+-	},
+-	config = function()
+-		local cmp = require('cmp')
+-		local luasnip = require('luasnip')
+-		require("luasnip.loaders.from_vscode").lazy_load()
+-
+-		cmp.setup({
+-			snippet = {
+-				expand = function(args)
+-					luasnip.lsp_expand(args.body)
+-				end,
+-			},
+-			mapping = cmp.mapping.preset.insert({
+-				['<Tab>'] = cmp.mapping.confirm({ select = true }),
+-				['<C-Space>'] = cmp.mapping.complete(),
+-				['<C-p>'] = cmp.mapping.select_prev_item(),
+-				['<C-n>'] = cmp.mapping.select_next_item(),
+-			}),
+-			sources = cmp.config.sources({
+-				{ name = 'nvim_lsp' },
+-				{ name = 'luasnip' },
+-				{ name = 'buffer' },
+-				{ name = 'path' },
+-                { name = 'vimtex' },
+-			}),
+-            -- this allows you to disable autocomplete with a keybinding <C-k>
+-			enabled = function()
+-				local cmp_toggle = require("mystuffs.cmp_toggle")
+-				return cmp_toggle.enabled
+-			end,
+-		})
+-	end,
+-}
++-- Completion + snippets.
++return {
++    "hrsh7th/nvim-cmp",
++    event = "InsertEnter",
++    dependencies = {
++        "hrsh7th/cmp-nvim-lsp",
++        "hrsh7th/cmp-buffer",
++        "hrsh7th/cmp-path",
++        "L3MON4D3/LuaSnip",
++        "saadparwaiz1/cmp_luasnip",
++        "rafamadriz/friendly-snippets",
++        "micangl/cmp-vimtex",
++    },
++    config = function()
++        local cmp = require("cmp")
++        local luasnip = require("luasnip")
++        local types = require("luasnip.util.types")
++
++        luasnip.setup({
++            enable_autosnippets = true,
++            update_events = { "TextChanged", "TextChangedI" },
++            region_check_events = { "CursorMoved", "CursorHold", "InsertEnter" },
++            delete_check_events = { "TextChanged", "InsertLeave" },
++            ext_opts = {
++                [types.insertNode] = {
++                    active = {
++                        hl_group = "Visual",
++                    },
++                },
++                [types.choiceNode] = {
++                    active = {
++                        hl_group = "IncSearch",
++                        virt_text = {
++                            { " choice ", "Comment" },
++                        },
++                    },
++                },
++            },
++        })
++
++        require("luasnip.loaders.from_vscode").lazy_load()
++        require("luasnip.loaders.from_lua").lazy_load({
++            paths = { vim.fn.stdpath("config") .. "/luasnippets" },
++        })
++
++        cmp.setup({
++            snippet = {
++                expand = function(args)
++                    luasnip.lsp_expand(args.body)
++                end,
++            },
++            window = {
++                completion = cmp.config.window.bordered(),
++                documentation = cmp.config.window.bordered(),
++            },
++            formatting = {
++                format = function(entry, item)
++                    local names = {
++                        nvim_lsp = "[LSP]",
++                        lazydev = "[LazyDev]",
++                        luasnip = "[Snippet]",
++                        vimtex = "[VimTeX]",
++                        path = "[Path]",
++                        buffer = "[Buffer]",
++                    }
++                    item.menu = names[entry.source.name] or ("[" .. entry.source.name .. "]")
++                    return item
++                end,
++            },
++            mapping = cmp.mapping.preset.insert({
++                ["<C-Space>"] = cmp.mapping.complete(),
++                ["<C-p>"] = cmp.mapping.select_prev_item(),
++                ["<C-n>"] = cmp.mapping.select_next_item(),
++                ["<CR>"] = cmp.mapping.confirm({ select = false }),
++                ["<Tab>"] = cmp.mapping(function(fallback)
++                    if cmp.visible() then
++                        cmp.select_next_item()
++                    elseif luasnip.expand_or_locally_jumpable() then
++                        luasnip.expand_or_jump()
++                    else
++                        fallback()
++                    end
++                end, { "i", "s" }),
++                ["<S-Tab>"] = cmp.mapping(function(fallback)
++                    if cmp.visible() then
++                        cmp.select_prev_item()
++                    elseif luasnip.locally_jumpable(-1) then
++                        luasnip.jump(-1)
++                    else
++                        fallback()
++                    end
++                end, { "i", "s" }),
++                ["<C-e>"] = cmp.mapping(function()
++                    if luasnip.choice_active() then
++                        luasnip.change_choice(1)
++                    else
++                        cmp.abort()
++                    end
++                end, { "i", "s" }),
++            }),
++            sources = cmp.config.sources({
++                { name = "lazydev", group_index = 0 },
++                { name = "nvim_lsp", priority = 1000 },
++                { name = "luasnip", priority = 900 },
++                { name = "vimtex", priority = 800 },
++                { name = "path", priority = 500 },
++                { name = "buffer", priority = 300, keyword_length = 3 },
++            }),
++            enabled = function()
++                return require("mystuffs.cmp_toggle").enabled
++            end,
++        })
++    end,
++}
+diff --git a/common/nvim/lua/plugins/core/treesitter.lua b/common/nvim/lua/plugins/core/treesitter.lua
+index d3af730..4a0bdf7 100644
+--- a/common/nvim/lua/plugins/core/treesitter.lua
++++ b/common/nvim/lua/plugins/core/treesitter.lua
+@@ -27,6 +27,10 @@ local parsers = {
+ 	"latex",
+ 	"markdown",
+ 	"markdown_inline",
++
++	-- HDL / FPGA
++	"verilog",
++	"vhdl",
+ }
+ 
+ return {
+diff --git a/common/nvim/lua/plugins/language/lsp.lua b/common/nvim/lua/plugins/language/lsp.lua
+index 751f349..f401e9f 100644
+--- a/common/nvim/lua/plugins/language/lsp.lua
++++ b/common/nvim/lua/plugins/language/lsp.lua
+@@ -1,113 +1,176 @@
+--- Language Server Protocol
+-return {
+-    'neovim/nvim-lspconfig',
+-    event = { "BufReadPre", "BufNewFile" },
+-    dependencies = {
+-        'mason-org/mason.nvim',
+-        'mason-org/mason-lspconfig.nvim',
+-        "barreiroleo/ltex_extra.nvim",
+-    },
+-    config = function()
+-        local ensure_installed = {
+-            "pyright", -- .py
+-            "bashls", -- .zsh/.sh
+-            "lua_ls", -- .lua
+-            "texlab", -- .tex
+-            "ltex", -- .tex
+-            "rust_analyzer",
+-            "taplo",
+-        }
+-
+-        local lspconfig = require("lspconfig")
+-        local default_capabilities = require("cmp_nvim_lsp").default_capabilities()
+-
+-        require("mason").setup()
+-        require("mason-lspconfig").setup({
+-            ensure_installed = ensure_installed,
+-            handlers = {
+-                ["lua_ls"] = function ()
+-                    lspconfig.lua_ls.setup({
+-                        settings = {
+-                            Lua = {
+-                                runtime = {
+-                                    version = 'LuaJIT', -- used by neovim
+-                                    path = vim.split(package.path, ';'),
+-                                },
+-                                diagnostics = {
+-                                    globals = {
+-                                        "hs", "spoon", -- hammerspoon
+-                                    },
+-                                },
+-                                workspace = {
+-                                    library = {
+-                                        vim.env.VIMRUNTIME,
+-                                        vim.fn.stdpath("config"),
+-                                        vim.fn.expand("~/.dotfiles"),
+-                                    },
+-                                    checkThirdParty = false,
+-                                },
+-                                telemetry = { enable = false },
+-                            },
+-                        },
+-                    })
+-                end,
+-                ["ltex"] = function()
+-                    lspconfig.ltex.setup({
+-                        capabilities = default_capabilities,
+-                        settings = {
+-                            ltex = {
+-                                language = "en-US",
+-                                -- Your other ltex settings
+-                            },
+-                        },
+-                    })
+-                end,
+-                ["pyright"] = function()
+-                    lspconfig.pyright.setup({
+-                        settings = {
+-                            python = {
+-                                venvPath = ".venv",
+-                                pythonPath = "./.venv/bin/python",
+-                            },
+-                        },
+-                    })
+-                end,
+-            },
+-        })
+-
+-        -- Separate LspAttach autocmd for ltex_extra
+-        vim.api.nvim_create_autocmd("LspAttach", {
+-            callback = function(args)
+-                local client = vim.lsp.get_client_by_id(args.data.client_id)
+-                if client and client.name == "ltex" then
+-                    require("ltex_extra").setup({
+-                        load_langs = { "en-US" },
+-                        init_check = true,
+-                        path = vim.fn.stdpath("config") .. "/spell",
+-                        log_level = "warn",
+-                    })
+-                end
+-            end
+-        })
+-
+-        -- Optional: LSP keybindings
+-        vim.api.nvim_create_autocmd("LspAttach", {
+-            callback = function(ev)
+-                local opts = { buffer = ev.buf }
+-                vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts) -- Native vim highlighting
+-                -- vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>", opts) -- Using Telescope
+-                vim.keymap.set("n", "K", vim.lsp.buf.hover, opts) -- mimicks putting your mouse cursor to see what something is
+-                vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts) -- rename a symbol
+-                vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, opts) -- this is doing the recommended smart suggestion
+-                vim.keymap.set("n", "<leader>vws", require("telescope.builtin").lsp_workspace_symbols, opts)
+-                vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)
+-                vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
+-
+-                -- diagnostic stuff
+-                vim.keymap.set("n", "<leader>kd", vim.diagnostic.open_float,  opts) -- opens the diagnostic for an error or warning etc.
+-                vim.keymap.set("n", "[d", function() vim.diagnostic.jump({count=-1,float=true}) end, opts)
+-                vim.keymap.set("n", "]d", function() vim.diagnostic.jump({count=1,float=true}) end, opts)
+-            end
+-        })
+-    end
+-}
++-- Language Server Protocol
++-- Neovim 0.12-style setup: vim.lsp.config() + Mason auto-enable.
++return {
++    "neovim/nvim-lspconfig",
++    event = { "BufReadPre", "BufNewFile" },
++    dependencies = {
++        { "mason-org/mason.nvim", opts = {} },
++        "mason-org/mason-lspconfig.nvim",
++        "hrsh7th/cmp-nvim-lsp",
++        "barreiroleo/ltex_extra.nvim",
++        { "folke/trouble.nvim", opts = {}, cmd = "Trouble" },
++    },
++    config = function()
++        local os = require("utils.os")
++        local capabilities = require("cmp_nvim_lsp").default_capabilities()
++
++        vim.lsp.config("*", {
++            capabilities = capabilities,
++        })
++
++        vim.lsp.config("lua_ls", {
++            settings = {
++                Lua = {
++                    runtime = {
++                        version = "LuaJIT",
++                    },
++                    diagnostics = {
++                        globals = {
++                            "vim",
++                            "hs",
++                            "spoon",
++                        },
++                    },
++                    workspace = {
++                        checkThirdParty = false,
++                    },
++                    telemetry = {
++                        enable = false,
++                    },
++                },
++            },
++        })
++
++        vim.lsp.config("pyright", {
++            settings = {
++                python = {
++                    analysis = {
++                        typeCheckingMode = "basic",
++                        autoSearchPaths = true,
++                        useLibraryCodeForTypes = true,
++                    },
++                },
++            },
++        })
++
++        vim.lsp.config("texlab", {
++            settings = {
++                texlab = {
++                    build = {
++                        executable = "latexmk",
++                        args = {
++                            "-pdf",
++                            "-interaction=nonstopmode",
++                            "-synctex=1",
++                            "%f",
++                        },
++                        onSave = false,
++                    },
++                    forwardSearch = {
++                        executable = os.is_macos and "displayline" or nil,
++                    },
++                },
++            },
++        })
++
++        vim.lsp.config("ltex_plus", {
++            settings = {
++                ltex = {
++                    language = "en-US",
++                    enabled = {
++                        "bibtex",
++                        "context",
++                        "context.tex",
++                        "html",
++                        "latex",
++                        "markdown",
++                        "org",
++                        "restructuredtext",
++                        "tex",
++                    },
++                },
++            },
++        })
++
++        vim.lsp.config("verible", {})
++        vim.lsp.config("vhdl_ls", {})
++
++        require("mason-lspconfig").setup({
++            ensure_installed = {
++                -- Neovim / configuration
++                "lua_ls",
++                "bashls",
++                "taplo",
++
++                -- Programming
++                "pyright",
++                "rust_analyzer",
++
++                -- Academic writing
++                "texlab",
++                "ltex_plus",
++
++                -- HDL / time-tagging project
++                "verible",
++                "vhdl_ls",
++            },
++            automatic_enable = true,
++        })
++
++        local ltex_extra_initialized = false
++        local group = vim.api.nvim_create_augroup("user_lsp_attach", { clear = true })
++
++        vim.api.nvim_create_autocmd("LspAttach", {
++            group = group,
++            callback = function(event)
++                local client = vim.lsp.get_client_by_id(event.data.client_id)
++
++                local function map(mode, lhs, rhs, desc)
++                    vim.keymap.set(mode, lhs, rhs, {
++                        buffer = event.buf,
++                        silent = true,
++                        desc = desc,
++                    })
++                end
++
++                -- Keep your familiar mappings for now, but also expose a clearer <leader>l namespace.
++                map("n", "gd", vim.lsp.buf.definition, "LSP: go to definition")
++                map("n", "gD", vim.lsp.buf.declaration, "LSP: go to declaration")
++                map("n", "K", vim.lsp.buf.hover, "LSP: hover")
++                map("i", "<C-h>", vim.lsp.buf.signature_help, "LSP: signature help")
++
++                map("n", "<leader>vrn", vim.lsp.buf.rename, "LSP: rename symbol")
++                map("n", "<leader>vca", vim.lsp.buf.code_action, "LSP: code action")
++                map("n", "<leader>vrr", vim.lsp.buf.references, "LSP: references")
++                map("n", "<leader>vws", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "LSP: workspace symbols")
++
++                map("n", "<leader>lr", vim.lsp.buf.rename, "LSP: rename symbol")
++                map("n", "<leader>la", vim.lsp.buf.code_action, "LSP: code action")
++                map("n", "<leader>lR", vim.lsp.buf.references, "LSP: references")
++                map("n", "<leader>ls", "<cmd>Telescope lsp_document_symbols<cr>", "LSP: document symbols")
++                map("n", "<leader>lS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "LSP: workspace symbols")
++
++                map("n", "<leader>kd", vim.diagnostic.open_float, "Diagnostics: current position")
++                map("n", "<leader>ld", vim.diagnostic.open_float, "Diagnostics: current position")
++                map("n", "[d", function()
++                    vim.diagnostic.jump({ count = -1, float = true })
++                end, "Diagnostics: previous")
++                map("n", "]d", function()
++                    vim.diagnostic.jump({ count = 1, float = true })
++                end, "Diagnostics: next")
++                map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", "Diagnostics: Trouble")
++                map("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", "Diagnostics: buffer Trouble")
++
++                if client and client.name == "ltex_plus" and not ltex_extra_initialized then
++                    require("ltex_extra").setup({
++                        load_langs = { "en-US" },
++                        init_check = true,
++                        path = vim.fn.stdpath("config") .. "/spell",
++                        log_level = "warn",
++                    })
++                    ltex_extra_initialized = true
++                end
++            end,
++        })
++    end,
++}
+diff --git a/common/nvim/lua/plugins/navigation/telescope.lua b/common/nvim/lua/plugins/navigation/telescope.lua
+index 55fec68..ba69c44 100644
+--- a/common/nvim/lua/plugins/navigation/telescope.lua
++++ b/common/nvim/lua/plugins/navigation/telescope.lua
+@@ -1,11 +1,24 @@
+--- This is the coolest pluggin for how little code it takes to implement.
+--- This plugin allows you to search files, grep text within a project
+--- and provides a very nice ui
+-return {
+-    'nvim-telescope/telescope.nvim', version = '*',
+-    dependencies = {
+-        'nvim-lua/plenary.nvim',
+-        'nvim-tree/nvim-web-devicons',
+-        { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+-    },
+-}
++-- Fuzzy finding: files, text, LSP results, and selection UIs.
++return {
++    "nvim-telescope/telescope.nvim",
++    version = "*",
++    dependencies = {
++        "nvim-lua/plenary.nvim",
++        "nvim-tree/nvim-web-devicons",
++        { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
++        "nvim-telescope/telescope-ui-select.nvim",
++    },
++    config = function()
++        local telescope = require("telescope")
++        local themes = require("telescope.themes")
++
++        telescope.setup({
++            extensions = {
++                ["ui-select"] = themes.get_dropdown({}),
++            },
++        })
++
++        pcall(telescope.load_extension, "fzf")
++        pcall(telescope.load_extension, "ui-select")
++    end,
++}
+diff --git a/common/nvim/lua/plugins/writing/vimtex.lua b/common/nvim/lua/plugins/writing/vimtex.lua
+index 9a28c4e..75853cc 100644
+--- a/common/nvim/lua/plugins/writing/vimtex.lua
++++ b/common/nvim/lua/plugins/writing/vimtex.lua
+@@ -1,40 +1,53 @@
+-return {
+-    "lervag/vimtex",
+-    lazy = false,     -- we don't want to lazy load VimTeX
+-    ft = { "tex" },
+-    -- tag = "v2.15", -- uncomment to pin to a specific release
+-    init = function()
+-        -- VimTeX configuration goes here, e.g.
+-        vim.g.vimtex_view_method = "skim"
+-        vim.g.vimtex_compiler_method = "latexmk"
+-        vim.g.vimtex_quickfix_mode = 0
+-        vim.g.vimtex_syntax_enabled = 0
+-        vim.g.vimtex_syntax_conceal = {
+-            accents = 1,
+-            cites = 1,
+-            fancy = 1,
+-            greek = 1,
+-            math_bounds = 1,
+-            math_delimiters = 1,
+-            math_fracs = 1,
+-            math_super_sub = 1,
+-            math_symbols = 1,
+-            sections = 1,
+-            styles = 1
+-        }
+-        -- Start a server for backward linking between vimtex and skim
+-        -- as soon as a .tex is opened
+-        vim.api.nvim_create_autocmd("FileType", {
+-            pattern = "tex",
+-            callback = function()
+-                local fixed = "/tmp/nvimsocket"  -- choose a stable path
+-                -- If there isn't already a server, start one at the fixed address
+-                local current = vim.v.servername or ""
+-                if current == "" then
+-                    vim.env.NVIM_LISTEN_ADDRESS = fixed
+-                    pcall(vim.fn.serverstart, fixed)
+-                end
+-            end,
+-        })
+-    end
+-}
++return {
++    "lervag/vimtex",
++    ft = { "tex", "plaintex", "bib" },
++    init = function()
++        local os = require("utils.os")
++
++        vim.g.vimtex_compiler_method = "latexmk"
++        vim.g.vimtex_quickfix_mode = 0
++
++        -- Treesitter is currently skipped for TeX in this config, so let VimTeX
++        -- own LaTeX syntax and math-zone detection.
++        vim.g.vimtex_syntax_enabled = 1
++        vim.g.vimtex_syntax_conceal = {
++            accents = 1,
++            cites = 1,
++            fancy = 1,
++            greek = 1,
++            math_bounds = 1,
++            math_delimiters = 1,
++            math_fracs = 1,
++            math_super_sub = 1,
++            math_symbols = 1,
++            sections = 1,
++            styles = 1,
++        }
++
++        if os.is_macos then
++            vim.g.vimtex_view_method = "skim"
++        elseif os.has_command("zathura") then
++            vim.g.vimtex_view_method = "zathura"
++        elseif os.is_wsl and os.has_command("wslview") then
++            -- Fallback: opens the PDF in the Windows default app. This is good
++            -- enough for viewing, but does not provide proper inverse search.
++            vim.g.vimtex_view_method = "general"
++            vim.g.vimtex_view_general_viewer = "wslview"
++            vim.g.vimtex_view_general_options = "@pdf"
++        else
++            -- Last resort. VimTeX can still compile and populate quickfix.
++            vim.g.vimtex_view_method = "general"
++        end
++
++        vim.api.nvim_create_autocmd("FileType", {
++            pattern = "tex",
++            callback = function()
++                require("utils.os").start_project_server()
++                vim.opt_local.wrap = true
++                vim.opt_local.linebreak = true
++                vim.opt_local.spell = true
++                vim.opt_local.spelllang = "en_us"
++            end,
++        })
++    end,
++}
+diff --git a/common/nvim/lua/utils/os.lua b/common/nvim/lua/utils/os.lua
+new file mode 100644
+index 0000000..0c6bb6c
+--- /dev/null
++++ b/common/nvim/lua/utils/os.lua
+@@ -0,0 +1,88 @@
++local M = {}
++
++local uname = vim.uv.os_uname()
++local sysname = uname.sysname or ""
++
++local function read_first_line(path)
++    local ok, lines = pcall(vim.fn.readfile, path, "", 1)
++    if not ok or not lines or not lines[1] then
++        return ""
++    end
++    return lines[1]
++end
++
++local proc_version = read_first_line("/proc/version"):lower()
++
++M.is_macos = sysname == "Darwin"
++M.is_windows = vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1
++M.is_wsl = not M.is_windows
++    and (vim.env.WSL_DISTRO_NAME ~= nil or proc_version:find("microsoft") ~= nil or proc_version:find("wsl") ~= nil)
++M.is_linux = sysname == "Linux" and not M.is_wsl
++M.is_unix = M.is_macos or M.is_linux or M.is_wsl
++
++function M.name()
++    if M.is_wsl then
++        return "wsl"
++    elseif M.is_macos then
++        return "macos"
++    elseif M.is_linux then
++        return "linux"
++    elseif M.is_windows then
++        return "windows"
++    end
++    return sysname:lower()
++end
++
++function M.executable(cmd)
++    return vim.fn.executable(cmd) == 1
++end
++
++function M.has_command(cmd)
++    return M.executable(cmd)
++end
++
++function M.path_exists(path)
++    return vim.uv.fs_stat(vim.fn.expand(path)) ~= nil
++end
++
++function M.join(...)
++    local parts = { ... }
++    return table.concat(parts, "/"):gsub("/+", "/")
++end
++
++function M.stdpath(kind, ...)
++    local base = vim.fn.stdpath(kind)
++    if select("#", ...) == 0 then
++        return base
++    end
++    return M.join(base, ...)
++end
++
++function M.ensure_dir(path)
++    vim.fn.mkdir(vim.fn.expand(path), "p")
++    return path
++end
++
++function M.nvim_socket_path()
++    -- Stable enough for PDF inverse search, but not a single global /tmp/nvimsocket.
++    -- Different working directories get different sockets, reducing collisions.
++    local run_dir = M.ensure_dir(M.stdpath("run"))
++    local cwd_hash = vim.fn.sha256(vim.fn.getcwd()):sub(1, 12)
++    return M.join(run_dir, "nvim-" .. cwd_hash .. ".sock")
++end
++
++function M.start_project_server()
++    if vim.v.servername ~= nil and vim.v.servername ~= "" then
++        return vim.v.servername
++    end
++
++    local socket = vim.env.NVIM_LISTEN_ADDRESS or M.nvim_socket_path()
++    local ok = pcall(vim.fn.serverstart, socket)
++    if ok then
++        return socket
++    end
++
++    return vim.v.servername
++end
++
++return M
+diff --git a/common/nvim/luasnippets/tex.lua b/common/nvim/luasnippets/tex.lua
+new file mode 100644
+index 0000000..30ab1f9
+--- /dev/null
++++ b/common/nvim/luasnippets/tex.lua
+@@ -0,0 +1,274 @@
++local ls = require("luasnip")
++local s = ls.snippet
++local t = ls.text_node
++local i = ls.insert_node
++local f = ls.function_node
++local c = ls.choice_node
++local sn = ls.snippet_node
++local fmt = require("luasnip.extras.fmt").fmt
++local fmta = require("luasnip.extras.fmt").fmta
++local rep = require("luasnip.extras").rep
++local parse = require("luasnip.util.parser").parse_snippet
++
++local function in_mathzone()
++    if vim.fn.exists("*vimtex#syntax#in_mathzone") == 1 then
++        return vim.fn["vimtex#syntax#in_mathzone"]() == 1
++    end
++    return false
++end
++
++local function outside_mathzone()
++    return not in_mathzone()
++end
++
++local function ps(context, body, opts)
++    context = vim.tbl_extend("force", context, opts or {})
++    return parse(context, body)
++end
++
++local function autosnip(trig, body, cond, opts)
++    return ps(vim.tbl_extend("force", {
++        trig = trig,
++        snippetType = "autosnippet",
++        wordTrig = true,
++    }, opts or {}), body, { condition = cond })
++end
++
++local function math_auto(trig, body, opts)
++    return autosnip(trig, body, in_mathzone, opts)
++end
++
++local function text_auto(trig, body, opts)
++    return autosnip(trig, body, outside_mathzone, opts)
++end
++
++local function reg_auto(trig, nodes, opts)
++    opts = opts or {}
++    opts.trig = trig
++    opts.regTrig = true
++    opts.snippetType = "autosnippet"
++    opts.wordTrig = false
++    return s(opts, nodes, { condition = opts.condition or in_mathzone })
++end
++
++local snippets = {
++    s({ trig = "beg", name = "begin/end environment" }, fmta([[
++\begin{<>}
++    <>
++\end{<>}
++]], { i(1, "environment"), i(2), rep(1) })),
++
++    s({ trig = "sec", name = "section with label" }, fmta([[
++\section{<>}
++\label{sec:<>}
++
++<>
++]], { i(1, "Title"), i(2, "label"), i(0) })),
++
++    s({ trig = "eq", name = "equation" }, fmta([[
++\begin{equation}
++    <>
++\end{equation}
++]], { i(1) })),
++
++    s({ trig = "fig", name = "figure" }, fmta([[
++\begin{figure}[<>]
++    \centering
++    \includegraphics[width=<>	extwidth]{<>}
++    \caption{<>}
++    \label{fig:<>}
++\end{figure}
++]], { i(1, "htbp"), i(2, "0.8"), i(3, "path/to/image"), i(4, "Caption"), i(5, "label") })),
++
++    s({ trig = "partial", name = "partial derivative" }, fmta("\\frac{ \\partial <> }{ \\partial <> }<>", {
++        i(1), i(2, "x"), i(0),
++    })),
++
++    s({ trig = "dint", name = "definite integral" }, fmta("\\int_{<>}^{<>} <> \\, d<> <>", {
++        i(1, "0"), i(2, "\\infty"), i(3), i(4, "x"), i(0),
++    })),
++
++    s({ trig = "int", name = "integral" }, fmta("\\int <> \\, d<> <>", {
++        i(1), i(2, "x"), i(0),
++    })),
++
++    s({ trig = "bra", name = "bra" }, fmta("\\bra{<>} <>", { i(1), i(0) })),
++    s({ trig = "ket", name = "ket" }, fmta("\\ket{<>} <>", { i(1), i(0) })),
++    s({ trig = "brk", name = "braket" }, fmta("\\braket{ <> | <> } <>", { i(1), i(2), i(0) })),
++    s({ trig = "kbr", name = "ket-bra" }, fmta("\\ket{<>}\\bra{<>} <>", { i(1), i(2), i(0) })),
++
++    s({ trig = "mat", name = "matrix environment" }, fmta([[
++\begin{<>}
++<>
++\end{<>}
++]], { c(1, {
++        t("pmatrix"),
++        t("bmatrix"),
++        t("Bmatrix"),
++        t("vmatrix"),
++        t("Vmatrix"),
++        t("matrix"),
++    }), i(2), rep(1) })),
++}
++
++local autosnippets = {
++    -- Text-mode math wrappers, migrated from Obsidian mk/dm.
++    text_auto("mk", "$\\large $0$", { name = "inline math" }),
++    text_auto("dm", "$$\\large\n$0\n$$", { name = "display math" }),
++    text_auto("dhm", "$$\\huge\n$0\n$$", { name = "display huge math" }),
++
++    -- Basic symbols and operators from Snippets.js.
++    math_auto("ff", "\\frac{$1}{$2}$0", { name = "fraction" }),
++    math_auto("//", "\\frac{$1}{$2}$0", { name = "fraction" }),
++    math_auto("sq", "\\sqrt{ $1 }$0", { name = "sqrt" }),
++    math_auto("sr", "^{2}", { name = "square" }),
++    math_auto("cb", "^{3}", { name = "cube" }),
++    math_auto("rd", "^{$1}$0", { name = "superscript" }),
++    math_auto("sts", "_\\text{$1}$0", { name = "text subscript" }),
++    math_auto("conj", "^{*}", { name = "complex conjugate" }),
++    math_auto("dag", "^{\\dagger}", { name = "dagger" }),
++    math_auto("rm", "\\mathrm{$1}$0", { name = "mathrm" }),
++    math_auto("bf", "\\mathbf{$1}$0", { name = "mathbf" }),
++    math_auto("cal", "\\mathcal{$1}$0", { name = "mathcal" }),
++    math_auto("mbb", "\\mathbb{$1}$0", { name = "mathbb" }),
++    math_auto("mcal", "\\mathcal{$1}$0", { name = "mathcal" }),
++    math_auto("te", "\\text{$1}$0", { name = "text" }),
++    math_auto("text", "\\text{$1}$0", { name = "text" }),
++
++    math_auto("sum", "\\sum\\limits_{$1}^{$2}$0", { name = "sum" }),
++    math_auto("prod", "\\prod\\limits_{$1}^{$2}$0", { name = "product" }),
++    math_auto("oprod", "\\bigotimes\\limits_{$1}^{$2}$0", { name = "tensor product" }),
++    math_auto("lim", "\\lim_{ ${1:n} \\to ${2:\\infty} } $0", { name = "limit" }),
++    math_auto("eval", "\\bigg|_{${1:-\\infty}}^{${2:\\infty}}$0", { name = "evaluation bar" }),
++    math_auto("def=", " \\triangleq ", { name = "defined equals" }),
++
++    math_auto("oinf", "\\int_{0}^{\\infty} $1 \\, d${2:x} $0", { name = "0 to infinity integral" }),
++    math_auto("infi", "\\int_{-\\infty}^{\\infty} $1 \\, d${2:x} $0", { name = "infinite integral" }),
++    math_auto("oint", "\\oint", { name = "closed integral" }),
++    math_auto("iint", "\\iint", { name = "double integral" }),
++    math_auto("iiint", "\\iiint", { name = "triple integral" }),
++
++    -- Greek letters from Snippets.js.
++    math_auto("@a", "\\alpha", { name = "alpha" }),
++    math_auto("@A", "\\alpha", { name = "alpha" }),
++    math_auto("@b", "\\beta", { name = "beta" }),
++    math_auto("@B", "\\beta", { name = "beta" }),
++    math_auto("@c", "\\chi", { name = "chi" }),
++    math_auto("@C", "\\chi", { name = "chi" }),
++    math_auto("@g", "\\gamma", { name = "gamma" }),
++    math_auto("@G", "\\Gamma", { name = "Gamma" }),
++    math_auto("@d", "\\delta", { name = "delta" }),
++    math_auto("@D", "\\Delta", { name = "Delta" }),
++    math_auto("@e", "\\epsilon", { name = "epsilon" }),
++    math_auto(":e", "\\varepsilon", { name = "varepsilon" }),
++    math_auto("@z", "\\zeta", { name = "zeta" }),
++    math_auto("@t", "\\theta", { name = "theta" }),
++    math_auto("@T", "\\Theta", { name = "Theta" }),
++    math_auto("@k", "\\kappa", { name = "kappa" }),
++    math_auto("@l", "\\lambda", { name = "lambda" }),
++    math_auto("@L", "\\Lambda", { name = "Lambda" }),
++    math_auto("@m", "\\mu", { name = "mu" }),
++    math_auto("@r", "\\rho", { name = "rho" }),
++    math_auto("@s", "\\sigma", { name = "sigma" }),
++    math_auto("@S", "\\Sigma", { name = "Sigma" }),
++    math_auto("ome", "\\omega", { name = "omega" }),
++    math_auto("@o", "\\omega", { name = "omega" }),
++    math_auto("@O", "\\Omega", { name = "Omega" }),
++
++    -- Common math constants and sets.
++    math_auto("ooo", "\\infty", { name = "infinity" }),
++    math_auto("CC", "\\mathbb{C}", { name = "complex numbers" }),
++    math_auto("RR", "\\mathbb{R}", { name = "real numbers" }),
++    math_auto("ZZ", "\\mathbb{Z}", { name = "integers" }),
++    math_auto("NN", "\\mathbb{N}", { name = "natural numbers" }),
++    math_auto("II", "\\mathbb{1}", { name = "identity" }),
++    math_auto("LL", "\\mathcal{L}", { name = "lagrangian/L" }),
++    math_auto("AA", "\\mathcal{A}", { name = "mathcal A" }),
++    math_auto("ell", "\\ell", { name = "ell" }),
++
++    -- Relations and arrows.
++    math_auto("+-", "\\pm", { name = "plus-minus" }),
++    math_auto("-+", "\\mp", { name = "minus-plus" }),
++    math_auto("...", "\\dots", { name = "dots" }),
++    math_auto("<->", "\\leftrightarrow ", { name = "leftrightarrow" }),
++    math_auto("->", "\\to", { name = "to" }),
++    math_auto("!>", "\\mapsto", { name = "mapsto" }),
++    math_auto("=>", "\\implies", { name = "implies" }),
++    math_auto("=<", "\\impliedby", { name = "implied by" }),
++    math_auto("iff", "\\iff", { name = "iff" }),
++    math_auto("===", "\\equiv", { name = "equiv" }),
++    math_auto("!=", "\\neq", { name = "not equal" }),
++    math_auto(">=", "\\geq", { name = "greater equal" }),
++    math_auto("<=", "\\leq", { name = "less equal" }),
++    math_auto(">>", "\\gg", { name = "much greater" }),
++    math_auto("<<", "\\ll", { name = "much less" }),
++    math_auto("~~", "\\sim", { name = "similar" }),
++    math_auto("prop", "\\propto", { name = "propto" }),
++    math_auto("xx", "\\times", { name = "times" }),
++    math_auto("**", "\\cdot", { name = "cdot" }),
++    math_auto("para", "\\parallel", { name = "parallel" }),
++    math_auto("inn", "\\in", { name = "in" }),
++    math_auto("notin", "\\not\\in", { name = "not in" }),
++    math_auto("eset", "\\emptyset", { name = "empty set" }),
++    math_auto("and", "\\cap", { name = "cap" }),
++    math_auto("orr", "\\cup", { name = "cup" }),
++
++    -- Vector calculus and physics.
++    math_auto("nabla", "\\nabla", { name = "nabla" }),
++    math_auto("del", "\\nabla", { name = "nabla" }),
++    math_auto("curl", "\\nabla \\times ", { name = "curl" }),
++    math_auto("div", "\\nabla \\cdot ", { name = "divergence" }),
++    math_auto("grad", "\\nabla", { name = "gradient" }),
++    math_auto("hba", "\\hbar", { name = "hbar" }),
++    math_auto("kbt", "k_{B}T", { name = "kBT" }),
++    math_auto("o+", "\\oplus ", { name = "oplus" }),
++    math_auto("ox", "\\otimes ", { name = "otimes" }),
++
++    -- Brackets and environments.
++    math_auto("avg", "\\langle $1 \\rangle $0", { name = "angle brackets" }),
++    math_auto("norm", "\\lvert $1 \\rvert $0", { name = "norm" }),
++    math_auto("Norm", "\\lVert $1 \\rVert $0", { name = "Norm" }),
++    math_auto("ceil", "\\lceil $1 \\rceil $0", { name = "ceil" }),
++    math_auto("floor", "\\lfloor $1 \\rfloor $0", { name = "floor" }),
++    math_auto("lr(", "\\left( $1 \\right) $0", { name = "left/right parentheses" }),
++    math_auto("lr|", "\\left| $1 \\right| $0", { name = "left/right bars" }),
++    math_auto("lr{", "\\left\\{ $1 \\right\\} $0", { name = "left/right braces" }),
++    math_auto("lr[", "\\left[ $1 \\right] $0", { name = "left/right brackets" }),
++    math_auto("align", "\\begin{align*}\n$1\n\\end{align*}", { name = "align environment" }),
++    math_auto("case", "\\begin{cases}\n$1\n\\end{cases}", { name = "cases" }),
++    math_auto("pmat", "\\begin{pmatrix}\n$1\n\\end{pmatrix}", { name = "pmatrix" }),
++    math_auto("bmat", "\\begin{bmatrix}\n$1\n\\end{bmatrix}", { name = "bmatrix" }),
++
++    -- Regex snippets that are safe and high-value.
++    reg_auto("([A-Za-z])(\\d)", {
++        f(function(_, snip)
++            return snip.captures[1] .. "_{" .. snip.captures[2] .. "}"
++        end),
++    }, { name = "letter digit subscript", condition = in_mathzone }),
++
++    reg_auto("([a-zA-Z])hat", {
++        f(function(_, snip)
++            return "\\hat{" .. snip.captures[1] .. "}"
++        end),
++    }, { name = "letter hat", condition = in_mathzone }),
++
++    reg_auto("([a-zA-Z])bar", {
++        f(function(_, snip)
++            return "\\bar{" .. snip.captures[1] .. "}"
++        end),
++    }, { name = "letter bar", condition = in_mathzone }),
++
++    reg_auto("([a-zA-Z])dot", {
++        f(function(_, snip)
++            return "\\dot{" .. snip.captures[1] .. "}"
++        end),
++    }, { name = "letter dot", condition = in_mathzone }),
++
++    reg_auto("([a-zA-Z])vec", {
++        f(function(_, snip)
++            return "\\vec{" .. snip.captures[1] .. "}"
++        end),
++    }, { name = "letter vector", condition = in_mathzone }),
++}
++
++return snippets, autosnippets

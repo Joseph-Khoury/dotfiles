@@ -1,9 +1,0 @@
-{
-    "diagnostics.globals": [
-        "vim",
-        "Terminal"
-    ],
-    "diagnostics.disable": [
-        "redundant-parameter"
-    ]
-}

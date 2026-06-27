@@ -22,4 +22,4 @@ export PAGER="${PAGER:-less}"
 export LESS="${LESS:--R -F -X}"
 
 # Shared config paths
-export FASTFETCH_CONFIG="${FASTFETCH_CONFIG:-$DOTFILES/common/shell/fastfetch/config.jsonc}"
+export FASTFETCH_CONFIG="${FASTFETCH_CONFIG:-$DOTFILES/common/shell/fastfetch/compact.jsonc}"
