@@ -1,0 +1,92 @@
+# ~/.dotfiles/common/shell/zsh/zshrc
+# Main Zsh loader. Keep this file small.
+
+# -----------------------------------------------------------------------------
+# Powerlevel10k instant prompt {{{
+# Must stay close to the top of ~/.zshrc.
+# -----------------------------------------------------------------------------
+
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# }}}
+
+# -----------------------------------------------------------------------------
+# Config root {{{
+# -----------------------------------------------------------------------------
+
+export DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
+export ZSH_CONFIG_DIR="$DOTFILES/common/shell/zsh"
+
+source_if_exists() {
+  [[ -r "$1" ]] && source "$1"
+}
+
+# }}}
+
+# -----------------------------------------------------------------------------
+# OS specific-env {{{
+# -----------------------------------------------------------------------------
+# 1. Detect OS and set common variables
+source_if_exists "$ZSH_CONFIG_DIR/common/00-detect.zsh"
+source_if_exists "$ZSH_CONFIG_DIR/common/05-env.zsh"
+
+# 2. Load OS-specific PATH/bootstrap before completions
+case "$ZSH_OS" in
+  macos)
+    source_if_exists "$ZSH_CONFIG_DIR/os/05-macos-paths.zsh"
+    ;;
+  wsl)
+    source_if_exists "$ZSH_CONFIG_DIR/os/05-linux-paths.zsh"
+    source_if_exists "$ZSH_CONFIG_DIR/os/05-wsl-paths.zsh"
+    ;;
+  linux)
+    source_if_exists "$ZSH_CONFIG_DIR/os/05-linux-paths.zsh"
+    ;;
+esac
+
+# }}}
+
+# -----------------------------------------------------------------------------
+# 3. Common shell behavior {{{
+# -----------------------------------------------------------------------------
+
+source_if_exists "$ZSH_CONFIG_DIR/common/10-history.zsh"
+source_if_exists "$ZSH_CONFIG_DIR/common/20-completion.zsh"
+source_if_exists "$ZSH_CONFIG_DIR/common/30-oh-my-zsh.zsh"
+source_if_exists "$ZSH_CONFIG_DIR/common/40-prompt.zsh"
+source_if_exists "$ZSH_CONFIG_DIR/common/50-tools.zsh"
+
+# }}}
+
+# -----------------------------------------------------------------------------
+# 4. Aliases and functions {{{
+# -----------------------------------------------------------------------------
+
+source_if_exists "$ZSH_CONFIG_DIR/common/60-aliases.zsh"
+
+case "$ZSH_OS" in
+  macos)
+    source_if_exists "$ZSH_CONFIG_DIR/os/60-macos-aliases.zsh"
+    ;;
+  wsl)
+    source_if_exists "$ZSH_CONFIG_DIR/os/60-linux-aliases.zsh"
+    source_if_exists "$ZSH_CONFIG_DIR/os/60-wsl-aliases.zsh"
+    ;;
+  linux)
+    source_if_exists "$ZSH_CONFIG_DIR/os/60-linux-aliases.zsh"
+    ;;
+esac
+
+source_if_exists "$ZSH_CONFIG_DIR/common/70-functions.zsh"
+source_if_exists "$ZSH_CONFIG_DIR/common/90-startup.zsh"
+
+# }}}
+
+# 5. Private per-machine overrides. Do not track these in git.
+for file in "$ZSH_CONFIG_DIR"/local/*.zsh(N); do
+  source "$file"
+done
+
+# vim: ft=zsh foldmethod=marker:
