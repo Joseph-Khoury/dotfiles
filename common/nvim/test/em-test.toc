@@ -1,0 +1,27 @@
+\contentsline {section}{\numberline {1}Electrostatics and Coulomb's Law}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Potential energy and electric potential}{3}{subsection.1.1}%
+\contentsline {section}{\numberline {2}Gauss's Law}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Spherical symmetry}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Planar and cylindrical symmetry}{4}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Boundary Conditions and Conductors}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Capacitance}{5}{subsection.3.1}%
+\contentsline {section}{\numberline {4}Poisson and Laplace Equations}{6}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Uniqueness}{6}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Separation of variables}{6}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Magnetostatics}{7}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Ampere's law}{7}{subsection.5.1}%
+\contentsline {section}{\numberline {6}Vector Potential and Gauge Freedom}{8}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Coulomb gauge}{8}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Aharonov--Bohm intuition}{8}{subsection.6.2}%
+\contentsline {section}{\numberline {7}Time-Dependent Fields and Maxwell's Correction}{9}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Faraday's law}{9}{subsection.7.1}%
+\contentsline {section}{\numberline {8}Maxwell's Equations}{10}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Constitutive relations}{10}{subsection.8.1}%
+\contentsline {section}{\numberline {9}Electromagnetic Waves}{11}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Plane waves}{11}{subsection.9.1}%
+\contentsline {section}{\numberline {10}Energy, Momentum, and the Poynting Vector}{12}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Poynting theorem}{12}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Radiation pressure}{12}{subsection.10.2}%
+\contentsline {section}{\numberline {11}Potentials, Retardation, and a Final Checklist}{13}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Editing setup checklist}{13}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Deliberate navigation targets}{14}{subsection.11.2}%
