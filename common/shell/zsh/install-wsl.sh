@@ -2,10 +2,10 @@
 set -euo pipefail
 
 sudo apt update
-sudo apt install -y zsh fzf zsh-completions git curl
+sudo apt install -y zsh fzf git curl
 
 if command -v brew >/dev/null 2>&1; then
-  brew install zoxide atuin eza bat ripgrep fd fastfetch || true
+  brew install zoxide zsh-completions atuin eza bat ripgrep fd fastfetch || true
 fi
 
 ZSH="${ZSH:-$HOME/.oh-my-zsh}"
@@ -26,7 +26,9 @@ clone_or_pull https://github.com/Aloxaf/fzf-tab "$ZSH_CUSTOM/plugins/fzf-tab"
 clone_or_pull https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
 clone_or_pull https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
 clone_or_pull https://github.com/zsh-users/zsh-completions "$ZSH_CUSTOM/plugins/zsh-completions"
+clone_or_pull https://github.com/romkatv/powerlevel10k "$ZSH_CUSTOM/themes/powerlevel10k"
 
 ln -sf "$HOME/.dotfiles/common/shell/zsh/zshrc" "$HOME/.zshrc"
+ln -sf "$HOME/.dotfiles/common/shell/zsh/p10k.zsh" "$HOME/.p10k.zsh"
 
 echo "Done. Restart with: exec zsh"

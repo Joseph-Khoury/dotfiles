@@ -1,0 +1,76 @@
+{
+    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+
+    // Compact/tiled-window version.
+    // This avoids the two things that were breaking in narrow panes:
+    // 1. the large ASCII logo
+    // 2. very long decorative dot rows
+    "logo": {
+        "type": "none"
+    },
+
+    "display": {
+        "separator": " -> ",
+        "disableLinewrap": true
+    },
+
+    "modules": [
+        {
+            "type": "title",
+            "keyWidth": 8
+        },
+        {
+            "type": "custom",
+            "format": "{#90} {#31} {#32} {#33} {#34} {#35} {#36} {#37} {#90}"
+        },
+        {
+            "type": "os",
+            "key": "{icon} OS",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "kernel",
+            "key": "│ ├",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "packages",
+            "key": "│ ├󰏖",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "shell",
+            "key": "│ └",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "terminal",
+            "key": " TERM",
+            "keyColor": "blue"
+        },
+        {
+            "type": "host",
+            "key": "󰌢 PC",
+            "keyColor": "green"
+        },
+        {
+            "type": "cpu",
+            "key": "│ ├󰻠",
+            "keyColor": "green"
+        },
+        {
+            "type": "memory",
+            "key": "│ ├󰑭",
+            "keyColor": "green"
+        },
+        {
+            "type": "uptime",
+            "key": "│ └󰅐",
+            "keyColor": "green"
+        },
+        {
+            "type": "custom",
+            "format": "{#90} {#31} {#32} {#33} {#34} {#35} {#36} {#37} {#90}"
+        }
+    ]
+}

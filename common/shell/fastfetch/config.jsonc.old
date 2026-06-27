@@ -4,12 +4,10 @@
         "type": "auto",
         "padding": {
             "top": 2,
-            "right": 2,
         },
     },
     "display": {
         "separator": " -> ",
-        "disableLinewrap": true,
         "constants": [
             "──────────────────────────────",
         ]

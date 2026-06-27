@@ -79,3 +79,34 @@ zsh-doctor() {
   autoload -Uz compaudit
   compaudit 2>/dev/null || true
 }
+
+# fastfetch
+unalias fastfetch 2>/dev/null
+
+unalias fastfetch 2>/dev/null
+
+fastfetch() {
+  # If arguments are passed, behave like normal fastfetch.
+  # Example: fastfetch --version
+  if (( $# > 0 )); then
+    command fastfetch "$@"
+    return
+  fi
+
+  local cols="${COLUMNS:-$(tput cols 2>/dev/null || echo 120)}"
+  [[ "$cols" == <-> ]] || cols=120
+
+  local cfgdir="$HOME/.dotfiles/common/shell/fastfetch"
+  local full="$cfgdir/config.jsonc"
+  local compact="$cfgdir/compact.jsonc"
+
+  if (( cols < 150 )); then
+    command fastfetch --config "$compact"
+  else
+    command fastfetch --config "$full"
+  fi
+}
+
+ff() {
+  fastfetch "$@"
+}
