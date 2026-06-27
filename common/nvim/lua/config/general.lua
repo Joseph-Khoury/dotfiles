@@ -32,10 +32,4 @@ vim.opt.updatetime = 300 -- fast updatetime
 
 vim.opt.colorcolumn = "80" -- falsecolor column reminding you of the 80 character limit
 
---- folds
-vim.opt.foldmethod = "marker"
-vim.opt.foldmarker = "{{{,}}}"
-vim.opt.foldlevel = 99
-vim.opt.foldlevelstart = 99
-vim.opt.foldenable = true
 

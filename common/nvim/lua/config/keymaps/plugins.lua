@@ -19,6 +19,10 @@ map("n", '<C-p>', builtin.git_files, { desc = 'Telescope find files in git' })
 -- Search within file content
 map("n", '<leader>ps', builtin.live_grep, { desc = 'Telescope live grep' })
 
+-- Current file text search
+
+vim.keymap.set("n", "<leader>/", require("telescope.builtin").current_buffer_fuzzy_find, { desc = 'Telescope current buffer grep' })
+
 -- }}}
 
 -- #3 harpoon {{{

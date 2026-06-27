@@ -1,0 +1,45 @@
+# -----------------------------------------------------------------
+# Powerlevel10k instant prompt {{{
+# Must stay close to the top.
+# -----------------------------------------------------------------
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# }}}
+
+# -----------------------------------------------------------------
+# Config root {{{
+# -----------------------------------------------------------------
+
+export DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
+export ZSH_CONFIG_DIR="$DOTFILES/common/shell/zsh"
+
+# }}}
+
+# -----------------------------------------------------------------
+# Load OS-specific config {{{
+# -----------------------------------------------------------------
+
+case "$ZSH_OS" in
+    macos)
+        source "$ZSH_CONFIG_DIR/os/macos.zsh"
+        ;;
+    wsl)
+        source "$ZSH_CONFIG_DIR/os/wsl.zsh"
+        ;;
+    linux)
+        source "$ZSH_CONFIG_DIR/os/linux.zsh"
+        ;;
+esac
+
+# }}}
+
+# -----------------------------------------------------------------
+# Load private/local machine overrides {{{
+# Not tracked by git.
+# -----------------------------------------------------------------
+
+for file in "$ZSH_CONFIG_DIR"/local/*.zsh(N); do
+    source "$file"
+done
