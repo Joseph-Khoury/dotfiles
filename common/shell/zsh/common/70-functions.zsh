@@ -83,8 +83,6 @@ zsh-doctor() {
 # fastfetch
 unalias fastfetch 2>/dev/null
 
-unalias fastfetch 2>/dev/null
-
 fastfetch() {
   # If arguments are passed, behave like normal fastfetch.
   # Example: fastfetch --version

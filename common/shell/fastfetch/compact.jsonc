@@ -6,7 +6,7 @@
     // 1. the large ASCII logo
     // 2. very long decorative dot rows
     "logo": {
-        "type": "none"
+        "type": "auto"
     },
 
     "display": {
