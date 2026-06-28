@@ -1,0 +1,1283 @@
+diff --git a/docs/bootstrap-plan.md b/docs/bootstrap-plan.md
+new file mode 100644
+index 0000000..b545b6f
+--- /dev/null
++++ b/docs/bootstrap-plan.md
+@@ -0,0 +1,216 @@
++# Dotfiles bootstrap plan
++
++This document records what the setup scripts are expected to install and link.
++
++The scripts are intentionally conservative:
++
++- Existing real files/directories are backed up before replacement.
++- Existing correct symlinks are left alone.
++- Windows uses copy-with-backup by default because some Windows apps dislike live symlinked config files.
++- Use dry-run first when supervising a new machine.
++
++## Entry points
++
++### macOS / WSL / native Linux
++
++```sh
++./scripts/setup-unix.sh fresh --dry-run
++./scripts/setup-unix.sh fresh --yes
++./scripts/setup-unix.sh update --yes
++./scripts/setup-unix.sh doctor
++```
++
++Modes:
++
++- `fresh`: core tools + GUI tools + LaTeX tools + links
++- `update`: core tools + links; use `--gui` or `--latex` to add heavier parts
++- `link`: links only
++- `doctor`: checks commands and links
++
++Useful flags:
++
++- `--dry-run`
++- `--yes`
++- `--no-install`
++- `--no-link`
++- `--gui` / `--no-gui`
++- `--latex` / `--no-latex`
++
++### Windows host
++
++```powershell
++.\scripts\setup-windows.ps1 fresh -DryRun
++.\scripts\setup-windows.ps1 fresh -Yes
++.\scripts\setup-windows.ps1 update -Yes
++.\scripts\setup-windows.ps1 doctor
++```
++
++By default, Windows config is copied with backups. Use `-UseSymlinks` only after Developer Mode/admin symlink permissions are working.
++
++## Symlink/copy map
++
++### Shared Unix-like targets: macOS, WSL, native Linux
++
++| Repo path | Live path | Type |
++|---|---:|---|
++| repo root | `~/.dotfiles` | symlink, if repo is not already there |
++| `common/nvim` | `~/.config/nvim` | symlink |
++| `common/tmux/tmux.conf` | `~/.tmux.conf` | symlink |
++| `common/shell/zsh/zshrc` | `~/.zshrc` | symlink |
++| `common/shell/zsh/p10k.zsh` | `~/.p10k.zsh` | symlink |
++| `common/shell/fastfetch` | `~/.config/fastfetch` | symlink |
++| `common/lazygit` | `~/.config/lazygit` | symlink |
++| `common/neofetch` | `~/.config/neofetch` | symlink, legacy if present |
++
++The `~/.dotfiles` link matters because the Zsh loader defaults to `DOTFILES=$HOME/.dotfiles`.
++
++### macOS-only targets
++
++| Repo path | Live path | Type |
++|---|---:|---|
++| `macos/aerospace` | `~/.config/aerospace` | symlink |
++| `macos/alacritty` | `~/.config/alacritty` | symlink |
++| `macos/hammerspoon` | `~/.hammerspoon` | symlink |
++| `macos/sketchybar` | `~/.config/sketchybar` | symlink |
++| `macos/neovide/neovide` | `~/.config/neovide` | symlink |
++
++### Windows host targets
++
++| Repo path | Live path | Default |
++|---|---:|---|
++| `windows/glazewm/config.yaml` | `%USERPROFILE%\.glzr\glazewm\config.yaml` | copy with backup |
++| `windows/zebar` | `%USERPROFILE%\.glzr\zebar` | copy with backup |
++| `windows/windows-terminal/settings.json` | Windows Terminal `settings.json` | copy with backup |
++| `windows/powershell/Microsoft.PowerShell_profile.ps1` | `$PROFILE` | copy with backup |
++| Sioyek generated preference | `%APPDATA%\sioyek\prefs_user.config` | ensure `vimtex_wsl_fix 1` |
++
++## External downloads inferred from the repo
++
++### Shared CLI tools
++
++Required or strongly expected:
++
++- `git`
++- `zsh`
++- `curl`
++- `tmux`
++- `neovim`
++- `ripgrep` (`rg`)
++- `fd` / Debian `fd-find`
++- `fzf`
++- `unzip`
++- C/build tools for native plugin builds such as Telescope FZF
++- `python3`, `python3-venv`, `python3-pip`
++- `node`, `npm`
++- `lazygit`, because both ToggleTerm and `lazygit.nvim` call the external binary
++- `tree-sitter` CLI, useful for parser installs/health and grammar work; Neovim parsers are still managed separately by the plugin
++
++Useful optional tools used by aliases or workflow:
++
++- `fastfetch`
++- `zoxide`
++- `atuin`
++- `eza`
++- `bat`
++- `tree`
++- `shellcheck`
++- `shfmt`
++- `jq`
++
++### Zsh and tmux plugins
++
++Installed/updated by `setup-unix.sh`:
++
++- Oh My Zsh
++- Powerlevel10k
++- `fzf-tab`
++- `zsh-autosuggestions`
++- `zsh-syntax-highlighting`
++- `zsh-completions`
++- tmux TPM
++
++### Neovim plugins
++
++Installed by Lazy.nvim from `common/nvim` after `nvim --headless "+Lazy! sync" +qa` or opening Neovim:
++
++- Telescope, FZF native extension, UI-select extension
++- nvim-cmp, LuaSnip, cmp sources, cmp-vimtex
++- nvim-lspconfig, Mason, Mason-LSPConfig, Trouble
++- VimTeX, render-markdown
++- Oil, Flash, Harpoon
++- Fugitive, LazyGit plugin
++- Catppuccin, lualine, fine-cmdline
++- Treesitter and parser registry
++
++Important distinction: Lazy installs the `nvim-treesitter` plugin, but the OS still needs a compiler/toolchain. The `tree-sitter` CLI is also installed by the bootstrap script because it is useful for parser generation/health checks and grammar development.
++
++### Mason language servers
++
++Your Neovim config requests:
++
++- `lua_ls`
++- `bashls`
++- `taplo`
++- `pyright`
++- `rust_analyzer`
++- `texlab`
++- `ltex_plus`
++- `verible`
++- `vhdl_ls`
++
++These are installed by Mason when the LSP config loads.
++
++### LaTeX and PDF viewers
++
++For full LaTeX workflow:
++
++- `latexmk`
++- `biber`
++- TeX Live packages on Debian/Linux:
++  - `texlive-latex-recommended`
++  - `texlive-latex-extra`
++  - `texlive-fonts-recommended`
++  - `texlive-science`
++  - `texlive-pictures`
++- macOS:
++  - `mactex-no-gui`
++  - Skim
++- native Linux:
++  - Zathura
++  - `zathura-pdf-poppler`
++- WSL:
++  - compile with Linux LaTeX tools
++  - view with Windows Sioyek through `~/.local/bin/sioyek-wsl`
++
++### macOS GUI/windowing tools
++
++For full macOS setup:
++
++- AeroSpace
++- JankyBorders/borders
++- SketchyBar
++- Alacritty
++- Neovide
++- Hammerspoon
++- JetBrains Mono Nerd Font
++
++### Windows host tools
++
++For full Windows host setup:
++
++- Git
++- Windows Terminal
++- GlazeWM
++- Zebar
++- Sioyek
++- optionally Alacritty and Neovide
++
++Winget package identifiers can change. The Windows script treats GUI installs as best-effort and continues if an ID is unavailable.
++
++## What the scripts do not try to solve
++
++- They do not permanently delete existing configs; they back them up.
++- They do not force a specific Git remote.
++- They do not install Vivado or vendor FPGA tools.
++- They do not guarantee Neovim nightly/stable version policy beyond checking the installed `nvim`.
++- They do not configure private machine-specific secrets. Put those in ignored local files.
+diff --git a/scripts/doctor-unix.sh b/scripts/doctor-unix.sh
+new file mode 100644
+index 0000000..c181d48
+--- /dev/null
++++ b/scripts/doctor-unix.sh
+@@ -0,0 +1,4 @@
++#!/usr/bin/env bash
++set -euo pipefail
++DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
++exec "$DIR/setup-unix.sh" doctor "$@"
+diff --git a/scripts/setup-unix.sh b/scripts/setup-unix.sh
+new file mode 100644
+index 0000000..b226382
+--- /dev/null
++++ b/scripts/setup-unix.sh
+@@ -0,0 +1,704 @@
++#!/usr/bin/env bash
++set -euo pipefail
++
++# Dotfiles bootstrap for macOS, WSL Debian, and native Linux.
++#
++# Modes:
++#   fresh   - assume a new machine; install core tools, GUI tools, LaTeX tools, then link configs
++#   update  - make an incomplete machine consistent; install core tools, then link configs
++#   link    - only create/update symlinks and wrappers
++#   doctor  - verify commands and symlink targets
++#
++# Examples:
++#   ./scripts/setup-unix.sh fresh --yes
++#   ./scripts/setup-unix.sh update --yes
++#   ./scripts/setup-unix.sh link --dry-run
++#   ./scripts/setup-unix.sh doctor
++#
++# Safety:
++#   - Existing real files/directories are backed up before replacement.
++#   - Existing correct symlinks are left alone.
++#   - Use --dry-run to preview.
++
++MODE="${1:-update}"
++if [[ "$MODE" =~ ^(fresh|update|link|doctor)$ ]]; then
++  shift || true
++else
++  MODE="update"
++fi
++
++ROOT="${DOTFILES_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
++TS="$(date +%Y%m%d-%H%M%S)"
++
++DRY_RUN=0
++YES=0
++NO_INSTALL=0
++NO_LINK=0
++
++# Fresh means "make this machine complete"; update is more conservative.
++if [[ "$MODE" == "fresh" ]]; then
++  INSTALL_GUI=1
++  INSTALL_LATEX=1
++else
++  INSTALL_GUI=0
++  INSTALL_LATEX=0
++fi
++
++usage() {
++  cat <<EOF
++Usage:
++  $0 [fresh|update|link|doctor] [options]
++
++Options:
++  --yes              Do not prompt before package installs or replacing configs
++  --dry-run          Print actions without making changes
++  --no-install       Do not install packages
++  --no-link          Do not create/update symlinks
++  --gui              Install GUI/window-manager apps for this OS
++  --no-gui           Skip GUI/window-manager apps
++  --latex            Install LaTeX toolchain and PDF viewer for this OS
++  --no-latex         Skip LaTeX/PDF viewer installs
++  -h, --help         Show this help
++
++Examples:
++  $0 fresh --yes
++  $0 update --yes --latex
++  $0 link --dry-run
++  $0 doctor
++EOF
++}
++
++while (($#)); do
++  case "$1" in
++    --yes|-y) YES=1 ;;
++    --dry-run|-n) DRY_RUN=1 ;;
++    --no-install) NO_INSTALL=1 ;;
++    --no-link) NO_LINK=1 ;;
++    --gui) INSTALL_GUI=1 ;;
++    --no-gui) INSTALL_GUI=0 ;;
++    --latex) INSTALL_LATEX=1 ;;
++    --no-latex) INSTALL_LATEX=0 ;;
++    -h|--help) usage; exit 0 ;;
++    *) echo "Unknown option: $1" >&2; usage; exit 2 ;;
++  esac
++  shift
++done
++
++detect_os() {
++  case "$(uname -s)" in
++    Darwin) echo "macos" ;;
++    Linux)
++      if grep -qiE "microsoft|wsl" /proc/version 2>/dev/null || [[ -n "${WSL_DISTRO_NAME:-}" ]]; then
++        echo "wsl"
++      else
++        echo "linux"
++      fi
++      ;;
++    *) echo "unknown" ;;
++  esac
++}
++
++OS="$(detect_os)"
++
++log() { printf "\033[1;34m==>\033[0m %s\n" "$*"; }
++warn() { printf "\033[1;33mWARN:\033[0m %s\n" "$*" >&2; }
++err() { printf "\033[1;31mERROR:\033[0m %s\n" "$*" >&2; }
++
++run() {
++  if [[ "$DRY_RUN" == 1 ]]; then
++    printf '[dry-run] '
++    printf '%q ' "$@"
++    printf '\n'
++  else
++    "$@"
++  fi
++}
++
++confirm() {
++  local prompt="$1"
++  if [[ "$YES" == 1 || "$DRY_RUN" == 1 ]]; then
++    return 0
++  fi
++  read -r -p "$prompt [y/N] " reply
++  [[ "$reply" =~ ^[Yy]$ ]]
++}
++
++have() { command -v "$1" >/dev/null 2>&1; }
++
++backup_path() {
++  local dest="$1"
++  local backup="${dest}.backup.${TS}"
++
++  if [[ -e "$dest" || -L "$dest" ]]; then
++    log "Backing up $dest -> $backup"
++    run mv "$dest" "$backup"
++  fi
++}
++
++same_symlink() {
++  local src="$1"
++  local dest="$2"
++
++  [[ -L "$dest" ]] || return 1
++  local target
++  target="$(readlink "$dest")"
++  [[ "$target" == "$src" ]]
++}
++
++link_path() {
++  local src="$1"
++  local dest="$2"
++
++  if [[ ! -e "$src" ]]; then
++    warn "Missing source, skipping: $src"
++    return 0
++  fi
++
++  if same_symlink "$src" "$dest"; then
++    log "Already linked: $dest -> $src"
++    return 0
++  fi
++
++  if [[ -e "$dest" || -L "$dest" ]]; then
++    if [[ "$YES" == 0 && "$DRY_RUN" == 0 ]]; then
++      confirm "Replace existing $dest with symlink to $src?" || {
++        warn "Skipped existing path: $dest"
++        return 0
++      }
++    fi
++    backup_path "$dest"
++  fi
++
++  run mkdir -p "$(dirname "$dest")"
++  log "Linking $dest -> $src"
++  run ln -s "$src" "$dest"
++}
++
++ensure_dotfiles_root_link() {
++  local dest="$HOME/.dotfiles"
++
++  if [[ "$ROOT" == "$dest" ]]; then
++    return 0
++  fi
++
++  link_path "$ROOT" "$dest"
++}
++
++apt_install_required() {
++  local packages=("$@")
++  if ((${#packages[@]} == 0)); then return 0; fi
++
++  if ! have apt-get; then
++    warn "apt-get not found; cannot install: ${packages[*]}"
++    return 0
++  fi
++
++  log "Installing required apt packages: ${packages[*]}"
++  run sudo apt-get update
++  run sudo apt-get install -y "${packages[@]}"
++}
++
++apt_install_optional() {
++  local pkg
++  if ! have apt-get; then
++    return 0
++  fi
++
++  for pkg in "$@"; do
++    log "Installing optional apt package: $pkg"
++    if [[ "$DRY_RUN" == 1 ]]; then
++      echo "[dry-run] sudo apt-get install -y $pkg"
++    else
++      sudo apt-get install -y "$pkg" || warn "Optional apt package failed or is unavailable: $pkg"
++    fi
++  done
++}
++
++ensure_npm_global() {
++  local bin="$1"
++  local pkg="$2"
++
++  if have "$bin"; then
++    return 0
++  fi
++
++  if ! have npm; then
++    warn "npm is missing; cannot install npm package: $pkg"
++    return 0
++  fi
++
++  log "Installing npm global package: $pkg"
++  if [[ "$DRY_RUN" == 1 ]]; then
++    echo "[dry-run] sudo npm install -g $pkg"
++  else
++    sudo npm install -g "$pkg" || warn "npm global install failed: $pkg"
++  fi
++}
++
++ensure_tree_sitter_cli() {
++  if have tree-sitter; then
++    return 0
++  fi
++
++  case "$OS" in
++    wsl|linux)
++      if have apt-get; then
++        log "Installing tree-sitter CLI"
++        if [[ "$DRY_RUN" == 1 ]]; then
++          echo "[dry-run] sudo apt-get install -y tree-sitter-cli || sudo npm install -g tree-sitter-cli"
++        else
++          sudo apt-get install -y tree-sitter-cli || ensure_npm_global tree-sitter tree-sitter-cli
++        fi
++      else
++        ensure_npm_global tree-sitter tree-sitter-cli
++      fi
++      ;;
++    macos)
++      brew_install_formulae tree-sitter
++      ;;
++  esac
++}
++
++install_lazygit_linux_fallback() {
++  if have lazygit; then
++    return 0
++  fi
++
++  if ! have curl || ! have tar; then
++    warn "lazygit is missing and curl/tar are unavailable for fallback install."
++    return 0
++  fi
++
++  local arch
++  case "$(uname -m)" in
++    x86_64|amd64) arch="x86_64" ;;
++    aarch64|arm64) arch="arm64" ;;
++    *)
++      warn "lazygit fallback does not know this architecture: $(uname -m)"
++      return 0
++      ;;
++  esac
++
++  log "Installing latest lazygit release fallback for Linux_$arch"
++  if [[ "$DRY_RUN" == 1 ]]; then
++    echo "[dry-run] download latest lazygit Linux_$arch tarball and install to /usr/local/bin/lazygit"
++    return 0
++  fi
++
++  local tmp url
++  tmp="$(mktemp -d)"
++  url="$(curl -fsSL https://api.github.com/repos/jesseduffield/lazygit/releases/latest \
++    | grep browser_download_url \
++    | grep "Linux_${arch}\.tar\.gz" \
++    | cut -d '"' -f 4 \
++    | head -n 1)"
++
++  if [[ -z "$url" ]]; then
++    warn "Could not resolve lazygit release URL. Install lazygit manually."
++    rm -rf "$tmp"
++    return 0
++  fi
++
++  curl -fL "$url" -o "$tmp/lazygit.tar.gz"
++  tar -xzf "$tmp/lazygit.tar.gz" -C "$tmp" lazygit
++  sudo install -m 0755 "$tmp/lazygit" /usr/local/bin/lazygit
++  rm -rf "$tmp"
++}
++
++install_brew_if_needed() {
++  if have brew; then
++    return 0
++  fi
++
++  if ! confirm "Homebrew is missing. Install Homebrew now?"; then
++    warn "Homebrew missing; skipping macOS package installation."
++    return 1
++  fi
++
++  log "Installing Homebrew"
++  run /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
++
++  if [[ -x /opt/homebrew/bin/brew ]]; then
++    eval "$(/opt/homebrew/bin/brew shellenv)"
++  elif [[ -x /usr/local/bin/brew ]]; then
++    eval "$(/usr/local/bin/brew shellenv)"
++  fi
++}
++
++brew_install_formulae() {
++  local pkg
++  install_brew_if_needed || return 0
++  for pkg in "$@"; do
++    if brew list --formula "$pkg" >/dev/null 2>&1; then
++      log "Already installed formula: $pkg"
++    else
++      log "Installing formula: $pkg"
++      if [[ "$DRY_RUN" == 1 ]]; then
++        echo "[dry-run] brew install $pkg"
++      else
++        brew install "$pkg" || warn "Formula failed or is unavailable: $pkg"
++      fi
++    fi
++  done
++}
++
++brew_install_casks() {
++  local pkg
++  install_brew_if_needed || return 0
++  for pkg in "$@"; do
++    if brew list --cask "$pkg" >/dev/null 2>&1; then
++      log "Already installed cask: $pkg"
++    else
++      log "Installing cask: $pkg"
++      if [[ "$DRY_RUN" == 1 ]]; then
++        echo "[dry-run] brew install --cask $pkg"
++      else
++        brew install --cask "$pkg" || warn "Cask failed or is unavailable: $pkg"
++      fi
++    fi
++  done
++}
++
++clone_or_update() {
++  local repo="$1"
++  local dest="$2"
++
++  if [[ -d "$dest/.git" ]]; then
++    log "Updating $dest"
++    if [[ "$DRY_RUN" == 1 ]]; then
++      echo "[dry-run] git -C $dest pull --ff-only"
++    else
++      git -C "$dest" pull --ff-only || warn "Could not update $dest"
++    fi
++  elif [[ -e "$dest" ]]; then
++    warn "Exists but is not a git repo, skipping: $dest"
++  else
++    log "Cloning $repo -> $dest"
++    run git clone --depth=1 "$repo" "$dest"
++  fi
++}
++
++install_shell_plugins() {
++  log "Installing/updating Oh My Zsh, Zsh plugins, and tmux TPM"
++
++  if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
++    if confirm "Install Oh My Zsh?"; then
++      if [[ "$DRY_RUN" == 1 ]]; then
++        echo "[dry-run] RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c \"\$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\""
++      else
++        RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c \
++          "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
++      fi
++    else
++      warn "Skipped Oh My Zsh."
++    fi
++  else
++    log "Oh My Zsh already exists"
++  fi
++
++  local zsh_custom="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
++  run mkdir -p "$zsh_custom/plugins" "$zsh_custom/themes"
++
++  clone_or_update "https://github.com/romkatv/powerlevel10k.git" \
++    "$zsh_custom/themes/powerlevel10k"
++  clone_or_update "https://github.com/Aloxaf/fzf-tab.git" \
++    "$zsh_custom/plugins/fzf-tab"
++  clone_or_update "https://github.com/zsh-users/zsh-autosuggestions.git" \
++    "$zsh_custom/plugins/zsh-autosuggestions"
++  clone_or_update "https://github.com/zsh-users/zsh-syntax-highlighting.git" \
++    "$zsh_custom/plugins/zsh-syntax-highlighting"
++  clone_or_update "https://github.com/zsh-users/zsh-completions.git" \
++    "$zsh_custom/plugins/zsh-completions"
++  clone_or_update "https://github.com/tmux-plugins/tpm.git" \
++    "$HOME/.tmux/plugins/tpm"
++}
++
++install_packages() {
++  if [[ "$NO_INSTALL" == 1 || "$MODE" == "link" || "$MODE" == "doctor" ]]; then
++    return 0
++  fi
++
++  log "OS: $OS"
++  log "Mode: $MODE"
++  log "Install GUI tools: $INSTALL_GUI"
++  log "Install LaTeX tools: $INSTALL_LATEX"
++
++  confirm "Proceed with package installation?" || {
++    warn "Skipped package installation."
++    return 0
++  }
++
++  case "$OS" in
++    wsl|linux)
++      local required=(
++        zsh git curl ca-certificates openssh-client
++        tmux neovim
++        ripgrep fd-find fzf
++        unzip build-essential make gcc g++
++        python3 python3-venv python3-pip
++        nodejs npm
++      )
++
++      local optional=(
++        fastfetch zoxide atuin eza bat tree shellcheck shfmt jq
++      )
++
++      apt_install_required "${required[@]}"
++      apt_install_optional "${optional[@]}"
++
++      # Required by the current Neovim config/workflow but not reliably present
++      # in every Debian/Ubuntu apt repository. Install with fallbacks.
++      apt_install_optional lazygit tree-sitter-cli
++      install_lazygit_linux_fallback
++      ensure_tree_sitter_cli
++
++      if [[ "$INSTALL_LATEX" == 1 ]]; then
++        apt_install_required \
++          latexmk biber \
++          texlive-latex-recommended \
++          texlive-latex-extra \
++          texlive-fonts-recommended \
++          texlive-science \
++          texlive-pictures
++
++        if [[ "$OS" == "linux" ]]; then
++          apt_install_optional zathura zathura-pdf-poppler xclip wl-clipboard xdg-utils
++        fi
++      fi
++
++      # Debian calls fd "fdfind".
++      run mkdir -p "$HOME/.local/bin"
++      if have fdfind && ! have fd; then
++        link_path "$(command -v fdfind)" "$HOME/.local/bin/fd"
++      fi
++      ;;
++
++    macos)
++      if ! xcode-select -p >/dev/null 2>&1; then
++        warn "Xcode Command Line Tools are missing. macOS may prompt you to install them."
++        run xcode-select --install || true
++      fi
++
++      brew_install_formulae \
++        git zsh tmux neovim ripgrep fd fzf fastfetch lazygit tree-sitter zoxide atuin eza bat tree \
++        node python jq shellcheck shfmt
++
++      if [[ "$INSTALL_GUI" == 1 ]]; then
++        brew_install_formulae \
++          nikitabobko/tap/aerospace \
++          FelixKratz/formulae/sketchybar \
++          FelixKratz/formulae/borders
++        brew_install_casks \
++          alacritty neovide hammerspoon font-jetbrains-mono-nerd-font
++      fi
++
++      if [[ "$INSTALL_LATEX" == 1 ]]; then
++        brew_install_casks mactex-no-gui skim
++      fi
++      ;;
++
++    *)
++      warn "Unsupported OS for package installation: $OS"
++      ;;
++  esac
++
++  install_shell_plugins
++
++  if have zsh && [[ "${SHELL:-}" != "$(command -v zsh)" ]]; then
++    if confirm "Set zsh as your default shell?"; then
++      run chsh -s "$(command -v zsh)" || warn "chsh failed. You can set zsh manually later."
++    fi
++  fi
++}
++
++write_wsl_sioyek_wrapper() {
++  [[ "$OS" == "wsl" ]] || return 0
++
++  local dest="$HOME/.local/bin/sioyek-wsl"
++  run mkdir -p "$HOME/.local/bin"
++
++  log "Writing WSL Sioyek wrapper: $dest"
++  if [[ "$DRY_RUN" == 1 ]]; then
++    echo "[dry-run] write $dest"
++    return 0
++  fi
++
++  cat > "$dest" <<'EOF'
++#!/usr/bin/env bash
++set -euo pipefail
++
++args=()
++
++for arg in "$@"; do
++  if [[ "$arg" != -* && -e "$arg" ]]; then
++    args+=("$(wslpath -w "$(realpath "$arg")")")
++  else
++    args+=("$arg")
++  fi
++done
++
++exec sioyek.exe "${args[@]}"
++EOF
++
++  chmod +x "$dest"
++
++  if have cmd.exe; then
++    local appdata_win appdata sioyek_dir prefs
++    appdata_win="$(cmd.exe /c 'echo %APPDATA%' 2>/dev/null | tr -d '\r' || true)"
++    if [[ -n "$appdata_win" ]]; then
++      appdata="$(wslpath -u "$appdata_win" 2>/dev/null || true)"
++      if [[ -n "$appdata" ]]; then
++        sioyek_dir="$appdata/sioyek"
++        prefs="$sioyek_dir/prefs_user.config"
++        mkdir -p "$sioyek_dir"
++        if ! grep -q '^vimtex_wsl_fix 1' "$prefs" 2>/dev/null; then
++          log "Adding vimtex_wsl_fix to $prefs"
++          printf '\nvimtex_wsl_fix 1\n' >> "$prefs"
++        fi
++      fi
++    fi
++  fi
++
++  if ! have sioyek.exe; then
++    warn "sioyek.exe is not found from WSL. Install Sioyek on Windows with scripts/setup-windows.ps1."
++  fi
++}
++
++link_common_configs() {
++  ensure_dotfiles_root_link
++
++  link_path "$ROOT/common/nvim" "$HOME/.config/nvim"
++  link_path "$ROOT/common/tmux/tmux.conf" "$HOME/.tmux.conf"
++  link_path "$ROOT/common/shell/zsh/zshrc" "$HOME/.zshrc"
++  link_path "$ROOT/common/shell/zsh/p10k.zsh" "$HOME/.p10k.zsh"
++  link_path "$ROOT/common/shell/fastfetch" "$HOME/.config/fastfetch"
++  link_path "$ROOT/common/lazygit" "$HOME/.config/lazygit"
++
++  if [[ -d "$ROOT/common/neofetch" ]]; then
++    link_path "$ROOT/common/neofetch" "$HOME/.config/neofetch"
++  fi
++}
++
++link_macos_configs() {
++  [[ "$OS" == "macos" ]] || return 0
++
++  link_path "$ROOT/macos/aerospace" "$HOME/.config/aerospace"
++  link_path "$ROOT/macos/alacritty" "$HOME/.config/alacritty"
++  link_path "$ROOT/macos/hammerspoon" "$HOME/.hammerspoon"
++  link_path "$ROOT/macos/sketchybar" "$HOME/.config/sketchybar"
++
++  if [[ -d "$ROOT/macos/neovide/neovide" ]]; then
++    link_path "$ROOT/macos/neovide/neovide" "$HOME/.config/neovide"
++  elif [[ -d "$ROOT/macos/neovide" ]]; then
++    link_path "$ROOT/macos/neovide" "$HOME/.config/neovide"
++  fi
++}
++
++link_configs() {
++  if [[ "$NO_LINK" == 1 || "$MODE" == "doctor" ]]; then
++    return 0
++  fi
++
++  log "Applying symlinks"
++  link_common_configs
++  link_macos_configs
++  write_wsl_sioyek_wrapper
++
++  if [[ "$OS" == "wsl" && "$ROOT" == /mnt/* ]]; then
++    warn "Repo is under /mnt. Neovim/LSP/Git can be slower there than under WSL's Linux filesystem."
++  fi
++}
++
++run_nvim_bootstrap() {
++  if [[ "$MODE" == "doctor" || "$NO_INSTALL" == 1 ]]; then
++    return 0
++  fi
++
++  if have nvim; then
++    if confirm "Run Neovim Lazy sync now?"; then
++      log "Running Lazy sync"
++      run nvim --headless "+Lazy! sync" +qa || warn "Lazy sync failed; open nvim and run :Lazy manually."
++    fi
++  fi
++}
++
++check_cmd() {
++  local cmd="$1"
++  if have "$cmd"; then
++    printf "  [ok]   %-18s %s\n" "$cmd" "$(command -v "$cmd")"
++  else
++    printf "  [miss] %-18s\n" "$cmd"
++  fi
++}
++
++check_link() {
++  local dest="$1"
++  local src="$2"
++  if [[ -L "$dest" && "$(readlink "$dest")" == "$src" ]]; then
++    printf "  [ok]   %-32s -> %s\n" "$dest" "$src"
++  elif [[ -e "$dest" || -L "$dest" ]]; then
++    printf "  [warn] %-32s exists but is not linked to %s\n" "$dest" "$src"
++  else
++    printf "  [miss] %-32s -> %s\n" "$dest" "$src"
++  fi
++}
++
++doctor() {
++  log "Dotfiles doctor"
++  echo "Root: $ROOT"
++  echo "OS:   $OS"
++  echo
++
++  echo "Commands:"
++  local cmds=(git zsh nvim tmux rg fd fzf fastfetch lazygit tree-sitter zoxide atuin eza bat tree node npm python3 make gcc jq shellcheck shfmt latexmk biber)
++  if [[ "$OS" == "macos" ]]; then
++    cmds+=(brew aerospace sketchybar borders alacritty hs)
++  elif [[ "$OS" == "wsl" ]]; then
++    cmds+=(sioyek.exe sioyek-wsl wslpath explorer.exe clip.exe)
++  elif [[ "$OS" == "linux" ]]; then
++    cmds+=(zathura)
++  fi
++  for cmd in "${cmds[@]}"; do
++    check_cmd "$cmd"
++  done
++
++  echo
++  echo "Symlinks:"
++  check_link "$HOME/.dotfiles" "$ROOT"
++  check_link "$HOME/.config/nvim" "$ROOT/common/nvim"
++  check_link "$HOME/.tmux.conf" "$ROOT/common/tmux/tmux.conf"
++  check_link "$HOME/.zshrc" "$ROOT/common/shell/zsh/zshrc"
++  check_link "$HOME/.p10k.zsh" "$ROOT/common/shell/zsh/p10k.zsh"
++  check_link "$HOME/.config/fastfetch" "$ROOT/common/shell/fastfetch"
++  check_link "$HOME/.config/lazygit" "$ROOT/common/lazygit"
++
++  if [[ "$OS" == "macos" ]]; then
++    check_link "$HOME/.config/aerospace" "$ROOT/macos/aerospace"
++    check_link "$HOME/.config/alacritty" "$ROOT/macos/alacritty"
++    check_link "$HOME/.hammerspoon" "$ROOT/macos/hammerspoon"
++    check_link "$HOME/.config/sketchybar" "$ROOT/macos/sketchybar"
++    check_link "$HOME/.config/neovide" "$ROOT/macos/neovide/neovide"
++  fi
++
++  echo
++  if have nvim; then
++    echo "Neovim:"
++    nvim --version | head -n 1 || true
++  fi
++}
++
++main() {
++  if [[ "$MODE" == "doctor" ]]; then
++    doctor
++    return
++  fi
++
++  install_packages
++  link_configs
++  run_nvim_bootstrap
++  doctor
++
++  log "Done"
++}
++
++main "$@"
+diff --git a/scripts/setup-windows.ps1 b/scripts/setup-windows.ps1
+new file mode 100644
+index 0000000..67244b2
+--- /dev/null
++++ b/scripts/setup-windows.ps1
+@@ -0,0 +1,335 @@
++# Dotfiles bootstrap for native Windows host configuration.
++#
++# Modes:
++#   fresh   - install Windows-side apps, then apply configs
++#   update  - install/check missing apps, then apply configs
++#   link    - only apply configs
++#   doctor  - verify app commands and config paths
++#
++# Examples:
++#   .\scripts\setup-windows.ps1 fresh -Yes
++#   .\scripts\setup-windows.ps1 update -Yes
++#   .\scripts\setup-windows.ps1 link -DryRun
++#   .\scripts\setup-windows.ps1 doctor
++
++[CmdletBinding()]
++param(
++    [ValidateSet("fresh", "update", "link", "doctor")]
++    [string]$Mode = "update",
++
++    [switch]$Yes,
++    [switch]$DryRun,
++    [switch]$NoInstall,
++    [switch]$NoLink,
++
++    # Default: fresh installs GUI apps; update does not unless -Gui is supplied.
++    [switch]$Gui,
++    [switch]$NoGui,
++
++    # Default: fresh installs Sioyek; update does not unless -Latex is supplied.
++    [switch]$Latex,
++    [switch]$NoLatex,
++
++    # Default is copy-with-backup. Use -UseSymlinks only if Developer Mode/admin symlink
++    # permissions are working and you want live links.
++    [switch]$UseSymlinks
++)
++
++$ErrorActionPreference = "Stop"
++
++$RepoRoot = Split-Path -Parent $PSScriptRoot
++$Timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
++
++$InstallGui = $false
++$InstallLatex = $false
++
++if ($Mode -eq "fresh") {
++    $InstallGui = $true
++    $InstallLatex = $true
++}
++if ($Gui) { $InstallGui = $true }
++if ($NoGui) { $InstallGui = $false }
++if ($Latex) { $InstallLatex = $true }
++if ($NoLatex) { $InstallLatex = $false }
++
++function Write-Step {
++    param([string]$Message)
++    Write-Host "==> $Message" -ForegroundColor Cyan
++}
++
++function Write-Warn {
++    param([string]$Message)
++    Write-Host "WARN: $Message" -ForegroundColor Yellow
++}
++
++function Invoke-Logged {
++    param(
++        [Parameter(ValueFromRemainingArguments = $true)]
++        [string[]]$Command
++    )
++
++    if ($DryRun) {
++        Write-Host "[dry-run] $($Command -join ' ')"
++    } else {
++        & $Command[0] @($Command | Select-Object -Skip 1)
++    }
++}
++
++function Confirm-Action {
++    param([string]$Prompt)
++
++    if ($Yes -or $DryRun) { return $true }
++
++    $reply = Read-Host "$Prompt [y/N]"
++    return $reply -match "^[Yy]$"
++}
++
++function Ensure-Dir {
++    param([string]$Path)
++
++    if ($DryRun) {
++        Write-Host "[dry-run] mkdir $Path"
++        return
++    }
++
++    New-Item -ItemType Directory -Force $Path | Out-Null
++}
++
++function Backup-Path {
++    param([string]$Path)
++
++    if (Test-Path $Path) {
++        $Backup = "$Path.backup.$Timestamp"
++        Write-Step "Backing up $Path -> $Backup"
++        if (-not $DryRun) {
++            Move-Item $Path $Backup -Force
++        }
++    }
++}
++
++function Apply-Path {
++    param(
++        [string]$Source,
++        [string]$Destination,
++        [ValidateSet("File", "Directory")]
++        [string]$Kind
++    )
++
++    if (-not (Test-Path $Source)) {
++        Write-Warn "Missing source, skipping: $Source"
++        return
++    }
++
++    $Parent = Split-Path -Parent $Destination
++    Ensure-Dir $Parent
++
++    if (Test-Path $Destination) {
++        if (-not (Confirm-Action "Replace existing $Destination?")) {
++            Write-Warn "Skipped existing path: $Destination"
++            return
++        }
++        Backup-Path $Destination
++    }
++
++    if ($UseSymlinks) {
++        Write-Step "Linking $Destination -> $Source"
++        if (-not $DryRun) {
++            if ($Kind -eq "Directory") {
++                New-Item -ItemType SymbolicLink -Path $Destination -Target $Source | Out-Null
++            } else {
++                New-Item -ItemType SymbolicLink -Path $Destination -Target $Source | Out-Null
++            }
++        }
++    } else {
++        Write-Step "Copying $Source -> $Destination"
++        if (-not $DryRun) {
++            if ($Kind -eq "Directory") {
++                Ensure-Dir $Destination
++                Copy-Item (Join-Path $Source "*") $Destination -Recurse -Force
++            } else {
++                Copy-Item $Source $Destination -Force
++            }
++        }
++    }
++}
++
++function Get-WindowsTerminalSettingsPath {
++    $Candidates = @(
++        "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json",
++        "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json",
++        "$env:LOCALAPPDATA\Microsoft\Windows Terminal\settings.json"
++    )
++
++    foreach ($Candidate in $Candidates) {
++        if (Test-Path $Candidate) { return $Candidate }
++    }
++
++    return $Candidates[0]
++}
++
++function Test-CommandExists {
++    param([string]$Command)
++    return $null -ne (Get-Command $Command -ErrorAction SilentlyContinue)
++}
++
++function Install-WingetPackage {
++    param(
++        [string]$Id,
++        [string]$Label = $Id
++    )
++
++    if (-not (Test-CommandExists "winget")) {
++        Write-Warn "winget is missing; cannot install $Label"
++        return
++    }
++
++    Write-Step "Installing/checking $Label via winget: $Id"
++
++    if ($DryRun) {
++        Write-Host "[dry-run] winget install --id $Id --exact --silent --accept-source-agreements --accept-package-agreements"
++        return
++    }
++
++    winget install --id $Id --exact --silent --accept-source-agreements --accept-package-agreements
++    if ($LASTEXITCODE -ne 0) {
++        Write-Warn "winget install failed or package id is unavailable: $Id"
++    }
++}
++
++function Install-Packages {
++    if ($NoInstall -or $Mode -eq "link" -or $Mode -eq "doctor") { return }
++
++    Write-Step "Mode: $Mode"
++    Write-Step "Install GUI apps: $InstallGui"
++    Write-Step "Install Sioyek/LaTeX viewer: $InstallLatex"
++
++    if (-not (Confirm-Action "Proceed with Windows package installation?")) {
++        Write-Warn "Skipped package installation."
++        return
++    }
++
++    Install-WingetPackage "Git.Git" "Git"
++    Install-WingetPackage "Microsoft.WindowsTerminal" "Windows Terminal"
++
++    if ($InstallGui) {
++        # If any ID changes, the script warns and continues.
++        Install-WingetPackage "glzr-io.glazewm" "GlazeWM"
++        Install-WingetPackage "glzr-io.zebar" "Zebar"
++        Install-WingetPackage "Alacritty.Alacritty" "Alacritty"
++        Install-WingetPackage "Neovide.Neovide" "Neovide"
++    }
++
++    if ($InstallLatex) {
++        Install-WingetPackage "ahrm.sioyek" "Sioyek"
++    }
++
++    Write-Warn "Font installation is intentionally not forced. Install a Nerd Font manually if terminal icons look wrong."
++}
++
++function Apply-Configs {
++    if ($NoLink -or $Mode -eq "doctor") { return }
++
++    Write-Step "Applying Windows configs"
++    if ($UseSymlinks) {
++        Write-Warn "Using symlinks. If this fails, enable Windows Developer Mode or run PowerShell as Administrator."
++    } else {
++        Write-Warn "Using copy-with-backup by default for Windows app configs."
++    }
++
++    Apply-Path `
++        -Source "$RepoRoot\windows\glazewm\config.yaml" `
++        -Destination "$env:USERPROFILE\.glzr\glazewm\config.yaml" `
++        -Kind File
++
++    Apply-Path `
++        -Source "$RepoRoot\windows\zebar" `
++        -Destination "$env:USERPROFILE\.glzr\zebar" `
++        -Kind Directory
++
++    $WtSettings = Get-WindowsTerminalSettingsPath
++    Apply-Path `
++        -Source "$RepoRoot\windows\windows-terminal\settings.json" `
++        -Destination $WtSettings `
++        -Kind File
++
++    Apply-Path `
++        -Source "$RepoRoot\windows\powershell\Microsoft.PowerShell_profile.ps1" `
++        -Destination $PROFILE `
++        -Kind File
++
++    Ensure-SioyekPrefs
++}
++
++function Ensure-SioyekPrefs {
++    $SioyekDir = Join-Path $env:APPDATA "sioyek"
++    $Prefs = Join-Path $SioyekDir "prefs_user.config"
++
++    Ensure-Dir $SioyekDir
++
++    if ($DryRun) {
++        Write-Host "[dry-run] ensure $Prefs contains vimtex_wsl_fix 1"
++        return
++    }
++
++    if (-not (Test-Path $Prefs)) {
++        New-Item -ItemType File -Path $Prefs -Force | Out-Null
++    }
++
++    $Content = Get-Content $Prefs -Raw -ErrorAction SilentlyContinue
++    if ($Content -notmatch "(?m)^vimtex_wsl_fix\s+1\s*$") {
++        Add-Content $Prefs "`nvimtex_wsl_fix 1"
++        Write-Step "Added vimtex_wsl_fix 1 to $Prefs"
++    }
++}
++
++function Check-Path {
++    param([string]$Label, [string]$Path)
++
++    if (Test-Path $Path) {
++        Write-Host ("  [ok]   {0,-28} {1}" -f $Label, $Path)
++    } else {
++        Write-Host ("  [miss] {0,-28} {1}" -f $Label, $Path)
++    }
++}
++
++function Check-Command {
++    param([string]$Command)
++
++    $Found = Get-Command $Command -ErrorAction SilentlyContinue
++    if ($null -ne $Found) {
++        Write-Host ("  [ok]   {0,-18} {1}" -f $Command, $Found.Source)
++    } else {
++        Write-Host ("  [miss] {0,-18}" -f $Command)
++    }
++}
++
++function Invoke-Doctor {
++    Write-Step "Windows dotfiles doctor"
++    Write-Host "Repo root: $RepoRoot"
++    Write-Host ""
++
++    Write-Host "Commands:"
++    foreach ($Command in @("winget", "git", "wt", "sioyek", "glazewm", "zebar", "wsl")) {
++        Check-Command $Command
++    }
++
++    Write-Host ""
++    Write-Host "Config paths:"
++    Check-Path "GlazeWM config" "$env:USERPROFILE\.glzr\glazewm\config.yaml"
++    Check-Path "Zebar config dir" "$env:USERPROFILE\.glzr\zebar"
++    Check-Path "Windows Terminal" (Get-WindowsTerminalSettingsPath)
++    Check-Path "PowerShell profile" $PROFILE
++    Check-Path "Sioyek prefs" (Join-Path $env:APPDATA "sioyek\prefs_user.config")
++
++    Write-Host ""
++    Write-Host "WSL:"
++    if (Test-CommandExists "wsl") {
++        wsl -l -v
++    }
++}
++
++Install-Packages
++Apply-Configs
++Invoke-Doctor
++
++Write-Step "Done"
