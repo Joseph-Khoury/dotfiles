@@ -80,29 +80,49 @@ zsh-doctor() {
   compaudit 2>/dev/null || true
 }
 
+# Get the columns to choose which fastfetch config
+_ff_terminal_cols() {
+  emulate -L zsh
+
+  local cols="${COLUMNS:-}"
+
+  # Fallback if COLUMNS is empty, unset, or weird.
+  if ! [[ "$cols" == <-> ]] || (( cols <= 0 )); then
+    cols="$(command tput cols 2>/dev/null || print -r -- 80)"
+  fi
+
+  # Final fallback.
+  if ! [[ "$cols" == <-> ]] || (( cols <= 0 )); then
+    cols=80
+  fi
+
+  print -r -- "$cols"
+}
+
 # fastfetch
 unalias fastfetch 2>/dev/null
 
 fastfetch() {
-  # If arguments are passed, behave like normal fastfetch.
-  # Example: fastfetch --version
-  if (( $# > 0 )); then
-    command fastfetch "$@"
-    return
-  fi
+      emulate -L zsh
 
-  local cols="${COLUMNS:-$(tput cols 2>/dev/null || echo 120)}"
-  [[ "$cols" == <-> ]] || cols=120
+  local config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
+  local full="$config_home/fastfetch/config.jsonc"
+  local compact="$config_home/fastfetch/compact.jsonc"
 
-  local cfgdir="$HOME/.dotfiles/common/shell/fastfetch"
-  local full="$cfgdir/config.jsonc"
-  local compact="$cfgdir/compact.jsonc"
+  local cols
+  cols="$(_ff_terminal_cols)"
 
-  if (( cols < 150 )); then
+  # Tune this number for your full config.
+  local full_min_cols=70
+
+  if (( cols >= full_min_cols )) && [[ -r "$full" ]]; then
+    command fastfetch --config "$full"
+  elif [[ -r "$compact" ]]; then
     command fastfetch --config "$compact"
   else
-    command fastfetch --config "$full"
+    command fastfetch
   fi
+
 }
 
 ff() {

@@ -81,7 +81,7 @@ return {
                             vim.g.vimtex_view_skim_sync = 1
 
                             -- Do not constantly steal focus from Neovim.
-                            vim.g.vimtex_view_skim_activate = 0
+                            vim.g.vimtex_view_skim_activate = 1
 
                             -- Nice visual cue in Skim.
                             vim.g.vimtex_view_skim_reading_bar = 1

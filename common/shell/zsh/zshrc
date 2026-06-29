@@ -1,3 +1,4 @@
+# vim: ft=zsh foldmethod=marker:
 # ~/.dotfiles/common/shell/zsh/zshrc
 # Main Zsh loader. Keep this file small.
 
@@ -6,9 +7,9 @@
 # Must stay close to the top of ~/.zshrc.
 # -----------------------------------------------------------------------------
 
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# fi
 
 # }}}
 
@@ -54,6 +55,7 @@ esac
 
 source_if_exists "$ZSH_CONFIG_DIR/common/10-history.zsh"
 source_if_exists "$ZSH_CONFIG_DIR/common/20-completion.zsh"
+source_if_exists "$ZSH_CONFIG_DIR/common/25-fzf-tab.zsh"
 source_if_exists "$ZSH_CONFIG_DIR/common/30-oh-my-zsh.zsh"
 source_if_exists "$ZSH_CONFIG_DIR/common/40-prompt.zsh"
 source_if_exists "$ZSH_CONFIG_DIR/common/50-tools.zsh"
@@ -89,4 +91,3 @@ for file in "$ZSH_CONFIG_DIR"/local/*.zsh(N); do
   source "$file"
 done
 
-# vim: ft=zsh foldmethod=marker:

@@ -23,6 +23,12 @@ clone_or_pull https://github.com/zsh-users/zsh-completions "$ZSH_CUSTOM/plugins/
 clone_or_pull https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
 clone_or_pull https://github.com/romkatv/powerlevel10k "$ZSH_CUSTOM/themes/powerlevel10k"
 
+clone_or_pull https://github.com/JannoTjarks/catppuccin-zsh.git
+mkdir -p ~/.oh-my-zsh/themes/catppuccin-flavors
+
+ln catppuccin-zsh/catppuccin.zsh-theme ~/.oh-my-zsh/themes/
+ln catppuccin-zsh/catppuccin-flavors/* ~/.oh-my-zsh/themes/catppuccin-flavors
+
 ln -sf "$HOME/.dotfiles/common/shell/zsh/zshrc" "$HOME/.zshrc"
 ln -sf "$HOME/.dotfiles/common/shell/zsh/p10k.zsh" "$HOME/.p10k.zsh"
 

@@ -1,0 +1,282 @@
+diff --git a/common/keybinds/curated/config-modules.tsv b/common/keybinds/curated/config-modules.tsv
+index 3aa35a5..3704c4b 100644
+--- a/common/keybinds/curated/config-modules.tsv
++++ b/common/keybinds/curated/config-modules.tsv
+@@ -6,4 +6,4 @@ sketchybar	Sketchybar	workspace	macos	active	medium	~/.config/sketchybar	macos/s
+ alacritty	Alacritty	terminal	macos	active	medium	~/.config/alacritty	macos/alacritty	windows-terminal
+ nvim	Neovim	editor	common	active	high	~/.config/nvim	common/nvim	nvim
+ tmux	tmux	terminal	common	active	high	~/.tmux.conf	common/tmux/tmux.conf	tmux
+-zsh	zsh	shell	common	active	high	~/.zshrc	common/shell/zshrc	zsh-wsl
++zsh	zsh	shell	common	active	high	~/.zshrc	common/shell/zsh/zshrc	zsh-wsl
+diff --git a/common/keybinds/curated/config-modules.yaml b/common/keybinds/curated/config-modules.yaml
+index 9f9e549..ec94c37 100644
+--- a/common/keybinds/curated/config-modules.yaml
++++ b/common/keybinds/curated/config-modules.yaml
+@@ -72,7 +72,7 @@ configs:
+     status: active
+     priority: high
+     source_path: "~/.zshrc"
+-    repo_path: "common/shell/zshrc"
++    repo_path: "common/shell/zsh/zshrc"
+     parity_target: zsh-wsl
+     keybind_importance: medium
+ 
+diff --git a/common/shell/zsh/common/70-functions.zsh b/common/shell/zsh/common/70-functions.zsh
+index f76c41c..cafd4b4 100644
+--- a/common/shell/zsh/common/70-functions.zsh
++++ b/common/shell/zsh/common/70-functions.zsh
+@@ -94,7 +94,7 @@ fastfetch() {
+   local cols="${COLUMNS:-$(tput cols 2>/dev/null || echo 120)}"
+   [[ "$cols" == <-> ]] || cols=120
+ 
+-  local cfgdir="$HOME/.dotfiles/common/shell/fastfetch"
++  local cfgdir="${DOTFILES:-$HOME/.dotfiles}/common/shell/fastfetch"
+   local full="$cfgdir/config.jsonc"
+   local compact="$cfgdir/compact.jsonc"
+ 
+diff --git a/common/shell/zsh/os/05-macos-paths.zsh b/common/shell/zsh/os/05-macos-paths.zsh
+index 703e80e..6b7f838 100644
+--- a/common/shell/zsh/os/05-macos-paths.zsh
++++ b/common/shell/zsh/os/05-macos-paths.zsh
+@@ -1,13 +1,34 @@
+ # macOS-specific PATH/bootstrap
++#
++# Apple Silicon Macs can have two Homebrew installations:
++#   /opt/homebrew  -> native arm64 Homebrew
++#   /usr/local     -> Intel/Rosetta Homebrew
++#
++# Do not load both shellenv blocks. Loading both can put the wrong brew/nvim on
++# PATH and can make compiled Neovim assets such as Treesitter parsers fail.
+ 
+-# Homebrew Apple Silicon
+-if [[ -x /opt/homebrew/bin/brew ]]; then
+-  eval "$(/opt/homebrew/bin/brew shellenv)"
+-fi
++case "$(uname -m)" in
++  arm64)
++    if [[ -x /opt/homebrew/bin/brew ]]; then
++      eval "$(/opt/homebrew/bin/brew shellenv)"
++    elif [[ -x /usr/local/bin/brew ]]; then
++      # Fallback only: useful on unusual systems, but not preferred on ARM Macs.
++      eval "$(/usr/local/bin/brew shellenv)"
++    fi
++    ;;
++  x86_64)
++    if [[ -x /usr/local/bin/brew ]]; then
++      eval "$(/usr/local/bin/brew shellenv)"
++    elif [[ -x /opt/homebrew/bin/brew ]]; then
++      eval "$(/opt/homebrew/bin/brew shellenv)"
++    fi
++    ;;
++esac
+ 
+-# Homebrew Intel fallback
+-if [[ -x /usr/local/bin/brew ]]; then
+-  eval "$(/usr/local/bin/brew shellenv)"
+-fi
++path=(
++  "$HOME/.cargo/bin"
++  $path
++)
+ 
++typeset -U path PATH
+ export PATH
+diff --git a/scripts/apply-wsl.sh b/scripts/apply-wsl.sh
+index 250b056..c1d8a21 100755
+--- a/scripts/apply-wsl.sh
++++ b/scripts/apply-wsl.sh
+@@ -35,21 +35,16 @@ echo "Repo root: $ROOT"
+ echo "Applying WSL dotfiles..."
+ echo
+ 
++link_path "$ROOT" "$HOME/.dotfiles"
+ link_path "$ROOT/common/nvim" "$HOME/.config/nvim"
+ link_path "$ROOT/common/tmux/tmux.conf" "$HOME/.tmux.conf"
++link_path "$ROOT/common/shell/zsh/zshrc" "$HOME/.zshrc"
++link_path "$ROOT/common/shell/zsh/p10k.zsh" "$HOME/.p10k.zsh"
++link_path "$ROOT/common/shell/fastfetch" "$HOME/.config/fastfetch"
++link_path "$ROOT/common/lazygit" "$HOME/.config/lazygit"
+ 
+-# Do not link the current macOS-heavy common/shell/zshrc into WSL unless no WSL file exists.
+-if [ -f "$ROOT/common/shell/zshrc-wsl" ]; then
+-  link_path "$ROOT/common/shell/zshrc-wsl" "$HOME/.zshrc"
+-else
+-  echo "No common/shell/zshrc-wsl found. Leaving ~/.zshrc untouched to avoid applying the macOS-heavy zshrc."
+-fi
+-
+-link_path "$ROOT/common/shell/p10k.zsh" "$HOME/.p10k.zsh"
+-link_path "$ROOT/common/git/gitconfig" "$HOME/.gitconfig"
+-
+-if [ -d "$ROOT/common/fastfetch" ]; then
+-  link_path "$ROOT/common/fastfetch" "$HOME/.config/fastfetch"
++if [ -f "$ROOT/common/git/gitconfig" ]; then
++  link_path "$ROOT/common/git/gitconfig" "$HOME/.gitconfig"
+ fi
+ 
+ echo
+diff --git a/scripts/install-macos.sh b/scripts/install-macos.sh
+index 4dd9abc..d2693e1 100755
+--- a/scripts/install-macos.sh
++++ b/scripts/install-macos.sh
+@@ -1,14 +1,47 @@
+ #!/usr/bin/env bash
+ set -euo pipefail
+ 
+-ROOT="${DOTFILES_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}"
+-
+-backup_path() {
+-  local path="$1"
+-  if [ -e "$path" ] || [ -L "$path" ]; then
+-    local backup="${path}.backup.$(date +%Y%m%d%H%M%S)"
+-    echo "Backing up $path -> $backup"
+-    mv "$path" "$backup"
++if [[ "$(uname -s)" != "Darwin" ]]; then
++  echo "This script is for macOS only."
++  exit 1
++fi
++
++ROOT="${DOTFILES_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
++TS="$(date +%Y%m%d-%H%M%S)"
++
++log() { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
++warn() { printf '\033[1;33mWARN:\033[0m %s\n' "$*"; }
++
++brew_cmd() {
++  case "$(uname -m)" in
++    arm64)
++      if [[ -x /opt/homebrew/bin/brew ]]; then
++        printf '%s\n' /opt/homebrew/bin/brew
++      elif [[ -x /usr/local/bin/brew ]]; then
++        printf '%s\n' /usr/local/bin/brew
++      else
++        return 1
++      fi
++      ;;
++    x86_64)
++      if [[ -x /usr/local/bin/brew ]]; then
++        printf '%s\n' /usr/local/bin/brew
++      elif [[ -x /opt/homebrew/bin/brew ]]; then
++        printf '%s\n' /opt/homebrew/bin/brew
++      else
++        return 1
++      fi
++      ;;
++  esac
++}
++
++backup_if_needed() {
++  local dest="$1"
++  if [[ -L "$dest" ]]; then
++    rm "$dest"
++  elif [[ -e "$dest" ]]; then
++    mv "$dest" "$dest.backup.$TS"
++    echo "Backed up: $dest -> $dest.backup.$TS"
+   fi
+ }
+ 
+@@ -16,35 +49,88 @@ link_path() {
+   local src="$1"
+   local dest="$2"
+ 
+-  if [ ! -e "$src" ]; then
+-    echo "Source does not exist: $src"
+-    return 1
++  if [[ ! -e "$src" ]]; then
++    warn "Skipped missing source: $src"
++    return 0
+   fi
+ 
+-  mkdir -p "$(dirname "$dest")"
+-  backup_path "$dest"
++  if [[ -L "$dest" && "$(readlink "$dest")" == "$src" ]]; then
++    echo "Already linked: $dest -> $src"
++    return 0
++  fi
+ 
+-  echo "Linking $dest -> $src"
++  mkdir -p "$(dirname "$dest")"
++  backup_if_needed "$dest"
+   ln -s "$src" "$dest"
++  echo "Linked: $dest -> $src"
++}
++
++clone_or_pull() {
++  local repo="$1"
++  local dest="$2"
++  if [[ -d "$dest/.git" ]]; then
++    git -C "$dest" pull --ff-only
++  else
++    git clone --depth=1 "$repo" "$dest"
++  fi
+ }
+ 
+-echo "This will replace selected live configs with symlinks."
+-echo "It will back up existing live configs first."
+-echo "Press Enter to continue, Ctrl-C to cancel."
+-read -r _
++BREW="$(brew_cmd || true)"
++if [[ -z "${BREW:-}" ]]; then
++  cat >&2 <<'MSG'
++Homebrew was not found.
++Install native Apple Silicon Homebrew first on ARM Macs:
++  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
++MSG
++  exit 1
++fi
+ 
+-link_path "$ROOT/common/nvim" "$HOME/.config/nvim"
+-link_path "$ROOT/common/tmux/tmux.conf" "$HOME/.tmux.conf"
+-link_path "$ROOT/common/shell/zshrc" "$HOME/.zshrc"
++log "Using Homebrew: $BREW"
++"$BREW" install \
++  git zsh curl wget \
++  tmux neovim \
++  fzf ripgrep fd lazygit tree-sitter \
++  zoxide atuin eza bat fastfetch \
++  node python go rustup-init \
++  jq shellcheck shfmt \
++  luarocks
++
++ZSH="${ZSH:-$HOME/.oh-my-zsh}"
++ZSH_CUSTOM="${ZSH_CUSTOM:-$ZSH/custom}"
++mkdir -p "$ZSH_CUSTOM/plugins" "$ZSH_CUSTOM/themes"
+ 
+-if [ -f "$ROOT/common/git/gitconfig" ]; then
+-  link_path "$ROOT/common/git/gitconfig" "$HOME/.gitconfig"
++if [[ ! -d "$ZSH" ]]; then
++  log "Installing Oh My Zsh"
++  git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$ZSH"
+ fi
+ 
++log "Installing/updating Zsh plugins"
++clone_or_pull https://github.com/Aloxaf/fzf-tab "$ZSH_CUSTOM/plugins/fzf-tab"
++clone_or_pull https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
++clone_or_pull https://github.com/zsh-users/zsh-completions "$ZSH_CUSTOM/plugins/zsh-completions"
++clone_or_pull https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
++clone_or_pull https://github.com/romkatv/powerlevel10k "$ZSH_CUSTOM/themes/powerlevel10k"
++
++log "Linking dotfiles"
++link_path "$ROOT" "$HOME/.dotfiles"
++link_path "$ROOT/common/nvim" "$HOME/.config/nvim"
++link_path "$ROOT/common/tmux/tmux.conf" "$HOME/.tmux.conf"
++link_path "$ROOT/common/shell/zsh/zshrc" "$HOME/.zshrc"
++link_path "$ROOT/common/shell/zsh/p10k.zsh" "$HOME/.p10k.zsh"
++link_path "$ROOT/common/shell/fastfetch" "$HOME/.config/fastfetch"
++link_path "$ROOT/common/lazygit" "$HOME/.config/lazygit"
++
+ link_path "$ROOT/macos/aerospace" "$HOME/.config/aerospace"
+ link_path "$ROOT/macos/alacritty" "$HOME/.config/alacritty"
+ link_path "$ROOT/macos/hammerspoon" "$HOME/.hammerspoon"
+ link_path "$ROOT/macos/sketchybar" "$HOME/.config/sketchybar"
++link_path "$ROOT/macos/neovide/neovide" "$HOME/.config/neovide"
++
++if [[ "$(uname -m)" == "arm64" ]]; then
++  if command -v nvim >/dev/null 2>&1 && [[ "$(command -v nvim)" == /usr/local/* ]]; then
++    warn "nvim is still resolving to Intel Homebrew: $(command -v nvim)"
++    warn "Start a new shell or ensure /opt/homebrew/bin is before /usr/local/bin."
++  fi
++fi
+ 
+-echo "Done."
+-echo "Now test: nvim, tmux, zsh, AeroSpace, Hammerspoon, Alacritty, Sketchybar."
++log "Done. Restart with: exec zsh"

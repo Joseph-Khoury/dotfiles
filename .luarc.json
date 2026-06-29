@@ -7,6 +7,5 @@
         "hs",
         "spoon",
         "getframe"
-    ],
-    "runtime.version": "Lua 5.5"
+    ]
 }

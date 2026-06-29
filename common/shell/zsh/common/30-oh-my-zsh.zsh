@@ -20,8 +20,12 @@ plugins=(
   zsh-syntax-highlighting
 )
 
+# Do not let Oh My Zsh set terminal/tmux window titles.
+export DISABLE_AUTO_TITLE="true"
+
 if [[ -r "$ZSH/oh-my-zsh.sh" ]]; then
   source "$ZSH/oh-my-zsh.sh"
 else
   print -P "%F{yellow}Warning:%f Oh My Zsh not found at $ZSH"
 fi
+

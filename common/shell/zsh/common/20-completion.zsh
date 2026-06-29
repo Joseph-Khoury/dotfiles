@@ -1,6 +1,5 @@
 # Completion setup
 # This is loaded before Oh My Zsh, because Oh My Zsh runs compinit.
-
 mkdir -p "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-${HOST}-${ZSH_VERSION}"
 
