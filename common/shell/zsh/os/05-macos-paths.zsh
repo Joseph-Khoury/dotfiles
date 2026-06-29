@@ -21,6 +21,8 @@ export NVM_DIR="${HOME}/.nvm"
 
 export PATH="/Library/TeX/texbin:$PATH"
 
+export FASTFETCH_FULL_MIN_COLS=70
+
 path=(
     "$HOME/.cargo/bin"
     $path

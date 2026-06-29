@@ -21,5 +21,5 @@ export VISUAL="${VISUAL:-$EDITOR}"
 export PAGER="${PAGER:-less}"
 export LESS="${LESS:--R -F -X}"
 
-# Shared config paths
-export FASTFETCH_CONFIG="${FASTFETCH_CONFIG:-$DOTFILES/common/shell/fastfetch/compact.jsonc}"
+# Global which can be set in OS-specific paths to adjust when fastfetch is compacted
+export FASTFETCH_FULL_MIN_COLS="${FASTFETCH_FULL_MIN_COLS:-150}"

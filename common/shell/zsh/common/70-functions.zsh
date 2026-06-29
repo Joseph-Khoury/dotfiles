@@ -113,7 +113,7 @@ fastfetch() {
   cols="$(_ff_terminal_cols)"
 
   # Tune this number for your full config.
-  local full_min_cols=70
+  local full_min_cols="${FASTFETCH_FULL_MIN_COLS:-150}"
 
   if (( cols >= full_min_cols )) && [[ -r "$full" ]]; then
     command fastfetch --config "$full"
