@@ -1,5 +1,6 @@
 return {
     "lervag/vimtex",
+    lazy=false,
 
     ft = {
         "tex",
@@ -84,7 +85,7 @@ return {
                             vim.g.vimtex_view_skim_activate = 1
 
                             -- Nice visual cue in Skim.
-                            vim.g.vimtex_view_skim_reading_bar = 1
+                            vim.g.vimtex_view_skim_reading_bar = 0
 
                             -- }}}
 
