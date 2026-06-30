@@ -19,11 +19,15 @@ return {
 
             vim.g.vimtex_compiler_method = "latexmk"
 
+            local auxdir = "auxdir"
+            local outdir = auxdir
+
             vim.g.vimtex_compiler_latexmk = {
                 executable = "latexmk",
                 continuous = 1,
                 callback = 1,
-                build_dir = "",
+                aux_dir = auxdir,
+                out_dir = outdir,
                 options = {
                     "-pdf",
                     "-verbose",

@@ -4,3 +4,4 @@
 # Add WSL-specific PATH entries here only if needed.
 
 export FASTFETCH_FULL_MIN_COLS=80
+export NEXTCLOUD_DIR="/mnt/c/Users/joe89/Nextcloud"

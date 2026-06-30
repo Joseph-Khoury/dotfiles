@@ -17,10 +17,16 @@ alias zconf='nvim ~/.zshrc'
 alias zdir='cd ~/.dotfiles/common/shell/zsh && nvim .'
 alias ndir='cd ~/.dotfiles/common/nvim && nvim .'
 
+# Directories
+alias clouddir='cd /mnt/c/Users/joe89/Nextcloud/'
+alias cloud='clouddir && nvim .'
+alias clddir='clouddir'
+alias cld='cloud'
+
 # CLI apps
-if (( $+commands[fastfetch] )); then
-  alias fastfetch='fastfetch --config "$FASTFETCH_CONFIG"'
-fi
+# if (( $+commands[fastfetch] )); then
+#   alias fastfetch='fastfetch --config "$FASTFETCH_CONFIG"'
+# fi
 
 if (( $+commands[eza] )); then
   alias ls='eza --icons=auto --group-directories-first'
