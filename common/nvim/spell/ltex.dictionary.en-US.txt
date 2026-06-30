@@ -57,3 +57,10 @@ Sketchybar
 Keybinds
 GlazeWM
 Zebar
+VimTeX
+SyncTeX
+TikZ
+SyncTeX
+latexmk
+synctex
+VimTeX

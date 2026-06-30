@@ -9,3 +9,4 @@
 {"rule":"MISSING_GENITIVE","sentence":"^\\QJosephson effect\nThe goal is to bring two semiconductor materials together.\\E$"}
 {"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qnofooter.[L].\\E$"}
 {"rule":"MAC_OS","sentence":"^\\QAdded floating window keybinds through hammerspoon\nReorganized dotfiles into common / macos / windows structure.\\E$"}
+{"rule":"FILE_EXTENSIONS_CASE","sentence":"^\\QCompile with latexmk -pdf -synctex=1 em-test.tex.\\E$"}
