@@ -161,6 +161,8 @@ workspaces:
 
 
 window_rules:
+  # Windows from certain applications to ignore with glaze
+  # These apps will not be able to be moved to different workspaces
   - commands: ['ignore']
     match:
       # Ignores any Zebar windows.
@@ -186,6 +188,15 @@ window_rules:
       - window_process: { equals: 'POWERPNT' }
         window_class: { not_regex: 'PPTFrameClass' }
 
+      # # Windows from certain applications to start floating
+      # - commands: ['set-floating']
+      #   match:
+      #     - window_process: { equals: 'Vivado' }
+      #     - window_process: { equals: 'taskmgr' }
+    
+    
+
+
 binding_modes:
   # When enabled, the focused window can be resized via arrow keys or HJKL.
   - name: 'resize'
@@ -206,7 +217,7 @@ binding_modes:
     keybindings:
         # Reload the config
       - commands: ['wm-reload-config', 'wm-disable-binding-mode --name service']
-        bindings: ['escape']
+        bindings: ['escape', 'r']
         # Kill the window manager service safely
       - commands: ['wm-exit']
         bindings: ['alt+shift+e']
@@ -227,6 +238,12 @@ binding_modes:
     keybindings:
       - commands: ['wm-disable-binding-mode --name app-launcher']
         bindings: ['escape', 'alt+shift+space', 'enter']
+      - commands: ['shell-exec C:\Users\joe89\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Obsidian.lnk', 'wm-disable-binding-mode --name app-launcher']
+        bindings: ['o']
+      - commands: ['shell-exec firefox -new-window', 'wm-disable-binding-mode --name app-launcher']
+        bindings: ['f']
+      - commands: ['shell-exec wt.exe -d . wsl tmux new-session -A -s main', 'wm-disable-binding-mode --name app-launcher']
+        bindings: ['t']
 
 keybindings:
   #### binding modes
@@ -234,7 +251,7 @@ keybindings:
   # resizing via arrow keys or HJKL. The binding mode is defined above with
   # the name 'resize'.
   - commands: ['wm-enable-binding-mode --name resize']
-    bindings: ['alt+r']
+    bindings: ['alt+shift+r']
   - commands: ['wm-enable-binding-mode --name service']
     bindings: ['alt+shift+;']
   - commands: ['wm-enable-binding-mode --name app-launcher']
