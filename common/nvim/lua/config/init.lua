@@ -1,3 +1,4 @@
+require("config.macos-paths")
 require("config.persistent-files")
 require("config.autocmds")
 require("config.lazy")
