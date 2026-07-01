@@ -166,7 +166,7 @@ esc = 'mode main'
 # Alacritty 
 # here - (shift-alt-space, t) Open a new terminal window with tmux attach
 # hammerspoon - (ctrl-cmd-\) Open a new terminal window
-t = ['exec-and-forget /Applications/Alacritty.app/Contents/MacOS/Alacritty --command tmux a', 'mode main']
+t = ['exec-and-forget /Applications/Alacritty.app/Contents/MacOS/Alacritty --command tmux new-session -A -s main', 'mode main']
 # t = ['exec-and-forget open -na Alacritty', 'mode main']
 
 # Firefox
