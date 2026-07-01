@@ -1,0 +1,33 @@
+# %APPDATA%\neovide\config.toml
+# Windows Neovide config for WSL Neovim
+
+fork = false
+frame = "full"
+maximized = false
+tabs = true
+title-hidden = false
+vsync = true
+srgb = true
+
+# This replaces needing --wsl in a plain Neovide shortcut.
+# Your wrapper/exe can still pass --wsl explicitly; command-line args override config.
+wsl = true
+
+# This is the path INSIDE WSL, not a Windows path.
+neovim-bin = "/usr/bin/nvim"
+
+# Optional. This affects Neovide's window icon, not necessarily your wrapper exe's icon.
+# For the wrapper exe icon, keep using Ahk2Exe /icon.
+# icon = "C:/Users/YOUR_USER/.dotfiles/windows/neovide/neovide.ico"
+
+[font]
+normal = ["JetBrainsMono Nerd Font"]
+size = 12.0
+hinting = "full"
+edging = "antialias"
+
+[box-drawing]
+mode = "native"
+
+[box-drawing.sizes]
+default = [2, 4]
