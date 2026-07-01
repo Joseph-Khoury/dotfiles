@@ -14,7 +14,7 @@ srgb = true
 wsl = true
 
 # This is the path INSIDE WSL, not a Windows path.
-neovim-bin = "/usr/bin/nvim"
+neovim-bin = "/opt/nvim-linux-x86_64/bin/nvim"
 
 # Optional. This affects Neovide's window icon, not necessarily your wrapper exe's icon.
 # For the wrapper exe icon, keep using Ahk2Exe /icon.
