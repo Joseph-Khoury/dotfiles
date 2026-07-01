@@ -10,7 +10,7 @@ function M.setup()
     ]]
 
     -- Font
-    vim.opt.guifont = { "JetBrainsMono Nerd Font", ":h16" }
+    -- vim.opt.guifont = { "JetBrainsMono Nerd Font", ":h16" } -- keep this commented out so that individual neovide.toml's can handle the font size
 
     -- Transparency
     vim.g.neovide_opacity=0.3
@@ -31,11 +31,6 @@ function M.setup()
     -- cursor stuff
     vim.g.neovide_cursor_animation_length = 0.08
     vim.g.neovide_cursor_trail_size = 0.0
-
-    if vim.g.neovide then
-        vim.o.guifont = "JetBrainsMono Nerd Font:h12"
-        vim.g.neovide_scale_factor = 1.0
-    end
 
 end
 
