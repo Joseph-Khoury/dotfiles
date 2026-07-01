@@ -29,7 +29,7 @@ local parsers = {
 	"markdown_inline",
 
 	-- HDL / FPGA
-	-- "verilog", -- Not an official parser
+	"verilog",
 	"vhdl",
 }
 
