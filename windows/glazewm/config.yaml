@@ -244,6 +244,8 @@ binding_modes:
         bindings: ['f']
       - commands: ['shell-exec wt.exe -d . wsl tmux new-session -A -s main', 'wm-disable-binding-mode --name app-launcher']
         bindings: ['t']
+      - commands: ['shell-exec C:\Program Files\Betterbird\Betterbird.exe', 'wm-disable-binding-mode --name app-launcher']
+        bindings: ['e']
 
 keybindings:
   #### binding modes
