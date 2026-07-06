@@ -81,11 +81,14 @@
         "list": 
         [
             {
+                "commandline": "wsl.exe -d Debian --cd ~",
                 "guid": "{d34aa4cb-f4df-557a-b1f8-a0f298350f52}",
                 "hidden": false,
                 "icon": "%USERPROFILE%\\.dotfiles\\windows\\assets\\debian.ico",
-                "name": "Debian",
-                "source": "Microsoft.WSL"
+                "name": "Debian wsl",
+                "pathTranslationStyle": "wsl",
+                "startingDiretory": "~",
+                "tabTitle": "Debian",
             },
             {
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
