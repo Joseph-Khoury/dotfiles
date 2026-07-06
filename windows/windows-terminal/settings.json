@@ -69,6 +69,7 @@
         {
             "colorScheme": "Catppuccin Macchiato",
             "compatibility.allowOSC52": true,
+            "cursorShape": "filledBox",
             "font": 
             {
                 "face": "JetBrainsMono Nerd Font"
@@ -80,22 +81,11 @@
         "list": 
         [
             {
-                "cursorShape": "filledBox",
                 "guid": "{d34aa4cb-f4df-557a-b1f8-a0f298350f52}",
                 "hidden": false,
-                "icon": "C:\\Users\\joe89\\AppData\\Local\\wsl\\{9a6fe7ea-9fde-402f-b620-8679f3925a1f}\\shortcut.ico",
+                "icon": "%USERPROFILE%\\.dotfiles\\windows\\assets\\debian.ico",
                 "name": "Debian",
                 "source": "Microsoft.WSL"
-            },
-            {
-                "commandline": "wsl.exe -d Debian --cd ~ -- tmux new-session -A -s main",
-                "guid": "{7b74e5a1-8e7e-4e5e-9e69-27f6313f3b11}",
-                "hidden": false,
-                "icon": "\ud83d\udc27",
-                "name": "Debian-tmux",
-                "startingDirectory": "%USERPROFILE%",
-                "suppressApplicationTitle": true,
-                "tabTitle": "Debian"
             },
             {
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
@@ -108,7 +98,17 @@
                 "hidden": false,
                 "icon": null,
                 "name": "Command Prompt"
-            }
+            },
+            {
+                "commandline": "wsl.exe -d Debian --cd ~ -- tmux new-session -A -s main",
+                "guid": "{7b74e5a1-8e7e-4e5e-9e69-27f6313f3b11}",
+                "hidden": false,
+                "icon": null,
+                "name": "Debian-tmux",
+                "startingDirectory": "%USERPROFILE%",
+                "suppressApplicationTitle": true,
+                "tabTitle": "Debian"
+            },
         ]
     },
     "schemes": 
