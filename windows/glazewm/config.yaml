@@ -242,7 +242,7 @@ binding_modes:
         bindings: ['o']
       - commands: ['shell-exec firefox -new-window', 'wm-disable-binding-mode --name app-launcher']
         bindings: ['f']
-      - commands: ['shell-exec wt.exe -d . wsl tmux new-session -A -s main', 'wm-disable-binding-mode --name app-launcher']
+      - commands: ['shell-exec wt.exe --profile Debian-tmux', 'wm-disable-binding-mode --name app-launcher']
         bindings: ['t']
       - commands: ['shell-exec C:\Program Files\Betterbird\Betterbird.exe', 'wm-disable-binding-mode --name app-launcher']
         bindings: ['e']
