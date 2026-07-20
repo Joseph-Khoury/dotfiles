@@ -64,3 +64,8 @@ SyncTeX
 latexmk
 synctex
 VimTeX
+Fosi
+Dipl
+Ing
+Detz
+Ernstjan
