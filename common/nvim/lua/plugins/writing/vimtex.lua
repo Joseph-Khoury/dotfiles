@@ -20,7 +20,7 @@ return {
             vim.g.vimtex_compiler_method = "latexmk"
 
             local auxdir = "auxdir"
-            local outdir = auxdir
+            local outdir = "build"
 
             vim.g.vimtex_compiler_latexmk = {
                 executable = "latexmk",
