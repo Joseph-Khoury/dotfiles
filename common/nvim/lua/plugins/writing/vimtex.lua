@@ -20,13 +20,7 @@ return {
             vim.g.vimtex_compiler_method = "latexmk"
 
             local auxdir = "auxdir"
-<<<<<<< HEAD
-            local outdir = ''
-||||||| fade123 (Changed outdir)
             local outdir = "build"
-=======
-            local outdir = auxdir
->>>>>>> parent of fade123 (Changed outdir)
 
             vim.g.vimtex_compiler_latexmk = {
                 executable = "latexmk",
