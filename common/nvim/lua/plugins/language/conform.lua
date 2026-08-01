@@ -1,61 +1,61 @@
 return {
-  "stevearc/conform.nvim",
+    "stevearc/conform.nvim",
 
-  event = {
-    "BufReadPre",
-    "BufNewFile",
-  },
-
-  keys = {
-    {
-      "<leader>f",
-      function()
-        require("conform").format({
-          async = false,
-          lsp_format = "fallback",
-        })
-      end,
-      mode = { "n", "v" },
-      desc = "Format buffer or selection",
+    event = {
+        "BufReadPre",
+        "BufNewFile",
     },
-  },
 
-  config = function()
-    local conform = require("conform")
+    keys = {
+        {
+            "<leader>cf",
+            function()
+                require("conform").format({
+                    async = false,
+                    lsp_format = "fallback",
+                })
+            end,
+            mode = { "n", "v" },
+            desc = "Format buffer or selection",
+        },
+    },
 
-    conform.formatters.verible = {
-      append_args = {
-        -- lowRISC basic formatting.
-        "--indentation_spaces=2",
-        "--wrap_spaces=4",
-        "--column_limit=100",
+    config = function()
+        local conform = require("conform")
 
-        -- Align parameter and port declarations.
-        "--formal_parameters_alignment=align",
-        "--port_declarations_alignment=align",
+        conform.formatters.verible = {
+            append_args = {
+                -- lowRISC basic formatting.
+                "--indentation_spaces=2",
+                "--wrap_spaces=4",
+                "--column_limit=100",
 
-        -- Align internal signal declarations.
-        "--module_net_variable_alignment=align",
+                -- Align parameter and port declarations.
+                "--formal_parameters_alignment=align",
+                "--port_declarations_alignment=align",
 
-        -- Align module instantiations.
-        "--named_parameter_alignment=align",
-        "--named_port_alignment=align",
+                -- Align internal signal declarations.
+                "--module_net_variable_alignment=align",
 
-        -- Treat blank lines as separate alignment tables.
-        "--alignment_group_boundary=blank-lines",
-      },
-    }
+                -- Align module instantiations.
+                "--named_parameter_alignment=align",
+                "--named_port_alignment=align",
 
-    conform.setup({
-      formatters_by_ft = {
-        systemverilog = { "verible" },
-        verilog = { "verible" },
-      },
+                -- Treat blank lines as separate alignment tables.
+                "--alignment_group_boundary=blank-lines",
+            },
+        }
 
-      format_on_save = {
-        timeout_ms = 2000,
-        lsp_format = "fallback",
-      },
-    })
-  end,
+        conform.setup({
+            formatters_by_ft = {
+                systemverilog = { "verible" },
+                verilog = { "verible" },
+            },
+
+            format_on_save = {
+                timeout_ms = 2000,
+                lsp_format = "fallback",
+            },
+        })
+    end,
 }
