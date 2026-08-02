@@ -115,7 +115,7 @@ return {
         })
 
         local verible_rules = vim.fn.expand(
-            "~/.config/verible/.rules.verible_lint"
+            "~/.dotfiles/nvim/.rules.verible_lint"
         )
 
         vim.lsp.config("verible", {
