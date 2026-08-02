@@ -92,9 +92,6 @@ return {
             },
         })
 
-        vim.lsp.config("verible", {})
-        vim.lsp.config("vhdl_ls", {})
-
         require("mason-lspconfig").setup({
             ensure_installed = {
                 -- Neovim / configuration
@@ -116,6 +113,22 @@ return {
             },
             automatic_enable = true,
         })
+
+        local verible_rules = vim.fn.expand(
+            "~/.config/verible/.rules.verible_lint"
+        )
+
+        vim.lsp.config("verible", {
+            cmd = {
+                "verible-verilog-ls",
+                "--rules_config=" .. verible_rules
+            },
+        })
+        vim.lsp.enable("verible")
+
+        vim.lsp.config("vhdl_ls", {})
+
+
 
         local ltex_extra_initialized = false
         local group = vim.api.nvim_create_augroup("user_lsp_attach", { clear = true })
