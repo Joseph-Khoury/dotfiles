@@ -1,4 +1,0 @@
-app_launcher
-main
-regular_bindings
-service
