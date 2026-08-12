@@ -33,6 +33,11 @@ map("n", "<leader>y", "\"+y", { desc = "yank motion to system clipboard" })
 map("v", "<leader>y", "\"+y", { desc = "yank selection to system clipboard" })
 map("n", "<leader>Y", "\"+Y", { desc = "yank whole line to system clipboard" })
 
+-- paste from system clipboard
+map("n", "<leader>p", "\"+p", { desc = "past motion from system clipboard" })
+map("v", "<leader>p", "\"+p", { desc = "past selection from system clipboard" })
+map("n", "<leader>P", "\"+P", { desc = "past whole line from system clipboard" })
+
 -- chmod
 map("n", "<leader>ex", function()
     local file = vim.fn.expand("%:p")
@@ -46,7 +51,9 @@ map('n', '<leader>bn', ':bnext<CR>')
 map('n', '<leader>bp', ':bprev<CR>')
 map('n', '<leader>bf', ':Telescope buffers<CR>')
 
--- Windows {{{
+-------------------------------------------------------------------------------
+-- nvim windows (not the OS) {{{
+-------------------------------------------------------------------------------
 
 -- Window navigation
 map('n', '<leader>wh', '<C-w>h', { desc = 'Move to left window' })
@@ -68,14 +75,74 @@ map('n', '<leader>wp', '<C-w>p', { desc = 'Previous window' })
 
 -- }}}
 
+-------------------------------------------------------------------------------
 -- quality of life {{{
+-------------------------------------------------------------------------------
 
--- auto-align
-map("n", "<leader>==", function()
+-- auto-align 
+map("n", "<leader>aa", function()
     local curpos = vim.fn.getpos(".")         -- Save current cursor position
     vim.cmd("keepjumps normal! gg=G")         -- Indent entire file without jumping
     vim.fn.setpos(".", curpos)                -- Restore cursor position
 end, { desc = "Auto-align whole file" })
+
+
+local function align_equals() -- {{{
+    local mark1 = vim.fn.getpos("v")[2]
+    local mark2 = vim.fn.getpos(".")[2]
+
+    local first = math.min(mark1, mark2)
+    local last = math.max(mark1, mark2)
+
+    local lines = vim.api.nvim_buf_get_lines(
+        0,
+        first - 1,
+        last,
+        false
+    )
+
+    local max_width = 0
+
+    for _, line in ipairs(lines) do
+        local lhs = line:match("^(.-)%s+=%s*[^=]")
+
+        if lhs and not lhs:match("[!<>]$") then
+            lhs = lhs:gsub("%s+$", "")
+            max_width = math.max(
+                max_width,
+                vim.fn.strdisplaywidth(lhs)
+            )
+        end
+    end
+
+    for i, line in ipairs(lines) do
+        local lhs, rhs = line:match("^(.-)%s+=%s*(.*)$")
+
+        if lhs and not lhs:match("[!<>=]$") then
+            lhs = lhs:gsub("%s+$", "")
+
+            local padding = string.rep(
+                " ",
+                max_width - vim.fn.strdisplaywidth(lhs) + 1
+            )
+
+            lines[i] = lhs .. padding .. "= " .. rhs
+        end
+    end
+
+    vim.api.nvim_buf_set_lines(
+        0,
+        first - 1,
+        last,
+        false,
+        lines
+    )
+end -- }}}
+
+-- Align equals signs in visual selection
+map("v", "<leader>a=", align_equals, {
+    desc = "Align equals in selection",
+})
 
 -- write and source config
 map('n', '<leader>wso', function()
