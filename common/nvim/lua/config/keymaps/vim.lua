@@ -80,7 +80,7 @@ map('n', '<leader>wp', '<C-w>p', { desc = 'Previous window' })
 -------------------------------------------------------------------------------
 
 -- auto-align 
-map("n", "<leader>aa", function()
+map("n", "<leader>ai", function()
     local curpos = vim.fn.getpos(".")         -- Save current cursor position
     vim.cmd("keepjumps normal! gg=G")         -- Indent entire file without jumping
     vim.fn.setpos(".", curpos)                -- Restore cursor position
@@ -101,13 +101,24 @@ local function align_equals() -- {{{
         false
     )
 
+    local parsed = {}
     local max_width = 0
 
-    for _, line in ipairs(lines) do
-        local lhs = line:match("^(.-)%s+=%s*[^=]")
+    -- Find longest left-hand side.
+    for i, line in ipairs(lines) do
+        local lhs, op, rhs = line:match(
+            "^(.-)%s*([!<>=]?=)%s*(.*)$"
+        )
 
-        if lhs and not lhs:match("[!<>]$") then
+        if lhs then
             lhs = lhs:gsub("%s+$", "")
+
+            parsed[i] = {
+                lhs = lhs,
+                op  = op,
+                rhs = rhs,
+            }
+
             max_width = math.max(
                 max_width,
                 vim.fn.strdisplaywidth(lhs)
@@ -115,19 +126,18 @@ local function align_equals() -- {{{
         end
     end
 
-    for i, line in ipairs(lines) do
-        local lhs, rhs = line:match("^(.-)%s+=%s*(.*)$")
+    -- Align operators.
+    for i, item in pairs(parsed) do
+        local padding = string.rep(
+            " ",
+            max_width - vim.fn.strdisplaywidth(item.lhs) + 1
+        )
 
-        if lhs and not lhs:match("[!<>=]$") then
-            lhs = lhs:gsub("%s+$", "")
-
-            local padding = string.rep(
-                " ",
-                max_width - vim.fn.strdisplaywidth(lhs) + 1
-            )
-
-            lines[i] = lhs .. padding .. "= " .. rhs
-        end
+        lines[i] = item.lhs
+            .. padding
+            .. item.op
+            .. " "
+            .. item.rhs
     end
 
     vim.api.nvim_buf_set_lines(
@@ -142,6 +152,151 @@ end -- }}}
 -- Align equals signs in visual selection
 map("v", "<leader>a=", align_equals, {
     desc = "Align equals in selection",
+})
+
+local function align_signal_names() -- {{{
+    local mark1 = vim.fn.getpos("v")[2]
+    local mark2 = vim.fn.getpos(".")[2]
+
+    local first = math.min(mark1, mark2)
+    local last = math.max(mark1, mark2)
+
+    local lines = vim.api.nvim_buf_get_lines(
+        0,
+        first - 1,
+        last,
+        false
+    )
+
+    local valid_decl = {
+        input = true,
+        output = true,
+        inout = true,
+        logic = true,
+        wire = true,
+        reg = true,
+        bit = true,
+        tri = true,
+        var = true,
+    }
+
+    local parsed = {}
+    local max_width = 0
+
+    for i, line in ipairs(lines) do
+        -- Match the final identifier before ; , or =
+        local prefix, name, rest = line:match(
+            "^(.-)%s+([%a_][%w_$]*)(%s*[,;=].*)$"
+        )
+
+        if prefix then
+            local keyword = prefix:match("^%s*([%a_][%w_]*)")
+
+            if valid_decl[keyword] then
+                prefix = prefix:gsub("%s+$", "")
+
+                parsed[i] = {
+                    prefix = prefix,
+                    name = name,
+                    rest = rest,
+                }
+
+                max_width = math.max(
+                    max_width,
+                    vim.fn.strdisplaywidth(prefix)
+                )
+            end
+        end
+    end
+
+    for i, item in pairs(parsed) do
+        local padding = string.rep(
+            " ",
+            max_width - vim.fn.strdisplaywidth(item.prefix) + 1
+        )
+
+        lines[i] = item.prefix
+            .. padding
+            .. item.name
+            .. item.rest
+    end
+
+    vim.api.nvim_buf_set_lines(
+        0,
+        first - 1,
+        last,
+        false,
+        lines
+    )
+end -- }}}
+
+map("v", "<leader>al", align_signal_names, {
+    desc = "Align signal names",
+})
+
+local function align_dot_connections() -- {{{
+    local mark1 = vim.fn.getpos("v")[2]
+    local mark2 = vim.fn.getpos(".")[2]
+
+    local first = math.min(mark1, mark2)
+    local last = math.max(mark1, mark2)
+
+    local lines = vim.api.nvim_buf_get_lines(
+        0,
+        first - 1,
+        last,
+        false
+    )
+
+    local parsed = {}
+    local max_width = 0
+
+    -- Find longest `.name` prefix.
+    for i, line in ipairs(lines) do
+        local prefix, value, rest = line:match(
+            "^(%s*%.[%a_][%w_$]*)%s*(%b())(.*)$"
+        )
+
+        if prefix then
+            prefix = prefix:gsub("%s+$", "")
+
+            parsed[i] = {
+                prefix = prefix,
+                value = value,
+                rest = rest,
+            }
+
+            max_width = math.max(
+                max_width,
+                vim.fn.strdisplaywidth(prefix)
+            )
+        end
+    end
+
+    -- Align opening parentheses.
+    for i, item in pairs(parsed) do
+        local padding = string.rep(
+            " ",
+            max_width - vim.fn.strdisplaywidth(item.prefix) + 1
+        )
+
+        lines[i] = item.prefix
+            .. padding
+            .. item.value
+            .. item.rest
+    end
+
+    vim.api.nvim_buf_set_lines(
+        0,
+        first - 1,
+        last,
+        false,
+        lines
+    )
+end -- }}}
+
+map("v", "<leader>a(", align_dot_connections, {
+    desc = "Align parameter and port connections",
 })
 
 -- write and source config

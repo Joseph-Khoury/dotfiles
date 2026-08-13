@@ -96,3 +96,8 @@ Poynting
 li
 VimtexInfo
 kets
+axi-lite
+bitmask
+tdc
+AXI
+AXI-lite
