@@ -188,11 +188,11 @@ window_rules:
       - window_process: { equals: 'POWERPNT' }
         window_class: { not_regex: 'PPTFrameClass' }
 
-      # Windows from certain applications to start floating
-      - commands: ['set-floating']
-        match:
-          - window_process: { equals: 'vivado' }
-      #     - window_process: { equals: 'taskmgr' }
+  # Windows from certain applications to start floating
+  - commands: ['set-floating']
+    match:
+      - window_process: { equals: 'vivado' }
+  #     - window_process: { equals: 'taskmgr' }
     
     
 
