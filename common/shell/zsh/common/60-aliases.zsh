@@ -18,7 +18,6 @@ alias zdir='cd ~/.dotfiles/common/shell/zsh && nvim .'
 alias ndir='cd ~/.dotfiles/common/nvim && nvim .'
 
 # Directories
-alias clouddir='cd /mnt/c/Users/joe89/Nextcloud/'
 alias cloud='clouddir && nvim .'
 alias clddir='clouddir'
 alias cld='cloud'

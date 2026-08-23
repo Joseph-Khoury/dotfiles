@@ -7,6 +7,7 @@ alias neovide='/mnt/c/Program\ Files/Neovide/neovide.exe --wsl'
 alias nv='neovide'
 alias psdots='cd /mnt/c/Users/joe89/.dotfiles'
 alias psdot='psdots && nvim .'
+alias clouddir='cd /mnt/c/Users/joe89/Nextcloud/'
 
 if [[ -d /mnt/c/Users ]]; then
   alias cusers='cd /mnt/c/Users'
