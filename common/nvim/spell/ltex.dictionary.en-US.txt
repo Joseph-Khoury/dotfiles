@@ -101,3 +101,11 @@ bitmask
 tdc
 AXI
 AXI-lite
+Zedboard
+PerformanceExplore
+LUTs
+behaviourly
+fanout
+tdl
+LookUp
+behaviour
