@@ -68,7 +68,7 @@ end
 function obj:start()
     self:stop()
 
-    local mods = { "cmd", "ctrl", "alt" }
+    local mods = { "cmd", "ctrl" }
 
     bindAndStore(self, mods, "h", function()
         self:move(-self.moveStep, 0)
