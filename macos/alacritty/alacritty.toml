@@ -6,18 +6,19 @@ TERM = "xterm-256color"
 padding.x = 10
 padding.y = 10
 decorations = "Buttonless"
-opacity = 0.30
+# opacity = 0.79
+opacity=0.79
 #opacity = 0.4
 #opacity = 0.5
 
-blur = true
+blur = false
 
 option_as_alt = "Both"
 
 [[hints.enabled]]
 binding = { key = "U", mods = "Control|Shift" }
 command = "xdg-open"
-hyperlinks = false
+hyperlinks = true
 mouse.enabled = true
 mouse.mods = "Control"
 post_processing = true
