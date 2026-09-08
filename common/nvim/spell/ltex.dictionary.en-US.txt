@@ -110,3 +110,7 @@ tdl
 LookUp
 behaviour
 Qubo
+TimeTagger
+parameterizable
+Xilinx
+ZedBoard
