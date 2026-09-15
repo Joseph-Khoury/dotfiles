@@ -372,6 +372,10 @@ keybindings:
     bindings: ['alt+p']
   - commands: ['focus --workspace m']
     bindings: ['alt+m']
+  - commands: ['focus --workspace n']
+    bindings: ['alt+n']
+  - commands: ['focus --workspace v']
+    bindings: ['alt+v']
 
   # Move the focused window's parent workspace to a monitor in a given
   # direction.
@@ -425,3 +429,7 @@ keybindings:
     bindings: ['alt+shift+p']
   - commands: ['move --workspace m', 'focus --workspace m']
     bindings: ['alt+shift+m']
+  - commands: ['move --workspace n', 'focus --workspace n']
+    bindings: ['alt+shift+n']
+  - commands: ['move --workspace v', 'focus --workspace v']
+    bindings: ['alt+shift+v']
