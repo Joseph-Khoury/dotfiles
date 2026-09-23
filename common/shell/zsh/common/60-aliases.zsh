@@ -1,7 +1,7 @@
 # Common aliases
 
 # Basic
-alias cls='clear'
+alias cls='clear && fastfetch'
 alias vim='nvim'
 alias zreload='source ~/.zshrc'
 
