@@ -5,3 +5,4 @@
 
 export FASTFETCH_FULL_MIN_COLS=80
 export NEXTCLOUD_DIR="/mnt/c/Users/joe89/Nextcloud"
+export PATH="$(go env GOPATH)/bin:$PATH"

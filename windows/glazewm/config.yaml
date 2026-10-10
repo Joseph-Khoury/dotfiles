@@ -188,6 +188,8 @@ window_rules:
       - window_process: { equals: 'POWERPNT' }
         window_class: { not_regex: 'PPTFrameClass' }
 
+      - window_title: { regex: "(?i)gnuplot" }
+
   # Windows from certain applications to start floating
   - commands: ['set-floating']
     match:

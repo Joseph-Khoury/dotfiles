@@ -55,3 +55,4 @@
 {"rule":"SENTENCE_WHITESPACE","sentence":"^\\QNote Still in development For most of these, the format exists but the actual logic supporting them does not.\\E$"}
 {"rule":"ADVERB_OR_HYPHENATED_ADJECTIVE","sentence":"^\\QWhen the PL accesses board DDR, that is an internal trusted path.\\E$"}
 {"rule":"NUMBERS_IN_WORDS","sentence":"^\\Q\\E(?:Dummy|Ina|Jimmy-|Dummy-|Maniquí-|Maniquíes-|Atrapa-|Dummy\\+|Dummy's\\+)[0-9]+\\Qs can exist as standalone devices, but when constituted into a measurement instrument, the whole device is generally referred to as a time tagger.\\E$"}
+{"rule":"AGREEMENT_SENT_START","sentence":"^\\QAnother special thanks goes out to Daniel Martinez who acted as a mentor and friend.\\E$"}
